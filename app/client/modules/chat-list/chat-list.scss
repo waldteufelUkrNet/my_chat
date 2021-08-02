@@ -1,0 +1,106 @@
+.chat-list {
+  &__item {
+    margin                           : 5px 0;
+    font                             : 1em light;
+    padding                          : 0 10px;
+    display                          : flex;
+    align-items                      : flex-end;
+    justify-content                  : center;
+    @media (min-width: 1200px) {
+      padding                        : 0px;
+    }
+    &_date {
+      text-align                     : center;
+      font                           : 1em reg;
+      padding-top                    : 10px;
+      color                          : rgba(0,0,0,.8);
+    }
+    &_sent {
+      justify-content                : flex-end;
+      .chat-list__message {
+        max-width                    : 70%;
+        background-color             : dodgerblue;
+        border-bottom-right-radius   : 0 0;
+      }
+    }
+    &_received {
+      justify-content                : flex-start;
+      .chat-list__message {
+        max-width                    : 80%;
+        background-color             : lightskyblue;
+        border-bottom-left-radius    : 0 0;
+      }
+    }
+  }
+  &__message {
+    padding                          : 2px 6px;
+    border                           : 1px solid transparent;
+    border-radius                    : 10px;
+    position                         : relative;
+  }
+  &__message-text {}
+  &__message-date {
+    font                             : .7em reg;
+  }
+  &__message-status {
+    position                         : absolute;
+    bottom                           : -3px;
+    right                            : 0;
+    i {
+      font-family                    : ElegantIcons;
+      color                          : grey;
+      display                        : none;
+      &:first-of-type {
+        position                     : relative;
+        left                         : 10px;
+      }
+    }
+    &_delivered {
+      i:last-of-type {
+        display                      : inline-block;
+      }
+    }
+    &_read {
+      i {
+        display                      : inline-block;
+      }
+    }
+  }
+
+  &_mono {
+    .chat-list__item {
+      &_sent {
+        @media (min-width              : 900px) {
+          justify-content              : flex-start;
+        }
+        .chat-list__message {
+          @media (min-width: 900px) {
+            border-bottom-right-radius : 10px 10px;
+            border-bottom-left-radius  : 0 0;
+          }
+        }
+      }
+      .logo {
+        display                        : none;
+        @media (min-width: 900px) {
+          display                      : block;
+        }
+      }
+    }
+  }
+
+  &_group {
+    .chat-list__item {
+      &_sent {
+        justify-content              : flex-start;
+        .chat-list__message {
+          border-bottom-right-radius : 10px 10px;
+          border-bottom-left-radius  : 0 0;
+        }
+      }
+      .logo {
+        display                      : block;
+      }
+    }
+  }
+}

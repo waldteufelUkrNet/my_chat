@@ -1,0 +1,28 @@
+doctype html
+html(lang='en').wjs-MobileHeightFix
+  head
+    meta(charset='UTF-8')
+    meta(name='viewport' content='width=device-width, initial-scale=1.0')
+    link(rel='stylesheet' type='text/css' href='../css/login.css')
+    title Document
+  body
+    .body-inner
+
+      header.login-header
+        nav.login-header__nav
+          ul
+            li
+              a.login-header__link.login-header__link_active(href='/login') вхід
+            li
+              a.login-header__link(href='/register') реєстрація
+      main.login-main
+        h1 My-cha-cha
+        h4 вільний веб-чат
+        h5 щоб увійти, введіть пароль і логін
+
+        form(name="loginForm" method="post" action="/")
+          input(name="name" type="name" placeholder="логін…")
+          input(name="pass" type="password" placeholder="пароль…")
+          button(type="submit") увійти
+
+      footer.login-footer © waldteufel@ukr.net

@@ -1,0 +1,129 @@
+@import "reset";
+@import "fonts";
+@import "general";
+@import "wMobileHeightFix";
+
+.login-header {
+  width: 100%;
+  height: 60px;
+  border-bottom: 1px solid steelblue;
+  padding: 0 10px;
+  @media (min-width: 1200px) {
+    padding: 0px;
+  }
+  &__nav {
+    height: 100%;
+    ul {
+      height: 100%;
+      display: flex;
+      justify-content: flex-end;
+      li {
+        display: flex;
+      }
+    }
+  }
+  &__link {
+    margin: auto;
+    margin-left: 10px;
+    color: #40E0D0;
+    font: 16px reg;
+    text-decoration: underline;
+    cursor: default;
+    &:hover {
+      color: #40E0D0;
+      text-decoration: underline;
+    }
+    &_active {
+      color: #006264;
+      text-decoration: none;
+      cursor: pointer;
+      &:hover {
+      color: #006264;
+      text-decoration: none;
+      }
+    }
+  }
+}
+
+.login-main {
+  flex-grow: 1;
+  padding: 30px 0;
+  h1 {
+    font: 30px deco;
+    text-align: center;
+    padding: 40px 0 20px;
+    position: relative;
+    &::after {
+      content: '';
+      display: block;
+      height: 1px;
+      width: 100px;
+      background-color: black;
+      position: absolute;
+      bottom: 5px;
+      left: 50%;
+      transform: translate(-50%);
+    }
+  }
+  h4 {
+    font: 16px bold;
+    text-align: center;
+    padding: 0 0 20px;
+    color: black;
+  }
+  h5 {
+    font: 16px reg;
+    text-align: center;
+    padding: 0 0 20px;
+    color: #40E0D0;
+  }
+  form {
+    border: 1px solid transparent;
+    border-radius: 6px;
+    width: 300px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    background-color: rgba(0,0,0,.2);
+    box-shadow: 0px 0px 5px #40E0D0;
+    input {
+      height: 40px;
+      margin-bottom: 20px;
+      padding: 6px;
+      background-color: rgba(255,255,255,.2);
+      border: 1px solid transparent;
+      border-radius: 4px;
+      color: white;
+      font: 16px light;
+      &::placeholder {
+        color: white;
+        opacity: 1;
+        font: 16px light;
+      }
+    }
+    button {
+      height: 40px;
+      margin: 0 auto;
+      padding: 0 20px;
+      cursor: pointer;
+      background-color: aquamarine;
+      border: 1px solid transparent;
+      border-radius: 6px;
+      letter-spacing: 1px;
+      color: steelblue;
+      font: 16px reg;
+    }
+  }
+}
+
+.login-footer {
+  width: 100%;
+  height: 60px;
+  border-top: 1px solid steelblue;
+  text-align: center;
+  padding-top: 18px;
+  font: 16px bold;
+  color: navy;
+  letter-spacing: 1px;
+}
