@@ -42,30 +42,6 @@
   &__message-date {
     font                             : .7em reg;
   }
-  &__message-status {
-    position                         : absolute;
-    bottom                           : -3px;
-    right                            : 0;
-    i {
-      font-family                    : ElegantIcons;
-      color                          : grey;
-      display                        : none;
-      &:first-of-type {
-        position                     : relative;
-        left                         : 10px;
-      }
-    }
-    &_delivered {
-      i:last-of-type {
-        display                      : inline-block;
-      }
-    }
-    &_read {
-      i {
-        display                      : inline-block;
-      }
-    }
-  }
 
   &_mono {
     .chat-list__item {
@@ -102,5 +78,10 @@
         display                      : block;
       }
     }
+  }
+  .message-status {
+    position: absolute;
+    bottom: 0;
+    right: 0;
   }
 }

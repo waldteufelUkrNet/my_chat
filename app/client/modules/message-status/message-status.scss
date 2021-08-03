@@ -1,0 +1,21 @@
+.message-status {
+  i {
+    font-family: ElegantIcons;
+    color: grey;
+    display: none;
+    &:first-of-type {
+      position: relative;
+      left: 10px;
+    }
+  }
+  &_delivered {
+    i:last-of-type {
+      display: inline-block;
+    }
+  }
+  &_read {
+    i {
+      display: inline-block;
+    }
+  }
+}

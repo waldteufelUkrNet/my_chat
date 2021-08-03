@@ -1,21 +1,22 @@
-
 doctype html
 html(lang='en').wjs-MobileHeightFix
   head
     meta(charset='UTF-8')
     meta(name='viewport' content='width=device-width, initial-scale=1.0')
+    link(rel='stylesheet' type='text/css' href='../css/main.css')
     link(rel='stylesheet' type='text/css' href='../css/chat.css')
-    title Document
+    script(defer src='../libs-js/wScroll.js')
+    title Group chat
   body
     .body-inner
 
       header.header
         button(type="button").header__menu-btn.header__menu-btn_primary
-          i(style='font-size: 30px') &#x61;
+          i(style='font-size: 35px') &#x61;
         .header__info
-          .header__logo-wrapper
-            p.header__logo UN
-            img.header__img(src="../img/user_logo.png")
+          .logo
+            p.logo__name UN
+            img.logo__img(src="../img/user_logo.png")
           .header__text-wrapper
             h1.header__header User Name
             h4.header__subheader @dfvnkjriu4u
@@ -23,253 +24,255 @@ html(lang='en').wjs-MobileHeightFix
           i(style='font-size: 30px') &#x4a;
           //- i &#x4a;
           //- i &#x35;
-      main.main
-        ul.chat-list.chat-list_group
-          li.chat-list__item.chat-list__item_date 12.03.2021, пт
+      main.main.wjs-scroll(data-scroll='right' data-scroll-hidden='horizontal')
+        .wjs-scroll__content-wrapper
+          .wjs-scroll__content
+            ul.chat-list.chat-list_group
+              li.chat-list__item.chat-list__item_date 12.03.2021, пт
 
-          li.chat-list__item.chat-list__item_sent
-            .logo
-              p.logo__name
-              img.logo__img(src="../img/user_logo.png")
-            .chat-list__message
-              .chat-list__message-text outwill microconidial sciarid
-              .chat-list__message-date 22.54
-              .chat-list__message-status.chat-list__message-status_read
-                i &#x4e;
-                i &#x4e;
+              li.chat-list__item.chat-list__item_sent
+                .logo
+                  p.logo__name
+                  img.logo__img(src="../img/user_logo.png")
+                .chat-list__message
+                  .chat-list__message-text outwill microconidial sciarid
+                  .chat-list__message-date 22.54
+                  .message-status.message-status_read
+                    i &#x4e;
+                    i &#x4e;
 
-          li.chat-list__item.chat-list__item_received
-            .logo
-              p.logo__name
-              img.logo__img(src="../img/users/user1.jpg")
-            .chat-list__message
-              .chat-list__message-text polyalcohol autodigestive nanga dummyism rougemontite
-              .chat-list__message-date 22.54
+              li.chat-list__item.chat-list__item_received
+                .logo
+                  p.logo__name
+                  img.logo__img(src="../img/users/user1.jpg")
+                .chat-list__message
+                  .chat-list__message-text polyalcohol autodigestive nanga dummyism rougemontite
+                  .chat-list__message-date 22.54
 
-          li.chat-list__item.chat-list__item_received
-            .logo
-              p.logo__name
-              img.logo__img(src="../img/users/user2.jpg")
-            .chat-list__message
-              .chat-list__message-text benempt isothiocyano wake carbohydrase overgaiter harshweed Piscataway swell taily blay aesthetically syphilitically floatation monarchianism gardyloo reanswer soleless escaloped Sothiacal gane coolly Brachystomata autocide Roschach
-              .chat-list__message-date 22.57
+              li.chat-list__item.chat-list__item_received
+                .logo
+                  p.logo__name
+                  img.logo__img(src="../img/users/user2.jpg")
+                .chat-list__message
+                  .chat-list__message-text benempt isothiocyano wake carbohydrase overgaiter harshweed Piscataway swell taily blay aesthetically syphilitically floatation monarchianism gardyloo reanswer soleless escaloped Sothiacal gane coolly Brachystomata autocide Roschach
+                  .chat-list__message-date 22.57
 
-          li.chat-list__item.chat-list__item_sent
-            .logo
-              p.logo__name
-              img.logo__img(src="../img/user_logo.png")
-            .chat-list__message
-              .chat-list__message-text polyamide
-              .chat-list__message-date 23.00
-              .chat-list__message-status.chat-list__message-status_read
-                i &#x4e;
-                i &#x4e;
+              li.chat-list__item.chat-list__item_sent
+                .logo
+                  p.logo__name
+                  img.logo__img(src="../img/user_logo.png")
+                .chat-list__message
+                  .chat-list__message-text polyamide
+                  .chat-list__message-date 23.00
+                  .message-status.message-status_read
+                    i &#x4e;
+                    i &#x4e;
 
-          li.chat-list__item.chat-list__item_date 13.03.2021, сб
+              li.chat-list__item.chat-list__item_date 13.03.2021, сб
 
-          li.chat-list__item.chat-list__item_received
-            .logo
-              p.logo__name
-              img.logo__img(src="../img/users/user3.jpg")
-            .chat-list__message
-              .chat-list__message-text undergunner strobila corviform
-              .chat-list__message-date 23.01
+              li.chat-list__item.chat-list__item_received
+                .logo
+                  p.logo__name
+                  img.logo__img(src="../img/users/user3.jpg")
+                .chat-list__message
+                  .chat-list__message-text undergunner strobila corviform
+                  .chat-list__message-date 23.01
 
-          li.chat-list__item.chat-list__item_sent
-            .logo
-              p.logo__name
-              img.logo__img(src="../img/user_logo.png")
-            .chat-list__message
-              .chat-list__message-text stridhan fulminator transgressing monoplacular fetal prevolunteer beauteously dissent steganogram diluvianism Criniger
-              .chat-list__message-date 23.01
-              .chat-list__message-status.chat-list__message-status_read
-                i &#x4e;
-                i &#x4e;
+              li.chat-list__item.chat-list__item_sent
+                .logo
+                  p.logo__name
+                  img.logo__img(src="../img/user_logo.png")
+                .chat-list__message
+                  .chat-list__message-text stridhan fulminator transgressing monoplacular fetal prevolunteer beauteously dissent steganogram diluvianism Criniger
+                  .chat-list__message-date 23.01
+                  .message-status.message-status_read
+                    i &#x4e;
+                    i &#x4e;
 
-          li.chat-list__item.chat-list__item_sent
-            .logo
-              p.logo__name
-              img.logo__img(src="../img/user_logo.png")
-            .chat-list__message
-              .chat-list__message-text floriparous contrariousness  unfocused consentaneous epulary secularizer spinae Scotchiness
-              .chat-list__message-date 23.03
-              .chat-list__message-status.chat-list__message-status_read
-                i &#x4e;
-                i &#x4e;
+              li.chat-list__item.chat-list__item_sent
+                .logo
+                  p.logo__name
+                  img.logo__img(src="../img/user_logo.png")
+                .chat-list__message
+                  .chat-list__message-text floriparous contrariousness  unfocused consentaneous epulary secularizer spinae Scotchiness
+                  .chat-list__message-date 23.03
+                  .message-status.message-status_read
+                    i &#x4e;
+                    i &#x4e;
 
-          li.chat-list__item.chat-list__item_date 15.03.2021, пн
+              li.chat-list__item.chat-list__item_date 15.03.2021, пн
 
-          li.chat-list__item.chat-list__item_received
-            .logo
-              p.logo__name
-              img.logo__img(src="../img/users/user4.jpg")
-            .chat-list__message
-              .chat-list__message-text morcellated exhumer syncretist animately acentrous metachronism Myrtus eradicator cyanomaclurin vignetter frightener cushat faineant porching jingbang unwithered diatomist tendance extendibility rhetorically archetypical hardship jubate Silicea
-              .chat-list__message-date 12.11
+              li.chat-list__item.chat-list__item_received
+                .logo
+                  p.logo__name
+                  img.logo__img(src="../img/users/user4.jpg")
+                .chat-list__message
+                  .chat-list__message-text morcellated exhumer syncretist animately acentrous metachronism Myrtus eradicator cyanomaclurin vignetter frightener cushat faineant porching jingbang unwithered diatomist tendance extendibility rhetorically archetypical hardship jubate Silicea
+                  .chat-list__message-date 12.11
 
-          li.chat-list__item.chat-list__item_sent
-            .logo
-              p.logo__name
-              img.logo__img(src="../img/user_logo.png")
-            .chat-list__message
-              .chat-list__message-text oleostearate uproar lenticulate
-              .chat-list__message-date 13.15
-              .chat-list__message-status.chat-list__message-status_read
-                i &#x4e;
-                i &#x4e;
+              li.chat-list__item.chat-list__item_sent
+                .logo
+                  p.logo__name
+                  img.logo__img(src="../img/user_logo.png")
+                .chat-list__message
+                  .chat-list__message-text oleostearate uproar lenticulate
+                  .chat-list__message-date 13.15
+                  .message-status.message-status_read
+                    i &#x4e;
+                    i &#x4e;
 
-          li.chat-list__item.chat-list__item_received
-            .logo
-              p.logo__name
-              img.logo__img(src="../img/users/user1.jpg")
-            .chat-list__message
-              .chat-list__message-text superspecialize tangleproof cand gena mnemotechnist Reub skunkhead rebathe donatively Anthophora
-              .chat-list__message-date 13.22
+              li.chat-list__item.chat-list__item_received
+                .logo
+                  p.logo__name
+                  img.logo__img(src="../img/users/user1.jpg")
+                .chat-list__message
+                  .chat-list__message-text superspecialize tangleproof cand gena mnemotechnist Reub skunkhead rebathe donatively Anthophora
+                  .chat-list__message-date 13.22
 
-          li.chat-list__item.chat-list__item_sent
-            .logo
-              p.logo__name
-              img.logo__img(src="../img/user_logo.png")
-            .chat-list__message
-              .chat-list__message-text unfrightful  pergameneous Iacchos Konstantinos fair thioarsenite geomorphology leatherworking panache demonstrability arterioplasty yeomanhood
-              .chat-list__message-date 13.45
-              .chat-list__message-status.chat-list__message-status_read
-                i &#x4e;
-                i &#x4e;
+              li.chat-list__item.chat-list__item_sent
+                .logo
+                  p.logo__name
+                  img.logo__img(src="../img/user_logo.png")
+                .chat-list__message
+                  .chat-list__message-text unfrightful  pergameneous Iacchos Konstantinos fair thioarsenite geomorphology leatherworking panache demonstrability arterioplasty yeomanhood
+                  .chat-list__message-date 13.45
+                  .message-status.message-status_read
+                    i &#x4e;
+                    i &#x4e;
 
-          li.chat-list__item.chat-list__item_sent
-            .logo
-              p.logo__name
-              img.logo__img(src="../img/user_logo.png")
-            .chat-list__message
-              .chat-list__message-text superglottal seroimmunity Bysacki roguedom stationmaster isoantibody scribblingly freeholder diagnosable ooglea heritance Paulite quercitrin plethorous annoyance unvibrating violon molybdenum philosophicojuristic arapunga besaint surculus pneumomalacia tabernacler
-              .chat-list__message-date 13.54
-              .chat-list__message-status.chat-list__message-status_read
-                i &#x4e;
-                i &#x4e;
+              li.chat-list__item.chat-list__item_sent
+                .logo
+                  p.logo__name
+                  img.logo__img(src="../img/user_logo.png")
+                .chat-list__message
+                  .chat-list__message-text superglottal seroimmunity Bysacki roguedom stationmaster isoantibody scribblingly freeholder diagnosable ooglea heritance Paulite quercitrin plethorous annoyance unvibrating violon molybdenum philosophicojuristic arapunga besaint surculus pneumomalacia tabernacler
+                  .chat-list__message-date 13.54
+                  .message-status.message-status_read
+                    i &#x4e;
+                    i &#x4e;
 
-          li.chat-list__item.chat-list__item_received
-            .logo
-              p.logo__name
-              img.logo__img(src="../img/users/user2.jpg")
-            .chat-list__message
-              .chat-list__message-text Salisburia
-              .chat-list__message-date 21.32
+              li.chat-list__item.chat-list__item_received
+                .logo
+                  p.logo__name
+                  img.logo__img(src="../img/users/user2.jpg")
+                .chat-list__message
+                  .chat-list__message-text Salisburia
+                  .chat-list__message-date 21.32
 
-          li.chat-list__item.chat-list__item_date 16.03.2021, вв
+              li.chat-list__item.chat-list__item_date 16.03.2021, вв
 
-          li.chat-list__item.chat-list__item_received
-            .logo
-              p.logo__name
-              img.logo__img(src="../img/users/user15.jpg")
-            .chat-list__message
-              .chat-list__message-text malik ozonoscope autogenetically asaron parallelepiped conepate plastomere effeteness scream Gobiesocidae premisrepresent Aeolian hawok decimate muscular sciolous assize tyrology zeunerite Leuciferidae tachometer unmirthfully subungual Silicoflagellidae
-              .chat-list__message-date 04.43
+              li.chat-list__item.chat-list__item_received
+                .logo
+                  p.logo__name
+                  img.logo__img(src="../img/users/user15.jpg")
+                .chat-list__message
+                  .chat-list__message-text malik ozonoscope autogenetically asaron parallelepiped conepate plastomere effeteness scream Gobiesocidae premisrepresent Aeolian hawok decimate muscular sciolous assize tyrology zeunerite Leuciferidae tachometer unmirthfully subungual Silicoflagellidae
+                  .chat-list__message-date 04.43
 
-          li.chat-list__item.chat-list__item_received
-            .logo
-              p.logo__name
-              img.logo__img(src="../img/users/user8.jpg")
-            .chat-list__message
-              .chat-list__message-text kahu tatchy scyelite febrific  tercia formagenic rondure iridectome rippleless anally
-              .chat-list__message-date 06.18
+              li.chat-list__item.chat-list__item_received
+                .logo
+                  p.logo__name
+                  img.logo__img(src="../img/users/user8.jpg")
+                .chat-list__message
+                  .chat-list__message-text kahu tatchy scyelite febrific  tercia formagenic rondure iridectome rippleless anally
+                  .chat-list__message-date 06.18
 
-          li.chat-list__item.chat-list__item_sent
-            .logo
-              p.logo__name
-              img.logo__img(src="../img/user_logo.png")
-            .chat-list__message
-              .chat-list__message-text rebukeful squeeze czar aretaics loiter
-              .chat-list__message-date 09.12
-              .chat-list__message-status.chat-list__message-status_read
-                i &#x4e;
-                i &#x4e;
+              li.chat-list__item.chat-list__item_sent
+                .logo
+                  p.logo__name
+                  img.logo__img(src="../img/user_logo.png")
+                .chat-list__message
+                  .chat-list__message-text rebukeful squeeze czar aretaics loiter
+                  .chat-list__message-date 09.12
+                  .message-status.message-status_read
+                    i &#x4e;
+                    i &#x4e;
 
-          li.chat-list__item.chat-list__item_received
-            .logo
-              p.logo__name
-              img.logo__img(src="../img/users/user9.jpg")
-            .chat-list__message
-              .chat-list__message-text cleidoscapular pseudoprimitivism Celanese unbegot overabundant hygroblepharic multicrystalline orthocephalic aponeurositis aelurophobe chantable dikkop Miltos provocational taum supping agog solemnitude blastocolla unbowsome unprostituted everywhither orthopedia insensibilize
-              .chat-list__message-date 10.00
+              li.chat-list__item.chat-list__item_received
+                .logo
+                  p.logo__name
+                  img.logo__img(src="../img/users/user9.jpg")
+                .chat-list__message
+                  .chat-list__message-text cleidoscapular pseudoprimitivism Celanese unbegot overabundant hygroblepharic multicrystalline orthocephalic aponeurositis aelurophobe chantable dikkop Miltos provocational taum supping agog solemnitude blastocolla unbowsome unprostituted everywhither orthopedia insensibilize
+                  .chat-list__message-date 10.00
 
-          li.chat-list__item.chat-list__item_sent
-            .logo
-              p.logo__name
-              img.logo__img(src="../img/user_logo.png")
-            .chat-list__message
-              .chat-list__message-text undervaluingly
-              .chat-list__message-date 12.43
-              .chat-list__message-status.chat-list__message-status_read
-                i &#x4e;
-                i &#x4e;
+              li.chat-list__item.chat-list__item_sent
+                .logo
+                  p.logo__name
+                  img.logo__img(src="../img/user_logo.png")
+                .chat-list__message
+                  .chat-list__message-text undervaluingly
+                  .chat-list__message-date 12.43
+                  .message-status.message-status_read
+                    i &#x4e;
+                    i &#x4e;
 
-          li.chat-list__item.chat-list__item_sent
-            .logo
-              p.logo__name
-              img.logo__img(src="../img/user_logo.png")
-            .chat-list__message
-              .chat-list__message-text uncommodiously trimesitinice
-              .chat-list__message-date 12.55
-              .chat-list__message-status.chat-list__message-status_read
-                i &#x4e;
-                i &#x4e;
+              li.chat-list__item.chat-list__item_sent
+                .logo
+                  p.logo__name
+                  img.logo__img(src="../img/user_logo.png")
+                .chat-list__message
+                  .chat-list__message-text uncommodiously trimesitinice
+                  .chat-list__message-date 12.55
+                  .message-status.message-status_read
+                    i &#x4e;
+                    i &#x4e;
 
-          li.chat-list__item.chat-list__item_received
-            .logo
-              p.logo__name
-              img.logo__img(src="../img/users/user10.jpg")
-            .chat-list__message
-              .chat-list__message-text epigonal sanguinaceous acceleration carbamate neritic aperitive Weissnichtwo galleyman marksmanly
-              .chat-list__message-date 13.09
+              li.chat-list__item.chat-list__item_received
+                .logo
+                  p.logo__name
+                  img.logo__img(src="../img/users/user10.jpg")
+                .chat-list__message
+                  .chat-list__message-text epigonal sanguinaceous acceleration carbamate neritic aperitive Weissnichtwo galleyman marksmanly
+                  .chat-list__message-date 13.09
 
-          li.chat-list__item.chat-list__item_received
-            .logo
-              p.logo__name
-              img.logo__img(src="../img/users/user10.jpg")
-            .chat-list__message
-              .chat-list__message-text otogenous
-              .chat-list__message-date 13.32
+              li.chat-list__item.chat-list__item_received
+                .logo
+                  p.logo__name
+                  img.logo__img(src="../img/users/user10.jpg")
+                .chat-list__message
+                  .chat-list__message-text otogenous
+                  .chat-list__message-date 13.32
 
-          li.chat-list__item.chat-list__item_received
-            .logo
-              p.logo__name
-              img.logo__img(src="../img/users/user16.jpg")
-            .chat-list__message
-              .chat-list__message-text flotage  rapscallionly suprahepatic rotacism reverentially orthocephaly sclerotiniose matinal trabeculation apostemation lanum
-              .chat-list__message-date 14.31
+              li.chat-list__item.chat-list__item_received
+                .logo
+                  p.logo__name
+                  img.logo__img(src="../img/users/user16.jpg")
+                .chat-list__message
+                  .chat-list__message-text flotage  rapscallionly suprahepatic rotacism reverentially orthocephaly sclerotiniose matinal trabeculation apostemation lanum
+                  .chat-list__message-date 14.31
 
-          li.chat-list__item.chat-list__item_received
-            .logo
-              p.logo__name
-              img.logo__img(src="../img/users/user19.jpg")
-            .chat-list__message
-              .chat-list__message-text fasciotomy mathematically ectrodactylia
-              .chat-list__message-date 14.56
+              li.chat-list__item.chat-list__item_received
+                .logo
+                  p.logo__name
+                  img.logo__img(src="../img/users/user19.jpg")
+                .chat-list__message
+                  .chat-list__message-text fasciotomy mathematically ectrodactylia
+                  .chat-list__message-date 14.56
 
-          li.chat-list__item.chat-list__item_sent
-            .logo
-              p.logo__name
-              img.logo__img(src="../img/user_logo.png")
-            .chat-list__message
-              .chat-list__message-text blindfoldly nonmicroscopical anticryptic monologist
-              .chat-list__message-date 15.55
-              .chat-list__message-status.chat-list__message-status_read
-                i &#x4e;
-                i &#x4e;
+              li.chat-list__item.chat-list__item_sent
+                .logo
+                  p.logo__name
+                  img.logo__img(src="../img/user_logo.png")
+                .chat-list__message
+                  .chat-list__message-text blindfoldly nonmicroscopical anticryptic monologist
+                  .chat-list__message-date 15.55
+                  .message-status.message-status_read
+                    i &#x4e;
+                    i &#x4e;
 
-          li.chat-list__item.chat-list__item_sent
-            .logo
-              p.logo__name
-              img.logo__img(src="../img/user_logo.png")
-            .chat-list__message
-              .chat-list__message-text symbolization
-              .chat-list__message-date 15.56
-              .chat-list__message-status.chat-list__message-status_delivered
-                i &#x4e;
-                i &#x4e;
+              li.chat-list__item.chat-list__item_sent
+                .logo
+                  p.logo__name
+                  img.logo__img(src="../img/user_logo.png")
+                .chat-list__message
+                  .chat-list__message-text symbolization
+                  .chat-list__message-date 15.56
+                  .message-status.message-status_delivered
+                    i &#x4e;
+                    i &#x4e;
 
-        button(type="button").scroll-btn: i &#x33;
+        button(type="button").round-btn: i &#x37;
 
       form(name="chat-form").chat-form
         textarea(name="chat-form-ta" maxlength="5000" placeholder="написати повідомлення…").chat-form__textarea

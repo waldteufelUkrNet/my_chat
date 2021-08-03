@@ -1,0 +1,20 @@
+.round-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: rgba(135, 206, 250,.5);
+  position: absolute;
+  border: 1px solid lightskyblue;
+  bottom: 10px;
+  right: 10px;
+  color: black;
+  box-shadow: 1px 1px 6px #003344;
+  cursor: pointer;
+   i {
+    font: 1.5em ElegantIcons;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+   }
+}
