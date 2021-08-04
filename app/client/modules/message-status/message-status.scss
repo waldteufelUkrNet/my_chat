@@ -1,7 +1,8 @@
 .message-status {
+  position: absolute;
   i {
     font-family: ElegantIcons;
-    color: grey;
+    color: $gr;
     display: none;
     &:first-of-type {
       position: relative;

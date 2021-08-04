@@ -1,14 +1,9 @@
-// @import "reset";
-// @import "fonts";
-// @import "general";
-// @import "wMobileHeightFix";
-
 .login-header {
   width: 100%;
   height: 60px;
-  border-bottom: 1px solid steelblue;
+  border-bottom: 1px solid $sb;
   padding: 0 10px;
-  @media (min-width: 1200px) {
+  @media (min-width: $bpl) {
     padding: 0px;
   }
   &__nav {
@@ -25,20 +20,20 @@
   &__link {
     margin: auto;
     margin-left: 10px;
-    color: #40E0D0;
+    color: $d0;
     font: 16px reg;
     text-decoration: underline;
     cursor: default;
     &:hover {
-      color: #40E0D0;
+      color: $d0;
       text-decoration: underline;
     }
     &_active {
-      color: #006264;
+      color: $c64;
       text-decoration: none;
       cursor: pointer;
       &:hover {
-      color: #006264;
+      color: $c64;
       text-decoration: none;
       }
     }
@@ -58,7 +53,7 @@
       display: block;
       height: 1px;
       width: 100px;
-      background-color: black;
+      background-color: $bl;
       position: absolute;
       bottom: 5px;
       left: 50%;
@@ -69,13 +64,13 @@
     font: 16px bold;
     text-align: center;
     padding: 0 0 20px;
-    color: black;
+    color: $bl;
   }
   h5 {
     font: 16px reg;
     text-align: center;
     padding: 0 0 20px;
-    color: #40E0D0;
+    color: $d0;
   }
   form {
     border: 1px solid transparent;
@@ -85,19 +80,19 @@
     display: flex;
     flex-direction: column;
     padding: 20px;
-    background-color: rgba(0,0,0,.2);
-    box-shadow: 0px 0px 5px #40E0D0;
+    background-color: $bt2;
+    box-shadow: 0px 0px 5px $d0;
     input {
       height: 40px;
       margin-bottom: 20px;
       padding: 6px;
-      background-color: rgba(255,255,255,.2);
+      background-color: $wt2;
       border: 1px solid transparent;
       border-radius: 4px;
-      color: white;
+      color: $wt;
       font: 16px light;
       &::placeholder {
-        color: white;
+        color: $wt;
         opacity: 1;
         font: 16px light;
       }
@@ -107,11 +102,11 @@
       margin: 0 auto;
       padding: 0 20px;
       cursor: pointer;
-      background-color: aquamarine;
+      background-color: $am;
       border: 1px solid transparent;
       border-radius: 6px;
       letter-spacing: 1px;
-      color: steelblue;
+      color: $sb;
       font: 16px reg;
     }
   }
@@ -120,10 +115,10 @@
 .login-footer {
   width: 100%;
   height: 60px;
-  border-top: 1px solid steelblue;
+  border-top: 1px solid $sb;
   text-align: center;
   padding-top: 18px;
   font: 16px bold;
-  color: navy;
+  color: $na;
   letter-spacing: 1px;
 }

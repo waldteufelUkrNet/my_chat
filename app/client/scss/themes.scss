@@ -1,0 +1,167 @@
+body.theme_dark {
+  background-image: linear-gradient(black);
+
+  .round-btn {
+    background-color: orange;
+    border: 1px solid orange;
+    color: black;
+    box-shadow: 1px 1px 6px white;
+  }
+
+  .message-status {
+    i {
+      color: white;
+    }
+  }
+
+.chat-list {
+  &__item {
+    &_date {
+      color : rgba(0,0,0,.8);
+    }
+    &_sent {
+      .chat-list__message {
+        background-color : rgba(255,255,255,.5);
+      }
+    }
+    &_received {
+      .chat-list__message {
+        background-color : rgba(255,255,255,.8);
+      }
+    }
+  }
+}
+
+  .logo {
+    box-shadow: 1px 1px 6px white;
+    &__name {
+      color: orange;
+    }
+    &__status {
+      &_online {
+        background-color: $sg;
+      }
+      &_offline {
+        background-color: $re;
+      }
+    }
+  }
+
+  .header {
+    border-bottom: 1px solid orange;
+    &__menu-btn {
+      i {
+        color: orange;
+      }
+    }
+    &__text-wrapper {
+      color: lightgrey;
+    }
+  }
+
+  .chat-form {
+    border-top: 1px solid orange;
+
+    &__btn {
+      &_active {
+        background-color: orange;
+        color: $d0;
+      }
+    }
+  }
+
+  .user-info {
+    &__name {
+      color: orange;
+    }
+    &__id {
+      color: yellowgreen;
+    }
+    &__status {
+      color: grey;
+    }
+  }
+
+  .menu-list {
+    &__item {
+      border-bottom: 1px solid orange;
+      color: lightgrey;
+      text-shadow: none;
+    }
+  }
+
+  .contact-item {
+    &__name {
+      color: lightgrey;
+      border-bottom: 1px solid orange;
+      text-shadow: none;
+    }
+  }
+
+  .chat-item {
+    &__text-wrapper {
+      color: lightgrey;
+      border-bottom: 1px solid orange;
+    }
+    &__name {
+      text-shadow: none;
+    }
+    &__message {
+      color: grey;
+    }
+    &__badge {
+      background-color: orange;
+    }
+  }
+
+  .login-header {
+    border-bottom: 1px solid orange;
+    &__link {
+      color: grey;
+      &:hover {
+        color: white;
+      }
+      &_active {
+        color: lightgrey;
+        &:hover {
+        color: lightgrey;
+        }
+      }
+    }
+  }
+
+  .login-main {
+    h1 {
+      color: orange;
+      &::after {
+        background-color: orange;
+      }
+    }
+    h4 {
+      color: orange;
+    }
+    h5 {
+      color: orange;
+    }
+    form {
+      background-color: $bt2;
+      box-shadow: 0px 0px 5px orange;
+      input {
+        background-color: $wt2;
+        color: $wt;
+        &::placeholder {
+          color: $wt;
+        }
+      }
+      button {
+        background-color: orange;
+        color: grey;
+      }
+    }
+  }
+
+  .login-footer {
+    border-top: 1px solid orange;
+    color: grey;
+  }
+}

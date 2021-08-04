@@ -65,7 +65,7 @@
 
   // scss -> css
   function convertSCSS() {
-    return src('app/client/scss/*.scss')
+    return src('app/client/scss/main.scss')
            .pipe( scss({outputStyle: 'compressed'}) ) // nested expanded compact compressed
            .on('error', notify.onError({
               message : 'Error: <%= error.message %>',

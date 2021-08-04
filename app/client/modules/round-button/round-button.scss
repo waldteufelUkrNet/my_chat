@@ -2,13 +2,13 @@
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background-color: rgba(135, 206, 250,.5);
+  background-color: $bt;
   position: absolute;
-  border: 1px solid lightskyblue;
+  border: 1px solid $lb;
   bottom: 10px;
   right: 10px;
-  color: black;
-  box-shadow: 1px 1px 6px #003344;
+  color: $bl;
+  box-shadow: 1px 1px 6px $c44;
   cursor: pointer;
    i {
     font: 1.5em ElegantIcons;
@@ -16,5 +16,5 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%,-50%);
-   }
+  }
 }

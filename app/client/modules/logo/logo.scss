@@ -3,7 +3,7 @@
   height: 40px;
   border: 1px solid transparent;
   border-radius: 50%;
-  box-shadow: 1px 1px 6px black;
+  box-shadow: 1px 1px 6px $bl;
   position: relative;
   margin-right: 10px;
   &__name {
@@ -12,7 +12,7 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%,-50%);
-    color: springgreen;
+    color: $sg;
     font: 1.3em bold;
   }
   &__img {
@@ -35,10 +35,10 @@
     right: 0;
     bottom: 0;
     &_online {
-      background-color: springgreen;
+      background-color: $sg;
     }
     &_offline {
-      background-color: red;
+      background-color: $re;
     }
   }
 }

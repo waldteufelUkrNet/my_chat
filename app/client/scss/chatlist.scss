@@ -1,70 +1,54 @@
-// @import "reset";
-// @import "fonts";
-// @import "general";
-// @import "wMobileHeightFix";
-
-// @import "../modules/logo/logo";
-// @import "../modules/header/header";
-// @import "../modules/message-status/message-status";
-
-// @import "../libs-css/wScroll";
-
-// .main {
-//   height: calc(100% - 60px);
-//   overflow-y: hidden;
-
-  .chat-list {
-    .message-status {
-      position: absolute;
-      bottom: 5px;
-      right: 10px;
-    }
+.chat-list {
+  .message-status {
+    position: absolute;
+    bottom: 5px;
+    right: 10px;
   }
-  .chat-item {
-    display: flex;
-    align-items: center;
+}
+.chat-item {
+  display: flex;
+  align-items: center;
+  padding: 5px;
+  overflow: hidden;
+  position: relative;
+  &__text-wrapper {
+    color: $d0;
+    border-bottom: 1px solid $cb;
     padding: 5px;
+    flex-grow: 1;
+    width: calc(100% - 100px);
+  }
+  &__name {
+    font: 1.2em reg;
+    text-shadow: 1px 1px 2px $c44;
+  }
+  &__message {
+    font: 1em light;
+    white-space: nowrap;
+    text-overflow: ellipsis;
     overflow: hidden;
-    position: relative;
-    &__text-wrapper {
-      color: #40E0D0;
-      border-bottom: 1px solid CadetBlue;
-      padding: 5px;
-      flex-grow: 1;
-      width: calc(100% - 100px);
-    }
-    &__name {
-      font: 1.2em reg;
-      text-shadow: 1px 1px 2px #003344;
-    }
-    &__message {
-      font: 1em light;
-      white-space: nowrap;
-      text-overflow: ellipsis;
-      overflow: hidden;
-      color: black;
-      padding-right: 20px;
-    }
-    &__date {
-      position: absolute;
-      top: 5px;
-      right: 10px;
-      font: .8em light;
-    }
-    &__badge {
-      position: absolute;
-      z-index: 3;
-      right: 10px;
-      bottom: 9px;
-      background-color: springgreen;
-      border: 1px solid transparent;
-      border-radius: 6px;
-      padding: 0px 6px;
-      font: .8em reg;
-      display: none;
-      &_active {
-        display: block;
-      }
+    color: $bl;
+    padding-right: 20px;
+  }
+  &__date {
+    position: absolute;
+    top: 5px;
+    right: 10px;
+    font: .8em light;
+  }
+  &__badge {
+    position: absolute;
+    z-index: 3;
+    right: 10px;
+    bottom: 9px;
+    background-color: $sg;
+    border: 1px solid transparent;
+    border-radius: 6px;
+    padding: 0px 6px;
+    font: .8em reg;
+    display: none;
+    &_active {
+      display: block;
     }
   }
-// }
+}

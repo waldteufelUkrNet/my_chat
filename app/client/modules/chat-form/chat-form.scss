@@ -1,7 +1,7 @@
 .chat-form {
   display: flex;
   align-items: end;
-  border-top: 1px solid dodgerblue;
+  border-top: 1px solid $db;
   &__textarea {
     margin: 0;
     flex-grow: 1;
@@ -22,8 +22,8 @@
     cursor: default;
     &_active {
       cursor: pointer;
-      background-color: #003344;
-      color: #40E0D0;
+      background-color: $c44;
+      color: $d0;
     }
     i {
       font: 2em ElegantIcons;
