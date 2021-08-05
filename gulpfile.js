@@ -82,6 +82,20 @@
   }
   exports.convertSCSS = convertSCSS;
 
+  // js modules
+  function convertModulesJS() {
+    return src('app/client/modules/**/*.js')
+           .pipe( uglify() )
+           .on('error', notify.onError({
+              message : 'Error: <%= error.message %>',
+              title   : 'JS error'
+            }))
+           .pipe( concat('modules.js') )
+           .pipe( dest('app/client/js/') )
+           .pipe( bs.stream() )
+  }
+  exports.convertModulesJS = convertModulesJS;
+
   // js
   function convertJS() {
     return src('app/client/js-expanded/*.js')
@@ -99,13 +113,14 @@
   // watching & live reload
   function startWatch(){
     watch(['app/client/index.pug'], convertIndexPug);
-    watch(['app/client/pug/*.pug'], convertPug);
+    watch(['app/client/pug/*.pug', 'app/client/modules/**/*.pug'], convertPug);
     watch(['app/client/scss/*.scss', 'app/client/modules/**/*.scss'], convertSCSS);
-    watch(['app/client/js/*.js'], convertJS );
+    watch(['app/client/modules/**/*.js'], convertModulesJS);
+    watch(['app/client/js-expanded/*.js'], convertJS );
     watch(['app/client/index.html', 'app/client/html/*.html']).on('change',  bs.reload);
   }
   exports.startWatch = startWatch;
 
-  exports.default = series(convertSCSS, convertJS, convertPug, convertIndexPug, parallel(startBrowserSync, startWatch));
+  exports.default = series(convertSCSS, convertModulesJS, convertJS, convertPug, convertIndexPug, parallel(startBrowserSync, startWatch));
 /* ↑↑↑ /TASKS ↑↑↑ */
 ////////////////////////////////////////////////////////////////////////////////

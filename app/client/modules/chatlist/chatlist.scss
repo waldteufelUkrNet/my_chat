@@ -8,9 +8,9 @@
 .chat-item {
   display: flex;
   align-items: center;
-  padding: 5px;
   overflow: hidden;
   position: relative;
+  cursor: pointer;
   &__text-wrapper {
     color: $d0;
     border-bottom: 1px solid $cb;
@@ -33,14 +33,14 @@
   &__date {
     position: absolute;
     top: 5px;
-    right: 10px;
+    right: 0;
     font: .8em light;
   }
   &__badge {
     position: absolute;
     z-index: 3;
-    right: 10px;
-    bottom: 9px;
+    right: 0px;
+    bottom: 3px;
     background-color: $sg;
     border: 1px solid transparent;
     border-radius: 6px;

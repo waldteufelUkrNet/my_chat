@@ -4,14 +4,16 @@
 @import "general";
 @import "wMobileHeightFix";
 
-
 @import "../modules/logo/logo";
-@import "../modules/chat-list/chat-list";
 @import "../modules/message-status/message-status";
 @import "../modules/header/header";
+@import "../modules/subheader/subheader";
 @import "../modules/round-button/round-button";
 @import "../modules/chat-form/chat-form";
-
+@import "../modules/menu/menu";
+@import "../modules/chatlist/chatlist";
+@import "../modules/contactlist/contactlist";
+@import "../modules/chat/chat";
 
 @import "../libs-css/wScroll";
 
@@ -21,13 +23,9 @@
   position: relative;
 }
 
-
+@import "layout";
 @import "user-card";
-@import "menu";
 @import "login";
-@import "contactslist";
-@import "chatlist";
 @import "chat-messages";
-
 
 @import "themes";

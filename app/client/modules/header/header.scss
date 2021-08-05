@@ -6,6 +6,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  position: relative;
   @media (min-width: $bpm) {
     padding: 0px;
   }
@@ -47,5 +48,36 @@
   }
   &__subheader {
     font: 1em light;
+  }
+  &__search {
+    height: 40px;
+    width: 0;
+    position: absolute;
+    z-index: 2;
+    top: 50%;
+    transform: translate(0,-50%);
+    right: 45px;
+    border: 1px solid transparent;
+    background-color: transparent;
+    padding: 0px;
+    color: $d0;
+    font: 1.2em light;
+    @media (min-width: $bpm) {
+      height: 30px;
+      transition: width .5s, padding .5s;
+    }
+    &_active {
+      width: calc(100% - 90px);
+      padding: 6px;
+      border: 1px solid $d0;
+      background-color: $c44;
+      @media (min-width: $bpm) {
+        width: calc(100% - 70px);
+        right: 35px;
+        height: 30px;
+        font: 1em light;
+        transition: width .5s, padding .5s;
+      }
+    }
   }
 }

@@ -1,0 +1,46 @@
+.body-inner {
+  height: 100%;
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: row;
+  overflow: hidden;
+  &_notSignedPage {
+    flex-direction: column;
+  }
+}
+
+.left-side {
+  height: 100%;
+  width: 100%;
+  @media (min-width: $bpm) {
+    width: 300px;
+    border-right: 1px solid $sb;
+  }
+  .lists-wrapper.wjs-scroll {
+    height: calc(100% - 60px);
+    padding: 10px;
+  }
+}
+
+.list {
+  display: none;
+  &_active {
+    display: block;
+  }
+}
+
+.right-side {
+  height: 100%;
+  display: none;
+  flex-direction: column;
+  position: relative;
+  @media (min-width: $bpm) {
+    display: flex;
+    width: calc(100% - 300px);
+  }
+}
+.chat-wrapper {
+  height: calc(100% - 100px);
+}
