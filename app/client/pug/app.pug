@@ -14,6 +14,7 @@ html(lang='en').wjs-MobileHeightFix
 
       .left-side
         include ../modules/header/header.pug
+        include ../modules/subheader/subheader.pug
         .lists-wrapper.wjs-scroll(data-scroll='right')
           .wjs-scroll__content-wrapper
             .wjs-scroll__content
@@ -26,12 +27,25 @@ html(lang='en').wjs-MobileHeightFix
               .list(data-list-group="aside" data-list="contactlist")
                 include ../modules/contactlist/contactlist.pug
 
+              .list(data-list-group="aside" data-list="usercard")
+                include ../modules/usercard/usercard.pug
+              .list(data-list-group="aside" data-list="groupcard")
+                include ../modules/groupcard/groupcard.pug
+              .list(data-list-group="aside" data-list="chat")
+                include ../modules/chat/chat.pug
+                include ../modules/round-button/round-button.pug
+                include ../modules/chat-form/chat-form.pug
+
       .right-side
-        //- p Виберіть чат або контакт і почніть спілкування
-        include ../modules/subheader/subheader.pug
-        .chat-wrapper.wjs-scroll(data-scroll='right')
-          .wjs-scroll__content-wrapper
-            .wjs-scroll__content
-              include ../modules/chat/chat.pug
-          include ../modules/round-button/round-button.pug
-        include ../modules/chat-form/chat-form.pug
+        p.right-side__info Виберіть чат або контакт і почніть спілкування
+
+        //- include ../modules/subheader/subheader.pug
+        //- .chat-wrapper.wjs-scroll(data-scroll='right')
+        //-   .wjs-scroll__content-wrapper
+        //-     .wjs-scroll__content
+        //-       include ../modules/chat/chat.pug
+        //-   include ../modules/round-button/round-button.pug
+        //- include ../modules/chat-form/chat-form.pug
+
+        //- include ../modules/usercard/usercard.pug
+        //- include ../modules/groupcard/groupcard.pug

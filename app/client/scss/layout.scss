@@ -12,11 +12,10 @@
 }
 
 .left-side {
-  height: 100%;
+  height: calc(100% - 60px);
   width: 100%;
   @media (min-width: $bpm) {
-    width: 300px;
-    border-right: 1px solid $sb;
+
   }
   .lists-wrapper.wjs-scroll {
     height: calc(100% - 60px);
@@ -36,6 +35,12 @@
   display: none;
   flex-direction: column;
   position: relative;
+  &__info {
+    text-align: center;
+    margin: 50px;
+    color: $d0;
+    font-size: 1.2em;
+  }
   @media (min-width: $bpm) {
     display: flex;
     width: calc(100% - 300px);
@@ -43,4 +48,34 @@
 }
 .chat-wrapper {
   height: calc(100% - 100px);
+}
+.chat-list {
+  padding-left: 10px;
+}
+
+.list[data-list="chat"]{
+  padding-bottom: 40px;
+  .round-btn {
+    bottom: 50px;
+  }
+}
+
+@media (min-width: $bpm) {
+  .left-side {
+    width: 300px;
+    height: 100%;
+    border-right: 1px solid $sb;
+    .subheader {
+      display: none;
+    }
+  }
+  .list[data-list="chat"],
+  .list[data-list="groupcard"],
+  .list[data-list="usercard"] {
+    display: none;
+  }
+}
+
+.left-side .chat-form {
+  position: fixed;
 }
