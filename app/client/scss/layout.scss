@@ -9,13 +9,16 @@
   &_notSignedPage {
     flex-direction: column;
   }
+  &_active {
+    filter: blur(2px);
+  }
 }
 
 .left-side {
-  height: calc(100% - 60px);
+  height: 100%;
   width: 100%;
-  @media (min-width: $bpm) {
-
+  &_with-subheader {
+    height: calc(100% - 60px);
   }
   .lists-wrapper.wjs-scroll {
     height: calc(100% - 60px);

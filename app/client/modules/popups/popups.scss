@@ -1,7 +1,3 @@
-.body-inner {
-  filter: blur(2px);
-}
-
 .popups-wrapper {
   position: fixed;
   top: 0;
@@ -9,7 +5,10 @@
   width: 100%;
   height: 100%;
   z-index: 1000;
-  display: flex;
+  display: none;
+  &_active {
+    display: flex;
+  }
 }
 
 .popup {
@@ -25,13 +24,22 @@
   display: flex;
   flex-direction: column;
   overflow: hidden;
-
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%);
+  top: -100%;
+  left: 50%;
+  transition: top .5s;
+  &_active {
+    top: 10%;
+  }
   &__header {
     height: 30px;
     display: flex;
     align-items: center;
     padding: 0 10px;
     position: relative;
+    user-select: none;
   }
   &__header-name {
     flex-grow: 1;

@@ -27,15 +27,6 @@
           <input class="header__search" type="text">
           <button class="header__menu-btn header__menu-btn_secondary" type="button"><i class="ico" style="font-size: 25px">&#x55;</i></button>
         </header>
-        <div class="subheader">
-          <div class="logo">
-            <p class="logo__name">UN</p><img class="logo__img" src="../img/users/user4.jpg">
-          </div>
-          <div class="subheader__text-wrapper">
-            <h1 class="subheader__name">Current Contact Name</h1>
-            <h4 class="subheader__id">@hereIsId1239ddfv</h4>
-          </div>
-        </div>
         <div class="lists-wrapper wjs-scroll" data-scroll="right">
           <div class="wjs-scroll__content-wrapper">
             <div class="wjs-scroll__content">
@@ -43,20 +34,20 @@
                 <ul class="menu-list">
                   <li class="menu-list__item" data-target-group="aside" data-target="contactlist">Контакти</li>
                   <li class="menu-list__item" data-target-group="aside" data-target="chatlist">Список чатів</li>
-                  <li class="menu-list__item">Новий груповий чат</li>
-                  <li class="menu-list__item">Чорний список</li>
+                  <li class="menu-list__item" data-role="showGroupChat">Новий груповий чат</li>
+                  <li class="menu-list__item" data-role="showBlackList">Чорний список</li>
                   <li class="menu-list__item" data-target-group="aside" data-target="settings">Налаштування</li>
-                  <li class="menu-list__item">Вийти з програми</li>
+                  <li class="menu-list__item" data-role="showLogout">Вийти з програми</li>
                 </ul>
               </div>
               <div class="list" data-list-group="aside" data-list="settings">
                 <ul class="menu-list">
-                  <li class="menu-list__item">Змінити аватарку</li>
-                  <li class="menu-list__item">Змінити ім'я</li>
-                  <li class="menu-list__item">Змінити пароль</li>
-                  <li class="menu-list__item">Кольорова тема</li>
-                  <li class="menu-list__item">Мова</li>
-                  <li class="menu-list__item">Видалити акаунт</li>
+                  <li class="menu-list__item" data-role="showChangeAva">Змінити аватарку</li>
+                  <li class="menu-list__item" data-role="showChangeName">Змінити ім'я</li>
+                  <li class="menu-list__item" data-role="showChangePass">Змінити пароль</li>
+                  <li class="menu-list__item" data-role="showChangeThema">Кольорова тема</li>
+                  <li class="menu-list__item" data-role="showChangeLang">Мова</li>
+                  <li class="menu-list__item" data-role="showDeleteAcc">Видалити акаунт</li>
                 </ul>
               </div>
               <div class="list list_active" data-list-group="aside" data-list="chatlist">
@@ -669,7 +660,7 @@
                     <button type="button">поділитися контактом</button>
                   </li>
                   <li>
-                    <button type="button">очистити історію</button>
+                    <button type="button" data-role="showClearHistory">очистити історію</button>
                   </li>
                 </ul>
                 <button class="round-btn" type="button"><i class="ico">&#x6a;</i></button>
@@ -688,20 +679,20 @@
                     <button type="button">вимкнути сповіщення</button>
                   </li>
                   <li>
-                    <button type="button">покинути групу</button>
+                    <button type="button" data-role="showLeaveGroup">покинути групу</button>
                   </li>
                   <li>
-                    <button type="button">подивитися учасників</button>
+                    <button type="button" data-role="showGroupList">подивитися учасників</button>
                   </li>
                   <li>
                     <p>з адмін. правами:</p>
-                    <button type="button">редагувати групу</button>
+                    <button type="button" data-role="showGroupChat">редагувати групу</button>
                   </li>
                   <li>
-                    <button type="button">видалити групу</button>
+                    <button type="button" data-role="showDeleteGroup">видалити групу</button>
                   </li>
                   <li>
-                    <button type="button">очистити історію</button>
+                    <button type="button" data-role="showClearHistory">очистити історію</button>
                   </li>
                 </ul>
                 <button class="round-btn" type="button"><i class="ico">&#x6a;</i></button>
@@ -961,17 +952,275 @@
         </div>
       </div>
       <div class="right-side">
-        <div class="subheader">
-          <div class="logo">
-            <p class="logo__name">UN</p><img class="logo__img" src="../img/users/user4.jpg">
+        <p class="right-side__info">Виберіть чат або контакт і почніть спілкування</p>
+      </div>
+    </div>
+    <div class="popups-wrapper">
+      <div class="popup" id="popupLogout">
+        <div class="popup__header">
+          <h4 class="popup__header-name">Вийти з чату</h4>
+          <button class="popup__close"><i class="ico">&#x4d;</i></button>
+        </div>
+        <div class="popup__body">
+          <div class="popup__text popup__text_tac">Дійсно вийти з чату?</div>
+        </div>
+        <div class="popup__footer">
+          <button class="popup__btn" type="submit">так</button>
+          <button class="popup__btn" type="button" data-role="resetPopup">скасувати</button>
+        </div>
+      </div>
+      <div class="popup" id="popupDeleteAcc">
+        <div class="popup__header">
+          <h4 class="popup__header-name">Видалити акаунт</h4>
+          <button class="popup__close"><i class="ico">&#x4d;</i></button>
+        </div>
+        <div class="popup__body">
+          <div class="popup__text popup__text_tac">Ви дійсно хочете видалити обліковий запис?</div>
+        </div>
+        <div class="popup__footer">
+          <button class="popup__btn" type="submit">так</button>
+          <button class="popup__btn" type="button" data-role="resetPopup">скасувати</button>
+        </div>
+      </div>
+      <div class="popup" id="popupClearHistory">
+        <div class="popup__header">
+          <h4 class="popup__header-name">Очистити історію</h4>
+          <button class="popup__close"><i class="ico">&#x4d;</i></button>
+        </div>
+        <div class="popup__body">
+          <div class="popup__text">Ви впевнені, що хочете видалити історію чату?</div>
+        </div>
+        <div class="popup__footer">
+          <button class="popup__btn" type="submit">так</button>
+          <button class="popup__btn" type="button" data-role="resetPopup">скасувати</button>
+        </div>
+      </div>
+      <div class="popup" id="popupDeleteGroup">
+        <div class="popup__header">
+          <h4 class="popup__header-name">Видалити групу</h4>
+          <button class="popup__close"><i class="ico">&#x4d;</i></button>
+        </div>
+        <div class="popup__body">
+          <div class="popup__text">Ви впевнені, що хочете видалити групу?</div>
+        </div>
+        <div class="popup__footer">
+          <button class="popup__btn" type="submit">так</button>
+          <button class="popup__btn" type="button" data-role="resetPopup">скасувати</button>
+        </div>
+      </div>
+      <div class="popup" id="popupLeaveGroup">
+        <div class="popup__header">
+          <h4 class="popup__header-name">Покинути групу</h4>
+          <button class="popup__close"><i class="ico">&#x4d;</i></button>
+        </div>
+        <div class="popup__body">
+          <div class="popup__text">Ви впевнені, що хочете вийти з групового чату?</div>
+        </div>
+        <div class="popup__footer">
+          <button class="popup__btn" type="submit">так</button>
+          <button class="popup__btn" type="button" data-role="resetPopup">скасувати</button>
+        </div>
+      </div>
+      <div class="popup" id="popupLangSelect">
+        <div class="popup__header">
+          <h4 class="popup__header-name">Змінити мову чату</h4>
+          <button class="popup__close"><i class="ico">&#x4d;</i></button>
+        </div>
+        <div class="popup__body">
+          <form id="langswitch" name="langswitch">
+            <label class="popup__label">
+              <input type="radio" name="lang" value="ukr"><i class="ico">&#x5c;</i><i class="ico">&#x5b;</i>
+              <div class="popup__divider"></div><img src="../img/ukraine.png"><span>українська</span>
+            </label>
+            <label class="popup__label">
+              <input type="radio" name="lang" value="eng"><i class="ico">&#x5c;</i><i class="ico">&#x5b;</i>
+              <div class="popup__divider"></div><img src="../img/united_kingdom.png"><span>english</span>
+            </label>
+          </form>
+        </div>
+        <div class="popup__footer">
+          <button class="popup__btn" type="submit" form="langswitch">так</button>
+          <button class="popup__btn" type="button" data-role="resetPopup">скасувати</button>
+        </div>
+      </div>
+      <div class="popup" id="popupThemaSelect">
+        <div class="popup__header">
+          <h4 class="popup__header-name">Вибрати тему чату</h4>
+          <button class="popup__close"><i class="ico">&#x4d;</i></button>
+        </div>
+        <div class="popup__body">
+          <form id="langswitch" name="langswitch">
+            <label class="popup__label">
+              <input type="radio" name="thema" value="default"><i class="ico">&#x5c;</i><i class="ico">&#x5b;</i>
+              <div class="popup__divider"></div><span>за замовчуванням</span>
+            </label>
+            <label class="popup__label">
+              <input type="radio" name="thema" value="dark"><i class="ico">&#x5c;</i><i class="ico">&#x5b;</i>
+              <div class="popup__divider"></div><span>dark</span>
+            </label>
+          </form>
+        </div>
+        <div class="popup__footer">
+          <button class="popup__btn" type="submit" form="langswitch">так</button>
+          <button class="popup__btn" type="button" data-role="resetPopup">скасувати</button>
+        </div>
+      </div>
+      <div class="popup popup_password" id="popupChangePass">
+        <div class="popup__header">
+          <h4 class="popup__header-name">Змінити пароль</h4>
+          <button class="popup__close"><i class="ico">&#x4d;</i></button>
+        </div>
+        <div class="popup__body">
+          <form id="changePass" name="changePass">
+            <div class="popup__text">Введіть старий пароль</div>
+            <div class="popup__pass-wrapper">
+              <input type="password" name="oldPass"><i class="ico">&#x7e;</i><i class="ico">&#xe000;</i>
+            </div>
+            <div class="popup__text">Введіть новий пароль</div>
+            <div class="popup__pass-wrapper">
+              <input type="password"><i class="ico">&#x7e;</i><i class="ico">&#xe000;</i>
+            </div>
+            <div class="popup__text">Повторіть новий пароль</div>
+            <div class="popup__pass-wrapper">
+              <input type="password" name="newPass"><i class="ico">&#x7e;</i><i class="ico">&#xe000;</i>
+            </div>
+          </form>
+        </div>
+        <div class="popup__footer">
+          <button class="popup__btn" type="submit" form="changePass">так</button>
+          <button class="popup__btn" type="button" data-role="resetPopup">скасувати</button>
+        </div>
+      </div>
+      <div class="popup" id="popupChangeName">
+        <div class="popup__header">
+          <h4 class="popup__header-name">Зміна імені</h4>
+          <button class="popup__close"><i class="ico">&#x4d;</i></button>
+        </div>
+        <div class="popup__body">
+          <div class="popup__text">Введіть нове ім'я</div>
+          <input type="text" name="name">
+        </div>
+        <div class="popup__footer">
+          <button class="popup__btn" type="submit">так</button>
+          <button class="popup__btn" type="button" data-role="resetPopup">скасувати</button>
+        </div>
+      </div>
+      <div class="popup" id="popupChangeAva">
+        <div class="popup__header">
+          <h4 class="popup__header-name">Зміна аватарки</h4>
+          <button class="popup__close"><i class="ico">&#x4d;</i></button>
+        </div>
+        <div class="popup__body">
+          <div class="popup__text">Виберіть нове зображення для аватарки</div>
+          <input type="file" name="ava">
+        </div>
+        <div class="popup__footer">
+          <button class="popup__btn" type="submit">так</button>
+          <button class="popup__btn" type="button" data-role="resetPopup">скасувати</button>
+        </div>
+      </div>
+      <div class="popup popup_search" id="popupGroupChat">
+        <div class="popup__header">
+          <h4 class="popup__header-name">Створити новий чат</h4>
+          <button class="popup__close"><i class="ico">&#x4d;</i></button>
+        </div>
+        <div class="popup__body">
+          <div class="popup__col-wrapper">
+            <div class="popup__col">
+              <div class="popup__text">Введіть назву чату</div>
+              <input type="text" name="groupName">
+              <div class="popup__text">Список учасників</div>
+              <div class="popup__list-wrapper wjs-scroll" data-scroll="right" data-scroll-hidden="horizontal">
+                <div class="wjs-scroll__content-wrapper">
+                  <div class="wjs-scroll__content">
+                    <ul class="popup__list" id="memberslist">
+                      <li class="popup__item">
+                        <label>
+                          <input type="checkbox" checked><i class="ico check">&#x5a;</i><i class="ico uncheck">&#x56;</i><span>Вася Пупкін</span><span>(@WEORI75MoBvQOhNq)</span>
+                        </label>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="popup__col">
+              <div class="popup__text">пошук по id</div>
+              <div class="popup__search-wrapper">
+                <input type="text" name="id"><i class="ico">&#x55;</i>
+                <div class="popup__search-result">
+                  <label>
+                    <input type="checkbox"><i class="ico check">&#x5a;</i><i class="ico uncheck">&#x56;</i><span>Вася Пупкін</span><span>(@WEORI75MoBvQOhNq)</span>
+                  </label>
+                </div>
+              </div>
+              <div class="popup__text">Вибрати з контактів</div>
+              <div class="popup__list-wrapper wjs-scroll" data-scroll="right" data-scroll-hidden="horizontal">
+                <div class="wjs-scroll__content-wrapper">
+                  <div class="wjs-scroll__content">
+                    <ul class="popup__list" id="contactslist">
+                      <li class="popup__item">
+                        <label>
+                          <input type="checkbox"><i class="ico check">&#x5a;</i><i class="ico uncheck">&#x56;</i><span>Вася Пупкін</span><span>(@WEORI75MoBvQOhNq)</span>
+                        </label>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
-          <div class="subheader__text-wrapper">
-            <h1 class="subheader__name">Current Contact Name</h1>
-            <h4 class="subheader__id">@hereIsId1239ddfv</h4>
+        </div>
+        <div class="popup__footer">
+          <button class="popup__btn" type="submit">так</button>
+          <button class="popup__btn" type="button" data-role="resetPopup">скасувати</button>
+        </div>
+      </div>
+      <div class="popup popup_show-list-group" id="popupGroupList">
+        <div class="popup__header">
+          <h4 class="popup__header-name">Список учасників групи</h4>
+          <button class="popup__close"><i class="ico">&#x4d;</i></button>
+        </div>
+        <div class="popup__body">
+          <div class="popup__list-wrapper wjs-scroll" data-scroll="right" data-scroll-hidden="horizontal">
+            <div class="wjs-scroll__content-wrapper">
+              <div class="wjs-scroll__content">
+                <ul class="popup__list">
+                  <li class="popup__item">
+                    <div class="logo">
+                      <p class="logo__name">AB</p><img class="logo__img" src="../img/users/user1.jpg">
+                    </div>
+                    <div class="popup__user-name">Estrella Wildauer</div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="popup popup_show-black-list" id="popupBlackList">
+        <div class="popup__header">
+          <h4 class="popup__header-name">Заблоковані акаунти</h4>
+          <button class="popup__close"><i class="ico">&#x4d;</i></button>
+        </div>
+        <div class="popup__body">
+          <div class="popup__list-wrapper wjs-scroll" data-scroll="right" data-scroll-hidden="horizontal">
+            <div class="wjs-scroll__content-wrapper">
+              <div class="wjs-scroll__content">
+                <ul class="popup__list">
+                  <li class="popup__item">
+                    <div class="logo">
+                      <p class="logo__name">AB</p><img class="logo__img" src="../img/users/user1.jpg">
+                    </div>
+                    <div class="popup__user-name">Estrella Wildauer</div>
+                    <button class="popup__user-restore"><i class="ico">&#x4d;</i></button>
+                  </li>
+                </ul>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
-    <div class="popups-wrapper"></div>
   </body>
 </html>

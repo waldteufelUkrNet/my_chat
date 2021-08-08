@@ -10,242 +10,254 @@
   //-     .popup__text lorem ipsum dolor
   //-   .popup__footer
   //-     button(type="submit").popup__btn так
-  //-     button(type="button").popup__btn скасувати
+  //-     button(type="button" data-role="resetPopup").popup__btn скасувати
 
   //- logout
-  //- .popup
-  //-   .popup__header
-  //-     h4.popup__header-name Вийти з чату
-  //-     button.popup__close
-  //-       i.ico &#x4d;
-  //-   .popup__body
-  //-     .popup__text.popup__text_tac Дійсно вийти з чату?
-  //-   .popup__footer
-  //-     button(type="submit").popup__btn так
-  //-     button(type="button").popup__btn скасувати
+  .popup#popupLogout
+    .popup__header
+      h4.popup__header-name Вийти з чату
+      button.popup__close
+        i.ico &#x4d;
+    .popup__body
+      .popup__text.popup__text_tac Дійсно вийти з чату?
+    .popup__footer
+      button(type="submit").popup__btn так
+      button(type="button" data-role="resetPopup").popup__btn скасувати
+
+  //- remove account
+  .popup#popupDeleteAcc
+    .popup__header
+      h4.popup__header-name Видалити акаунт
+      button.popup__close
+        i.ico &#x4d;
+    .popup__body
+      .popup__text.popup__text_tac Ви дійсно хочете видалити обліковий запис?
+    .popup__footer
+      button(type="submit").popup__btn так
+      button(type="button" data-role="resetPopup").popup__btn скасувати
 
   //- clear history
-  //- .popup
-  //-   .popup__header
-  //-     h4.popup__header-name Очистити історію
-  //-     button.popup__close
-  //-       i.ico &#x4d;
-  //-   .popup__body
-  //-     .popup__text Ви впевнені, що хочете видалити історію чату?
-  //-   .popup__footer
-  //-     button(type="submit").popup__btn так
-  //-     button(type="button").popup__btn скасувати
+  .popup#popupClearHistory
+    .popup__header
+      h4.popup__header-name Очистити історію
+      button.popup__close
+        i.ico &#x4d;
+    .popup__body
+      .popup__text Ви впевнені, що хочете видалити історію чату?
+    .popup__footer
+      button(type="submit").popup__btn так
+      button(type="button" data-role="resetPopup").popup__btn скасувати
 
   //- delete group
-  //- .popup
-  //-   .popup__header
-  //-     h4.popup__header-name Видалити групу
-  //-     button.popup__close
-  //-       i.ico &#x4d;
-  //-   .popup__body
-  //-     .popup__text Ви впевнені, що хочете видалити групу?
-  //-   .popup__footer
-  //-     button(type="submit").popup__btn так
-  //-     button(type="button").popup__btn скасувати
+  .popup#popupDeleteGroup
+    .popup__header
+      h4.popup__header-name Видалити групу
+      button.popup__close
+        i.ico &#x4d;
+    .popup__body
+      .popup__text Ви впевнені, що хочете видалити групу?
+    .popup__footer
+      button(type="submit").popup__btn так
+      button(type="button" data-role="resetPopup").popup__btn скасувати
 
-  //- delete group
-  //- .popup
-  //-   .popup__header
-  //-     h4.popup__header-name Покинути групу
-  //-     button.popup__close
-  //-       i.ico &#x4d;
-  //-   .popup__body
-  //-     .popup__text Ви впевнені, що хочете вийти з групового чату?
-  //-   .popup__footer
-  //-     button(type="submit").popup__btn так
-  //-     button(type="button").popup__btn скасувати
+  //- leave group
+  .popup#popupLeaveGroup
+    .popup__header
+      h4.popup__header-name Покинути групу
+      button.popup__close
+        i.ico &#x4d;
+    .popup__body
+      .popup__text Ви впевнені, що хочете вийти з групового чату?
+    .popup__footer
+      button(type="submit").popup__btn так
+      button(type="button" data-role="resetPopup").popup__btn скасувати
 
   //- language select
-  //- .popup
-  //-   .popup__header
-  //-     h4.popup__header-name Змінити мову чату
-  //-     button.popup__close
-  //-       i.ico &#x4d;
-  //-   .popup__body
-  //-     form#langswitch(name="langswitch")
-  //-       label.popup__label
-  //-         input(type="radio" name="lang" value="ukr")
-  //-         i.ico &#x5c;
-  //-         i.ico &#x5b;
-  //-         .popup__divider
-  //-         img(src="../img/ukraine.png")
-  //-         span українська
-  //-       label.popup__label
-  //-         input(type="radio" name="lang" value="eng")
-  //-         i.ico &#x5c;
-  //-         i.ico &#x5b;
-  //-         .popup__divider
-  //-         img(src="../img/united_kingdom.png")
-  //-         span english
-  //-   .popup__footer
-  //-     button(type="submit" form="langswitch").popup__btn так
-  //-     button(type="button").popup__btn скасувати
+  .popup#popupLangSelect
+    .popup__header
+      h4.popup__header-name Змінити мову чату
+      button.popup__close
+        i.ico &#x4d;
+    .popup__body
+      form#langswitch(name="langswitch")
+        label.popup__label
+          input(type="radio" name="lang" value="ukr")
+          i.ico &#x5c;
+          i.ico &#x5b;
+          .popup__divider
+          img(src="../img/ukraine.png")
+          span українська
+        label.popup__label
+          input(type="radio" name="lang" value="eng")
+          i.ico &#x5c;
+          i.ico &#x5b;
+          .popup__divider
+          img(src="../img/united_kingdom.png")
+          span english
+    .popup__footer
+      button(type="submit" form="langswitch").popup__btn так
+      button(type="button" data-role="resetPopup").popup__btn скасувати
 
   //- color thema select
-  //- .popup
-  //-   .popup__header
-  //-     h4.popup__header-name Вибрати тему чату
-  //-     button.popup__close
-  //-       i.ico &#x4d;
-  //-   .popup__body
-  //-     form#langswitch(name="langswitch")
-  //-       label.popup__label
-  //-         input(type="radio" name="thema" value="default")
-  //-         i.ico &#x5c;
-  //-         i.ico &#x5b;
-  //-         .popup__divider
-  //-         span за замовчуванням
-  //-       label.popup__label
-  //-         input(type="radio" name="thema" value="dark")
-  //-         i.ico &#x5c;
-  //-         i.ico &#x5b;
-  //-         .popup__divider
-  //-         span dark
-  //-   .popup__footer
-  //-     button(type="submit" form="langswitch").popup__btn так
-  //-     button(type="button").popup__btn скасувати
+  .popup#popupThemaSelect
+    .popup__header
+      h4.popup__header-name Вибрати тему чату
+      button.popup__close
+        i.ico &#x4d;
+    .popup__body
+      form#langswitch(name="langswitch")
+        label.popup__label
+          input(type="radio" name="thema" value="default")
+          i.ico &#x5c;
+          i.ico &#x5b;
+          .popup__divider
+          span за замовчуванням
+        label.popup__label
+          input(type="radio" name="thema" value="dark")
+          i.ico &#x5c;
+          i.ico &#x5b;
+          .popup__divider
+          span dark
+    .popup__footer
+      button(type="submit" form="langswitch").popup__btn так
+      button(type="button" data-role="resetPopup").popup__btn скасувати
 
   //- password change
-  //- .popup.popup_password
-  //-   .popup__header
-  //-     h4.popup__header-name Змінити пароль
-  //-     button.popup__close
-  //-       i.ico &#x4d;
-  //-   .popup__body
-  //-     form#changePass(name="changePass")
-  //-       .popup__text Введіть старий пароль
-  //-       .popup__pass-wrapper
-  //-         input(type="password" name="oldPass")
-  //-         i.ico &#x7e;
-  //-         i.ico &#xe000;
-  //-       .popup__text Введіть новий пароль
-  //-       .popup__pass-wrapper
-  //-         input(type="password")
-  //-         i.ico &#x7e;
-  //-         i.ico &#xe000;
-  //-       .popup__text Повторіть новий пароль
-  //-       .popup__pass-wrapper
-  //-         input(type="password" name="newPass")
-  //-         i.ico &#x7e;
-  //-         i.ico &#xe000;
-  //-   .popup__footer
-  //-     button(type="submit" form="changePass").popup__btn так
-  //-     button(type="button").popup__btn скасувати
+  .popup.popup_password#popupChangePass
+    .popup__header
+      h4.popup__header-name Змінити пароль
+      button.popup__close
+        i.ico &#x4d;
+    .popup__body
+      form#changePass(name="changePass")
+        .popup__text Введіть старий пароль
+        .popup__pass-wrapper
+          input(type="password" name="oldPass")
+          i.ico &#x7e;
+          i.ico &#xe000;
+        .popup__text Введіть новий пароль
+        .popup__pass-wrapper
+          input(type="password")
+          i.ico &#x7e;
+          i.ico &#xe000;
+        .popup__text Повторіть новий пароль
+        .popup__pass-wrapper
+          input(type="password" name="newPass")
+          i.ico &#x7e;
+          i.ico &#xe000;
+    .popup__footer
+      button(type="submit" form="changePass").popup__btn так
+      button(type="button" data-role="resetPopup").popup__btn скасувати
 
   //- name change
-  //- .popup
-  //-   .popup__header
-  //-     h4.popup__header-name Зміна імені
-  //-     button.popup__close
-  //-       i.ico &#x4d;
-  //-   .popup__body
-  //-     .popup__text Введіть нове ім'я
-  //-     input(type="text" name="name")
-  //-   .popup__footer
-  //-     button(type="submit").popup__btn так
-  //-     button(type="button").popup__btn скасувати
+  .popup#popupChangeName
+    .popup__header
+      h4.popup__header-name Зміна імені
+      button.popup__close
+        i.ico &#x4d;
+    .popup__body
+      .popup__text Введіть нове ім'я
+      input(type="text" name="name")
+    .popup__footer
+      button(type="submit").popup__btn так
+      button(type="button" data-role="resetPopup").popup__btn скасувати
 
   //- avatar change
-  //- .popup
-  //-   .popup__header
-  //-     h4.popup__header-name Зміна аватарки
-  //-     button.popup__close
-  //-       i.ico &#x4d;
-  //-   .popup__body
-  //-     .popup__text Виберіть нове зображення для аватарки
-  //-     input(type="file" name="ava")
-  //-   .popup__footer
-  //-     button(type="submit").popup__btn так
-  //-     button(type="button").popup__btn скасувати
+  .popup#popupChangeAva
+    .popup__header
+      h4.popup__header-name Зміна аватарки
+      button.popup__close
+        i.ico &#x4d;
+    .popup__body
+      .popup__text Виберіть нове зображення для аватарки
+      input(type="file" name="ava")
+    .popup__footer
+      button(type="submit").popup__btn так
+      button(type="button" data-role="resetPopup").popup__btn скасувати
 
   //- group chat
-  //- .popup.popup_search
-  //-   .popup__header
-  //-     h4.popup__header-name Створити новий чат
-  //-     button.popup__close
-  //-       i.ico &#x4d;
-  //-   .popup__body
-  //-     .popup__col-wrapper
-  //-       .popup__col
-  //-         .popup__text Введіть назву чату
-  //-         input(type="text" name="groupName")
-  //-         .popup__text Список учасників
-  //-         .popup__list-wrapper.wjs-scroll(data-scroll='right' data-scroll-hidden='horizontal')
-  //-           .wjs-scroll__content-wrapper
-  //-             .wjs-scroll__content
-  //-               ul.popup__list#memberslist
-  //-                 li.popup__item
-  //-                   label
-  //-                     input(type="checkbox" checked)
-  //-                     i.ico.check &#x5a;
-  //-                     i.ico.uncheck &#x56;
-  //-                     span Вася Пупкін
-  //-                     span (@WEORI75MoBvQOhNq)
-  //-       .popup__col
-  //-         .popup__text пошук по id
-  //-         .popup__search-wrapper
-  //-           input(type="text" name="id")
-  //-           i.ico &#x55;
-  //-           .popup__search-result
-  //-             label
-  //-               input(type="checkbox")
-  //-               i.ico.check &#x5a;
-  //-               i.ico.uncheck &#x56;
-  //-               span Вася Пупкін
-  //-               span (@WEORI75MoBvQOhNq)
-  //-         .popup__text Вибрати з контактів
-  //-         .popup__list-wrapper.wjs-scroll(data-scroll='right'  data-scroll-hidden='horizontal')
-  //-           .wjs-scroll__content-wrapper
-  //-             .wjs-scroll__content
-  //-               ul.popup__list#contactslist
-  //-                 li.popup__item
-  //-                   label
-  //-                     input(type="checkbox")
-  //-                     i.ico.check &#x5a;
-  //-                     i.ico.uncheck &#x56;
-  //-                     span Вася Пупкін
-  //-                     span (@WEORI75MoBvQOhNq)
-  //-   .popup__footer
-  //-     button(type="submit").popup__btn так
-  //-     button(type="button").popup__btn скасувати
+  .popup.popup_search#popupGroupChat
+    .popup__header
+      h4.popup__header-name Створити новий чат
+      button.popup__close
+        i.ico &#x4d;
+    .popup__body
+      .popup__col-wrapper
+        .popup__col
+          .popup__text Введіть назву чату
+          input(type="text" name="groupName")
+          .popup__text Список учасників
+          .popup__list-wrapper.wjs-scroll(data-scroll='right' data-scroll-hidden='horizontal')
+            .wjs-scroll__content-wrapper
+              .wjs-scroll__content
+                ul.popup__list#memberslist
+                  li.popup__item
+                    label
+                      input(type="checkbox" checked)
+                      i.ico.check &#x5a;
+                      i.ico.uncheck &#x56;
+                      span Вася Пупкін
+                      span (@WEORI75MoBvQOhNq)
+        .popup__col
+          .popup__text пошук по id
+          .popup__search-wrapper
+            input(type="text" name="id")
+            i.ico &#x55;
+            .popup__search-result
+              label
+                input(type="checkbox")
+                i.ico.check &#x5a;
+                i.ico.uncheck &#x56;
+                span Вася Пупкін
+                span (@WEORI75MoBvQOhNq)
+          .popup__text Вибрати з контактів
+          .popup__list-wrapper.wjs-scroll(data-scroll='right'  data-scroll-hidden='horizontal')
+            .wjs-scroll__content-wrapper
+              .wjs-scroll__content
+                ul.popup__list#contactslist
+                  li.popup__item
+                    label
+                      input(type="checkbox")
+                      i.ico.check &#x5a;
+                      i.ico.uncheck &#x56;
+                      span Вася Пупкін
+                      span (@WEORI75MoBvQOhNq)
+    .popup__footer
+      button(type="submit").popup__btn так
+      button(type="button" data-role="resetPopup").popup__btn скасувати
 
   //- show group list
-  //- .popup.popup_show-list-group
-  //-   .popup__header
-  //-     h4.popup__header-name Список учасників групи
-  //-     button.popup__close
-  //-       i.ico &#x4d;
-  //-   .popup__body
-  //-     .popup__list-wrapper.wjs-scroll(data-scroll='right'  data-scroll-hidden='horizontal')
-  //-       .wjs-scroll__content-wrapper
-  //-         .wjs-scroll__content
-  //-           ul.popup__list
-  //-             li.popup__item
-  //-               .logo
-  //-                 p.logo__name AB
-  //-                 img.logo__img(src="../img/users/user1.jpg")
-  //-               .popup__user-name Estrella Wildauer
+  .popup.popup_show-list-group#popupGroupList
+    .popup__header
+      h4.popup__header-name Список учасників групи
+      button.popup__close
+        i.ico &#x4d;
+    .popup__body
+      .popup__list-wrapper.wjs-scroll(data-scroll='right'  data-scroll-hidden='horizontal')
+        .wjs-scroll__content-wrapper
+          .wjs-scroll__content
+            ul.popup__list
+              li.popup__item
+                .logo
+                  p.logo__name AB
+                  img.logo__img(src="../img/users/user1.jpg")
+                .popup__user-name Estrella Wildauer
 
   //- show bllack list
-  //- .popup.popup_show-black-list
-  //-   .popup__header
-  //-     h4.popup__header-name Заблоковані акаунти
-  //-     button.popup__close
-  //-       i.ico &#x4d;
-  //-   .popup__body
-  //-     .popup__list-wrapper.wjs-scroll(data-scroll='right'  data-scroll-hidden='horizontal')
-  //-       .wjs-scroll__content-wrapper
-  //-         .wjs-scroll__content
-  //-           ul.popup__list
-  //-             li.popup__item
-  //-               .logo
-  //-                 p.logo__name AB
-  //-                 img.logo__img(src="../img/users/user1.jpg")
-  //-               .popup__user-name Estrella Wildauer
-  //-               button.popup__user-restore
-  //-                 i.ico &#x4d;
+  .popup.popup_show-black-list#popupBlackList
+    .popup__header
+      h4.popup__header-name Заблоковані акаунти
+      button.popup__close
+        i.ico &#x4d;
+    .popup__body
+      .popup__list-wrapper.wjs-scroll(data-scroll='right'  data-scroll-hidden='horizontal')
+        .wjs-scroll__content-wrapper
+          .wjs-scroll__content
+            ul.popup__list
+              li.popup__item
+                .logo
+                  p.logo__name AB
+                  img.logo__img(src="../img/users/user1.jpg")
+                .popup__user-name Estrella Wildauer
+                button.popup__user-restore
+                  i.ico &#x4d;
