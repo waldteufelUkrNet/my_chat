@@ -25,6 +25,17 @@
   position: relative;
 }
 
+#widthIndicator {
+  width: 1px;
+  height: 1px;
+  position: absolute;
+  z-index: 0;
+  display: none;
+  @media (min-width: $bpm) {
+    display: block;
+  }
+}
+
 @import "layout";
 @import "card-menu";
 @import "login";

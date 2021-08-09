@@ -24,6 +24,9 @@
     height: calc(100% - 60px);
     padding: 10px;
   }
+  .subheader {
+    display: none;
+  }
 }
 
 .list {
@@ -61,6 +64,12 @@
   .round-btn {
     bottom: 50px;
   }
+}
+
+.list.list_active[data-list="chatP"] {
+  height: 100%;
+  display: flex;
+  flex-direction: column !important;
 }
 
 @media (min-width: $bpm) {
