@@ -1,9 +1,11 @@
 <!DOCTYPE html>
-<html class="wjs-MobileHeightFix" lang="en">
+<html class="wjs-MobileHeightFix" lang="ua">
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="../css/main.css">
+    <link rel="icon" href="../img/logo.png">
+    <script src="../js/login.js"></script>
     <title>Login</title>
   </head>
   <body>
@@ -11,17 +13,17 @@
       <header class="login-header">
         <nav class="login-header__nav">
           <ul>
-            <li><a class="login-header__link login-header__link_active" href="/login">вхід</a></li>
-            <li><a class="login-header__link" href="/register">реєстрація</a></li>
+            <li><a class="login-header__link login-header__link_active" href="#" data-role="login" data-translate="link1">вхід</a></li>
+            <li><a class="login-header__link" href="#" data-role="register" data-translate="link2">реєстрація</a></li>
           </ul>
         </nav>
         <div class="lang-switcher">
           <div class="lang-switcher__img-wrapper"><img class="lang-switcher__img" src="../img/ukraine.png"></div><i class="ico">&#x33;</i>
           <div class="lang-switcher__list">
-            <div class="lang-switcher__list-item">
+            <div class="lang-switcher__list-item" data-lang="ua">
               <div class="lang-switcher__img-wrapper"><img class="lang-switcher__img" src="../img/ukraine.png"></div><span class="lang-switcher__name">укр</span>
             </div>
-            <div class="lang-switcher__list-item">
+            <div class="lang-switcher__list-item" data-lang="en">
               <div class="lang-switcher__img-wrapper"><img class="lang-switcher__img" src="../img/united_kingdom.png"></div><span class="lang-switcher__name">eng</span>
             </div>
           </div>
@@ -29,12 +31,15 @@
       </header>
       <main class="login-main">
         <h1>My-cha-cha</h1>
-        <h4>вільний веб-чат</h4>
-        <h5>щоб увійти, введіть пароль і логін</h5>
-        <form name="loginForm" method="post" action="/">
+        <h4 data-translate="h4">вільний веб-чат</h4>
+        <h5 data-translate="h51">щоб увійти, введіть пароль і логін</h5>
+        <h5 data-translate="h52" style="display: none">щоб почати користуватися чатом, пройдіть реєстрацію</h5>
+        <form name="loginForm" method="post" action="/login">
+          <input name="lang" type="hidden" value="ua">
           <input name="name" type="name" placeholder="логін…">
-          <input name="pass" type="password" placeholder="пароль…">
-          <button type="submit">увійти</button>
+          <input name="pass1" type="password" placeholder="пароль…">
+          <input name="pass2" type="password" placeholder="повторіть пароль…" style="display: none">
+          <button type="submit" data-translate="btn">увійти</button>
         </form>
       </main>
       <footer class="login-footer">© waldteufel@ukr.net</footer>

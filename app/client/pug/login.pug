@@ -1,10 +1,11 @@
 doctype html
-html(lang='en').wjs-MobileHeightFix
+html(lang='ua').wjs-MobileHeightFix
   head
     meta(charset='UTF-8')
     meta(name='viewport' content='width=device-width, initial-scale=1.0')
     link(rel='stylesheet' type='text/css' href='../css/main.css')
-    //- link(rel='stylesheet' type='text/css' href='../css/login.css')
+    link(rel='icon', href='../img/logo.png')
+    script(src="../js/login.js")
     title Login
   body
     .body-inner.body-inner_notSignedPage
@@ -13,30 +14,33 @@ html(lang='en').wjs-MobileHeightFix
         nav.login-header__nav
           ul
             li
-              a.login-header__link.login-header__link_active(href='/login') вхід
+              a.login-header__link.login-header__link_active(href='#' data-role="login" data-translate="link1") вхід
             li
-              a.login-header__link(href='/register') реєстрація
+              a.login-header__link(href='#' data-role="register" data-translate="link2") реєстрація
         .lang-switcher
           .lang-switcher__img-wrapper
             img.lang-switcher__img(src="../img/ukraine.png")
           i.ico &#x33;
           .lang-switcher__list
-            .lang-switcher__list-item
+            .lang-switcher__list-item(data-lang="ua")
               .lang-switcher__img-wrapper
                 img.lang-switcher__img(src="../img/ukraine.png")
               span.lang-switcher__name укр
-            .lang-switcher__list-item
+            .lang-switcher__list-item(data-lang="en")
               .lang-switcher__img-wrapper
                 img.lang-switcher__img(src="../img/united_kingdom.png")
               span.lang-switcher__name eng
       main.login-main
         h1 My-cha-cha
-        h4 вільний веб-чат
-        h5 щоб увійти, введіть пароль і логін
+        h4(data-translate="h4") вільний веб-чат
+        h5(data-translate="h51") щоб увійти, введіть пароль і логін
+        h5(data-translate="h52" style="display: none") щоб почати користуватися чатом, пройдіть реєстрацію
 
-        form(name="loginForm" method="post" action="/")
+        form(name="loginForm" method="post" action="/login")
+          input(name="lang" type="hidden" value="ua")
           input(name="name" type="name" placeholder="логін…")
-          input(name="pass" type="password" placeholder="пароль…")
-          button(type="submit") увійти
+          input(name="pass1" type="password" placeholder="пароль…")
+          input(name="pass2" type="password" placeholder="повторіть пароль…" style="display: none")
+          button(type="submit" data-translate="btn") увійти
 
       footer.login-footer © waldteufel@ukr.net
