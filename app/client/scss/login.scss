@@ -47,6 +47,7 @@
 .lang-switcher {
   width: 75px;
   position: relative;
+  z-index: 1;
   display: flex;
   margin-left: 10px;
   padding: 5px;
@@ -108,7 +109,14 @@
 
 .login-main {
   flex-grow: 1;
-  padding: 30px 0;
+  overflow: hidden;
+  &__inner {
+    height: 100%;
+    width: 100%;
+    padding: 30px 0;
+    margin-bottom: 450px;
+    overflow: hidden;
+  }
   h1 {
     font: 30px deco;
     text-align: center;
@@ -145,12 +153,12 @@
     margin: 0 auto;
     display: flex;
     flex-direction: column;
-    padding: 20px;
+    padding: 15px;
     background-color: $bt2;
     box-shadow: 0px 0px 5px $d0;
     input {
       height: 40px;
-      margin-bottom: 20px;
+      margin-bottom: 10px;
       padding: 6px;
       background-color: $wt2;
       border: 1px solid transparent;
@@ -187,4 +195,25 @@
   font: 16px bold;
   color: $na;
   letter-spacing: 1px;
+}
+
+.error-info {
+  background-color: rgba(0,0,0,.5);
+  display: flex;
+  align-items: center;
+  border-left: 3px solid red;
+  overflow: hidden;
+  height: 0px;
+  padding: 0 10px;
+  margin-bottom: 0px;
+  transition : height .3s, margin .3s, padding .3s;
+  // padding: 10px;
+  i.ico {
+    margin-right: 10px;
+    color: red;
+    font-size: 1.5em;
+  }
+  span {
+    color: $d0;
+  }
 }

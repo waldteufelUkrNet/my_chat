@@ -1,3 +1,108 @@
-"use strict";document.addEventListener("click",(function(t){if(t.target.closest(".chat-form__textarea")&&!document.querySelector(".chat-form__textarea_active")){let t=document.querySelector(".chat-form__textarea"),e=document.querySelector(".chat-form__btn");return t.classList.add("chat-form__textarea_active"),e.classList.add("chat-form__btn_active"),void t.focus()}if(document.querySelector(".chat-form__textarea_active")&&!t.target.closest(".chat-form__textarea_active")){let t=document.querySelector(".chat-form__textarea"),e=document.querySelector(".chat-form__btn");t.classList.remove("chat-form__textarea_active"),e.classList.remove("chat-form__btn_active"),t.blur()}}));
-"use strict";document.addEventListener("click",(function(e){if(e.target.closest(".header__menu-btn_secondary")&&!document.querySelector(".header__search_active")){let e=document.querySelector(".header__search");return e.classList.add("header__search_active"),void e.focus()}if(document.querySelector(".header__search_active")&&!e.target.closest(".header__search_active")){let e=document.querySelector(".header__search");e.classList.remove("header__search_active"),e.blur()}}));
-"use strict";const roles={showLogout(){showPopup("popupLogout")},showDeleteAcc(){showPopup("popupDeleteAcc")},showChangeAva(){showPopup("popupChangeAva")},showChangeName(){showPopup("popupChangeName")},showChangePass(){showPopup("popupChangePass")},showChangeThema(){showPopup("popupThemaSelect")},showChangeLang(){showPopup("popupLangSelect")},showGroupChat(){showPopup("popupGroupChat")},showBlackList(){showPopup("popupBlackList")},showClearHistory(){showPopup("popupClearHistory")},showLeaveGroup(){showPopup("popupLeaveGroup")},showGroupList(){showPopup("popupGroupList")},showDeleteGroup(){showPopup("popupDeleteGroup")},resetPopup(o){closePopup(o.target.closest(".popup").getAttribute("id"))}};function showPopup(o){document.querySelector(".popups-wrapper").classList.add("popups-wrapper_active"),document.querySelector(".body-inner").classList.add("body-inner_active"),setTimeout((function(){document.getElementById(o).classList.add("popup_active")}),1)}function closePopup(o){document.querySelector(".popups-wrapper").classList.remove("popups-wrapper_active"),document.querySelector(".body-inner").classList.remove("body-inner_active"),document.getElementById(o).classList.remove("popup_active")}document.addEventListener("click",(function(o){if(o.target.closest("[data-role]")){let p=o.target.closest("[data-role]").dataset.role;roles[p](o)}if(o.target.closest(".popup__close")){closePopup(o.target.closest(".popup").getAttribute("id"))}}));
+"use strict"
+////////////////////////////////////////////////////////////////////////////////
+/* ↓↓↓ chat-form module ↓↓↓ */
+  document.addEventListener('click', function(event){
+    // open form
+    if ( event.target.closest('.chat-form__textarea')
+         && ! document.querySelector('.chat-form__textarea_active') ) {
+      let ta  = document.querySelector('.chat-form__textarea'),
+          btn = document.querySelector('.chat-form__btn');
+      ta.classList.add('chat-form__textarea_active');
+      btn.classList.add('chat-form__btn_active');
+      ta.focus();
+      return
+    }
+  // close
+  if( document.querySelector('.chat-form__textarea_active')
+      && !event.target.closest('.chat-form__textarea_active') ) {
+    let ta  = document.querySelector('.chat-form__textarea'),
+        btn = document.querySelector('.chat-form__btn');
+    ta.classList.remove('chat-form__textarea_active');
+    btn.classList.remove('chat-form__btn_active');
+    ta.blur();
+  }
+  });
+/* ↑↑↑ chat-form module ↑↑↑ */
+////////////////////////////////////////////////////////////////////////////////
+"use strict"
+////////////////////////////////////////////////////////////////////////////////
+/* ↓↓↓ header module ↓↓↓ */
+  document.addEventListener('click', function(event){
+    // open
+    if ( event.target.closest('.header__menu-btn_secondary')
+         && ! document.querySelector('.header__search_active') ) {
+      let input   = document.querySelector('.header__search');
+      input.classList.add('header__search_active');
+      input.focus();
+      return
+    }
+
+
+    // close
+    if( document.querySelector('.header__search_active')
+        && !event.target.closest('.header__search_active') ) {
+      let input   = document.querySelector('.header__search');
+      input.classList.remove('header__search_active');
+      input.blur();
+    }
+  });
+/* ↑↑↑ header module ↑↑↑ */
+////////////////////////////////////////////////////////////////////////////////
+"use strict";
+////////////////////////////////////////////////////////////////////////////////
+/* ↓↓↓ event listeners ↓↓↓ */
+
+  const roles = {
+    showLogout()       { showPopup('popupLogout') },
+    showDeleteAcc()    { showPopup('popupDeleteAcc') },
+    showChangeAva ()   { showPopup('popupChangeAva') },
+    showChangeName ()  { showPopup('popupChangeName') },
+    showChangePass ()  { showPopup('popupChangePass') },
+    showChangeThema () { showPopup('popupThemaSelect') },
+    showChangeLang ()  { showPopup('popupLangSelect') },
+    showGroupChat ()   { showPopup('popupGroupChat') },
+    showBlackList ()   { showPopup('popupBlackList') },
+    showClearHistory () { showPopup('popupClearHistory') },
+    showLeaveGroup () { showPopup('popupLeaveGroup') },
+    showGroupList () { showPopup('popupGroupList') },
+    showDeleteGroup () { showPopup('popupDeleteGroup') },
+    resetPopup (event) {
+      let id = event.target.closest('.popup').getAttribute('id');
+      closePopup(id);
+    }
+  };
+
+  document.addEventListener('click', function(event){
+    if ( event.target.closest('[data-role]') ) {
+      let foo = event.target.closest('[data-role]').dataset.role;
+      roles[foo](event)
+    }
+
+    // close popup
+    if ( event.target.closest('.popup__close') ) {
+      let id = event.target.closest('.popup').getAttribute('id');
+      closePopup(id);
+    }
+  });
+/* ↑↑↑ event listeners ↑↑↑ */
+////////////////////////////////////////////////////////////////////////////////
+/* ↓↓↓ functions declaration ↓↓↓ */
+  function showPopup(id) {
+    document.querySelector('.popups-wrapper').classList
+                                             .add('popups-wrapper_active');
+
+    document.querySelector('.body-inner').classList.add('body-inner_active');
+
+    setTimeout(function(){
+      document.getElementById(id).classList.add('popup_active');
+    },1);
+  }
+
+  function closePopup(id) {
+    document.querySelector('.popups-wrapper').classList
+                                             .remove('popups-wrapper_active');
+    document.querySelector('.body-inner').classList.remove('body-inner_active');
+    document.getElementById(id).classList.remove('popup_active');
+  }
+/* ↑↑↑ functions declaration ↑↑↑ */
+////////////////////////////////////////////////////////////////////////////////

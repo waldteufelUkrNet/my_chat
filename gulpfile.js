@@ -85,7 +85,7 @@
   // js modules
   function convertModulesJS() {
     return src('app/client/modules/**/*.js')
-           .pipe( uglify() )
+           // .pipe( uglify() )
            .on('error', notify.onError({
               message : 'Error: <%= error.message %>',
               title   : 'JS error'
@@ -99,7 +99,7 @@
   // js
   function convertJS() {
     return src('app/client/js-expanded/*.js')
-           .pipe( uglify() )
+           // .pipe( uglify() )
            .on('error', notify.onError({
               message : 'Error: <%= error.message %>',
               title   : 'JS error'
