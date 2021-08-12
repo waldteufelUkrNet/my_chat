@@ -3,10 +3,9 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="../css/main.css">
     <link rel="icon" href="../img/logo.png">
-    <script defer src="../libs-js/wScroll.js"></script>
-    <script defer src="../js/login.js"></script>
+    <title>Login</title>
+    <link rel="stylesheet" type="text/css" href="../css/main.css">
   </head>
   <body>
     <div class="body-inner body-inner_notSignedPage">
@@ -37,7 +36,7 @@
               <h4 data-translate="h4">вільний веб-чат</h4>
               <h5 data-translate="h51">щоб увійти, введіть пароль і логін</h5>
               <h5 data-translate="h52" style="display: none">щоб почати користуватися чатом, пройдіть реєстрацію</h5>
-              <form name="loginForm" method="post" action="api/login">
+              <form name="loginForm" method="post" action="api/authorization/login">
                 <input name="lang" type="hidden" value="ua">
                 <input name="name" type="name" placeholder="логін…">
                 <div class="error-info"><i class="ico">&#x73;</i><span></span></div>
@@ -53,5 +52,7 @@
       </main>
       <footer class="login-footer">© waldteufel@ukr.net</footer>
     </div>
+    <script src="../libs-js/wScroll.js"></script>
+    <script src="../js/login.js"></script>
   </body>
 </html>

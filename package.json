@@ -4,7 +4,8 @@
   "description": "web-chat (MENG + Socket.io)",
   "main": "app/server/app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon app/server/app.js"
   },
   "repository": {
     "type": "git",
@@ -22,6 +23,7 @@
     "helmet": "^4.6.0",
     "http-errors": "~1.6.3",
     "mongodb": "^4.0.0",
+    "mongoose": "^5.13.7",
     "morgan": "~1.9.1",
     "nconf": "^0.11.3",
     "pug": "^3.0.2",

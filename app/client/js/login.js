@@ -1,4 +1,5 @@
 "use strict";
+// wSetScroll(document.querySelector('.login-main__inner.wjs-scroll'), {right:true, overflowXHidden:true});
 ////////////////////////////////////////////////////////////////////////////////
 /* ↓↓↓ variables declaration ↓↓↓ */
   let dictionary = {
@@ -81,7 +82,7 @@
       document.querySelector('[data-role="register"]').classList.remove('login-header__link_active');
       document.querySelector('main.login-main h5:first-of-type').style.display = 'block';
       document.querySelector('main.login-main h5:last-of-type').style.display = 'none';
-      document.forms.loginForm.setAttribute('action','api/login');
+      document.forms.loginForm.setAttribute('action','api/authorization/login');
       document.forms.loginForm.reset();
       document.querySelector('input[name="pass2"]').style.display = 'none';
       document.querySelector('head title').innerHTML = 'Login';
@@ -93,7 +94,7 @@
       document.querySelector('[data-role="login"]').classList.remove('login-header__link_active');
       document.querySelector('main.login-main h5:first-of-type').style.display = 'none';
       document.querySelector('main.login-main h5:last-of-type').style.display = 'block';
-      document.forms.loginForm.setAttribute('action','api/register');
+      document.forms.loginForm.setAttribute('action','api/authorization/register');
       document.forms.loginForm.reset();
       document.querySelector('input[name="pass2"]').style.display = 'block';
       document.querySelector('head title').innerHTML = 'Registration';
@@ -240,14 +241,14 @@
     }
 
     // повторення паролю при реєстрації
-    if ( formType == 'api/register' && !inpRepP.value ) {
+    if ( formType == 'api/authorization/register' && !inpRepP.value ) {
       showError(errors[2], dictionary.repeat[lang]);
       inpRepP.focus();
       return;
     }
 
     // однаковість паролів
-    if ( formType == 'api/register' && inpRepP.value != inpPass.value) {
+    if ( formType == 'api/authorization/register' && inpRepP.value != inpPass.value) {
       showError(errors[2], dictionary.notMatch[lang]);
       inpRepP.focus();
       return;
@@ -347,7 +348,7 @@
     let bodyObj = {name,pass};
       console.log("url", url);
 
-    if (url == 'api/register') {
+    if (url == 'api/authorization/register') {
       bodyObj.lang = lang;
     }
 
