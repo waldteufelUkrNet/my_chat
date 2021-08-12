@@ -71,6 +71,10 @@
       ua: 'Не вірний пароль',
       en: 'Incorrect password'
     },
+    serverError: {
+      ua: 'Серверна помилка. Спробуйте ще раз пізніше',
+      en: 'Server error. Please try again later'
+    },
   };
 /* ↑↑↑ variables declaration ↑↑↑ */
 ////////////////////////////////////////////////////////////////////////////////
@@ -264,7 +268,8 @@
 
     // сервер: нема такого користувача
     if (value
-        && errors[0].querySelector('span').innerText == dictionary.noUser) {
+        && (errors[0].querySelector('span').innerText == dictionary.noUser[lang]
+            || errors[3].querySelector('span').innerText == dictionary.serverError[lang]) ) {
       hideError(errors[0]);
     }
 
@@ -339,14 +344,14 @@
   }
 
   async function sendData() {
-    const form = document.forms.loginForm,
-          url  = form.getAttribute('action'),
-          lang = form.querySelector('input[name="lang"]').value,
-          name = form.querySelector('input[name="name"]').value,
-          pass = form.querySelector('input[name="pass1"]').value;
+    const form   = document.forms.loginForm,
+          url    = form.getAttribute('action'),
+          lang   = form.querySelector('input[name="lang"]').value,
+          name   = form.querySelector('input[name="name"]').value,
+          pass   = form.querySelector('input[name="pass1"]').value,
+          errors = document.querySelectorAll('.error-info');
 
     let bodyObj = {name,pass};
-      console.log("url", url);
 
     if (url == 'api/authorization/register') {
       bodyObj.lang = lang;
@@ -357,12 +362,29 @@
       headers: { "Accept": "application/json", "Content-Type": "application/json" },
       body: JSON.stringify(bodyObj)
     });
-    if (response.ok === true) {
+    console.log('response: ', response);
+    if (response.status == 500) {
+      // error DB?
+      showError(errors[3], dictionary.serverError[lang]);
+    } else if (response.status == 404) {
+      // not found
+      // сервер: Такого користувача не існує
+      showError(errors[0], dictionary.noUser[lang]);
+    } else if (response.status == 200) {
+      // ok
+      // тут подальша обробка запиту
+    } else {
+      // unknown error
+      showError(errors[3], dictionary.serverError[lang]);
+    }
+
+
+    // if (response.ok === true) {
       // тут подальша обробка запиту
 
       // сервер: Такого користувача не існує dictionary.noUser
       // сервер: Не вірний пароль dictionary.wrongPass
-    }
+    // }
   }
 /* ↑↑↑ functions declaration ↑↑↑ */
 ////////////////////////////////////////////////////////////////////////////////

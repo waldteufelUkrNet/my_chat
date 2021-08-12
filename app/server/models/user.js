@@ -19,6 +19,10 @@ let schema = new Schema({
   created: {
     type: Date,
     default: Date.now
+  },
+  language: {
+    type: String,
+    default: 'ua'
   }
 });
 
