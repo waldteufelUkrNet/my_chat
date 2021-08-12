@@ -269,7 +269,7 @@
     // сервер: нема такого користувача
     if (value
         && (errors[0].querySelector('span').innerText == dictionary.noUser[lang]
-            || errors[3].querySelector('span').innerText == dictionary.serverError[lang]) ) {
+            || errors[2].querySelector('span').innerText == dictionary.serverError[lang]) ) {
       hideError(errors[0]);
     }
 
@@ -362,7 +362,7 @@
       headers: { "Accept": "application/json", "Content-Type": "application/json" },
       body: JSON.stringify(bodyObj)
     });
-    console.log('response: ', response);
+console.log('response: ', response);
     if (response.status == 500) {
       // error DB?
       showError(errors[3], dictionary.serverError[lang]);
@@ -375,7 +375,7 @@
       // тут подальша обробка запиту
     } else {
       // unknown error
-      showError(errors[3], dictionary.serverError[lang]);
+      showError(errors[2], dictionary.serverError[lang]);
     }
 
 

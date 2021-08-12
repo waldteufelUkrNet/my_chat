@@ -13,7 +13,6 @@ exports.loginUser = function(req, res) {
     console.log('result find: ', result);
     if (!result) {
       res.sendStatus(404);
-      console.log('qw12');
     }
     if (result) {
       res.status(200).json(result);
