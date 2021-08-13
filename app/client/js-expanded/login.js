@@ -75,6 +75,10 @@
       ua: 'Серверна помилка. Спробуйте ще раз пізніше',
       en: 'Server error. Please try again later'
     },
+    loginIsUsed: {
+      ua: 'Ім\'я зайняте',
+      en: 'The name is busy'
+    },
   };
 /* ↑↑↑ variables declaration ↑↑↑ */
 ////////////////////////////////////////////////////////////////////////////////
@@ -175,22 +179,23 @@
   }
 
   async function showError(elem,text) {
-    let height = 0;
-
-    new Promise( (resolve, reject) => {
+    if (elem.clientHeight != 0) {
       elem.querySelector('span').innerText = text;
-      elem.style.height = 'auto';
-      height = elem.clientHeight + 20;
-      elem.style.height = 0;
-      while (elem.clientHeight != 0) {
-        sleep(100)
-      }
-      resolve();
-    }).then( () => {
-      elem.style.height = height + 'px';
-      elem.style.padding = '10px';
-      elem.style.marginBottom = '10px';
-    });
+    } else {
+      let height = 0;
+
+      new Promise( (resolve, reject) => {
+        elem.querySelector('span').innerText = text;
+        elem.style.height = 'auto';
+        height = elem.clientHeight + 20;
+        elem.style.height = 0;
+        resolve();
+      }).then( () => {
+        elem.style.height = height + 'px';
+        elem.style.padding = '10px';
+        elem.style.marginBottom = '10px';
+      });
+    }
   }
 
   function hideError(elem) {
@@ -261,11 +266,13 @@
     sendData();
   }
 
-  function checkInpName() {
-    let value  = document.querySelector('input[name="name"]').value,
-        errors = document.querySelectorAll('.error-info'),
-        lang   = document.querySelector('html').getAttribute('lang');
-
+  async function checkInpName() {
+    let value     = document.querySelector('input[name="name"]').value,
+        errors    = document.querySelectorAll('.error-info'),
+        lang      = document.querySelector('html').getAttribute('lang'),
+        form      = document.forms.loginForm,
+        submitBtn = form.querySelector('#submitBtn'),
+        formType  = form.getAttribute('action');
     // сервер: нема такого користувача
     if (value
         && (errors[0].querySelector('span').innerText == dictionary.noUser[lang]
@@ -287,6 +294,17 @@
       ) {
       hideError(errors[0]);
       return;
+    }
+
+    // перевірка зайнятості логіна
+    if (formType == 'api/authorization/register' && value.length >= 3 ) {
+      if ( !await isLoginFree(value) ) {
+        showError(errors[0], dictionary.loginIsUsed[lang]);
+        submitBtn.setAttribute('type','button');
+      } else {
+        hideError(errors[0]);
+        submitBtn.setAttribute('type','submit');
+      }
     }
   }
 
@@ -311,7 +329,7 @@
       return;
     }
 
-    // которке ім'я
+    // которкий пароль
     if (value.length >= 6
         && errors[1].querySelector('span').innerText == dictionary.passLength[lang]
       ) {
@@ -359,10 +377,12 @@
 
     const response = await fetch(url, {
       method: "POST",
-      headers: { "Accept": "application/json", "Content-Type": "application/json" },
+      headers: {
+        "Accept": "application/json",
+        "Content-Type": "application/json"
+      },
       body: JSON.stringify(bodyObj)
     });
-console.log('response: ', response);
     if (response.status == 500) {
       // error DB?
       showError(errors[3], dictionary.serverError[lang]);
@@ -373,18 +393,34 @@ console.log('response: ', response);
     } else if (response.status == 200) {
       // ok
       // тут подальша обробка запиту
+      console.log("200: redirect");
+    } else if (response.status == 403) {
+      // не вірний пароль
+      // сервер: Не вірний пароль dictionary.wrongPass
+      showError(errors[1], dictionary.wrongPass[lang]);
     } else {
       // unknown error
       showError(errors[2], dictionary.serverError[lang]);
     }
+  }
 
-
-    // if (response.ok === true) {
-      // тут подальша обробка запиту
-
-      // сервер: Такого користувача не існує dictionary.noUser
-      // сервер: Не вірний пароль dictionary.wrongPass
-    // }
+  async function isLoginFree(login) {
+    const response = await fetch('api/authorization/existUser', {
+      method: "POST",
+      headers: {
+        "Accept": "application/json",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({name:login})
+    });
+    if (response.status == 500) {
+      // error DB?
+      showError(errors[3], dictionary.serverError[lang]);
+    } else if (response.status == 200) {
+      let status = await response.json();
+      if (status.slot == 'used') return false;
+      return true;
+    }
   }
 /* ↑↑↑ functions declaration ↑↑↑ */
 ////////////////////////////////////////////////////////////////////////////////

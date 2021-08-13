@@ -9,7 +9,7 @@
     }
   },
   "session"                : {
-    "name"                 : "my-cha-cha",
+    "name"                 : "mcc_sid",
     "secret"               : "Q'P'A!WSg8XLh@Gg3n*YCDjh@<STE'",
     "resave"               : false,
     "saveUninitialized"    : true,
