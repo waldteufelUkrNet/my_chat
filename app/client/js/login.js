@@ -394,7 +394,7 @@
       method: "POST",
       headers: {
         // "Accept": "application/json",
-        // "Accept": "text/html",
+        "Accept": "text/html",
         "Content-Type": "application/json"
       },
       body: JSON.stringify(bodyObj)
@@ -410,8 +410,10 @@
       // ok
       // тут подальша обробка запиту
       console.log("200: redirect");
-      let ab = await response.text();
-      document.querySelector('html').innerHTML = ab;
+      let answer = await response.text();
+      console.log("answer: ", answer);
+      document.querySelector('body header').innerHTML = answer;
+      // document.querySelector('html').innerHTML = answer;
 
       // window.location.href = 'api/app';
 

@@ -1,0 +1,413 @@
+.popups-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1000;
+  display: none;
+  &_active {
+    display: flex;
+  }
+}
+
+.popup {
+  min-width: 270px;
+  max-width: 800px;
+  min-height: 100px;
+  max-height: 90%;
+  margin: auto;
+  border: 1px solid $d0;
+  background-image: linear-gradient($c44, $c79, $d0);
+  box-shadow: 1px 1px 6px black;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%);
+  top: -100%;
+  left: 50%;
+  transition: top .5s;
+  &_active {
+    top: 10%;
+  }
+  &__header {
+    height: 30px;
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+    position: relative;
+    user-select: none;
+  }
+  &__header-name {
+    flex-grow: 1;
+    font: 1.2em reg;
+    color: $d0;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    text-align: center;
+    @media (min-width: $bpm) {
+      font-size: 1em;
+    }
+  }
+  &__close {
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    border: 1px solid maroon;
+    background-color: red;
+    border-radius: 4px;
+    color: white;
+    font-size: 2em;
+    cursor: pointer;
+    i {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-54%,-53%);
+    }
+    @media (min-width: $bpm) {
+      width: 25px;
+      height: 25px;
+      font-size: 1.5em;
+    }
+  }
+  &__body {
+    flex-grow: 1;
+    padding: 10px;
+  }
+  &__text {
+    font: .95em reg;
+    color: $d0;
+    padding: 6px 0;
+    &_tac {
+      text-align: center;
+    }
+  }
+  &__footer {
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  &__btn {
+    height: 30px;
+    margin: 5px;
+    padding: 0 12px;
+    cursor: pointer;
+    background-color: $c64;
+    border: 1px solid $d0;
+    border-radius: 4px;
+    color: lightgrey;
+    transition: background-color .3s;
+    &:hover {
+      background-color: $c5f;
+    }
+  }
+  &__divider {
+    width: 20px;
+  }
+  &__col-wrapper {
+    display: grid;
+    @media (min-width: $bpm) {
+      grid-template-columns: 1fr 1fr;
+      grid-gap: 12px;
+    }
+  }
+  &__col {}
+  input[type="password"],
+  input[type="text"],
+  input[type="file"] {
+    display: block;
+    height: 30px;
+    min-width: 200px;
+    width: 100%;
+    border: 1px solid $d0;
+    border-radius: 4px;
+    background-color: transparent;
+    padding: 0 26px 0 6px;
+    color: $d0;
+    text-shadow: 1px 1px 6px black;
+  }
+  input[type="file"] {
+    padding-top: 3px;
+    cursor: pointer;
+  }
+}
+////////////////////////////////////////////////////////////////////////////////
+/* ↓↓↓ language select ↓↓↓ */
+  .popup {
+    &__label {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      min-height: 30px;
+      input {
+        position: absolute;
+        bottom: 100%;
+        right: 100%;
+      }
+      input:checked + i {
+        display: block;
+      }
+      i {
+        position: absolute;
+        color: $d0;
+        top:50%;
+        left: 0;
+        transform: translate(0,-50%);
+        &:first-of-type {
+          display: none;
+        }
+      }
+      img {
+        height: 36px;
+      }
+      span {
+        user-select: none;
+        color: $d0;
+      }
+      &:not(:last-of-type) {
+        border-bottom: 1px solid steelblue;
+      }
+    }
+  }
+/* ↑↑↑ language select ↑↑↑ */
+////////////////////////////////////////////////////////////////////////////////
+/* ↓↓↓ password change ↓↓↓ */
+  .popup_password {
+    .popup__body form {
+      display: grid;
+      grid-template-columns: 1fr;
+      grid-gap: 6px;
+      @media (min-width: $bpm) {
+        grid-template-columns: auto 1fr;
+        grid-gap: 12px 6px;
+      }
+    }
+    .popup__text {
+      padding-top: 3px;
+    }
+    .popup__pass-wrapper {
+      position: relative;
+      i {
+        position: absolute;
+        right: 6px;
+        top: 50%;
+        transform: translate(0,-50%);
+        cursor: pointer;
+      }
+      i:first-of-type {
+        color: springgreen;
+      }
+      i:last-of-type {
+        display: none;
+        color: red;
+      }
+    }
+  }
+/* ↑↑↑ password change ↑↑↑ */
+////////////////////////////////////////////////////////////////////////////////
+/* ↓↓↓ group chat ↓↓↓ */
+  .popup_search {
+    .popup__list-wrapper {
+      display: block;
+      height: 132px;
+      width: 270px;
+      border: 1px solid $d0;
+      border-radius: 4px;
+      background-color: transparent;
+      padding: 5px;
+      color: $d0;
+      text-shadow: 1px 1px 6px black;
+      .popup__list {
+      }
+      .popup__item label {
+        height: 30px;
+        position: relative;
+        user-select: none;
+        // overflow: hidden;
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        input {
+          position: absolute;
+          bottom: 100%;
+          right: 100%;
+        }
+        i {
+          font-size: 1.2em;
+        }
+        input ~ .check {
+          display: none;
+        }
+        input ~ .uncheck {
+          display: block;
+        }
+        input:checked ~ .check {
+          display: block;
+        }
+        input:checked ~ .uncheck {
+          display: none;
+        }
+        span {
+          white-space: nowrap;
+          &:first-of-type {
+            margin: 0 6px;
+          }
+          &:last-of-type {
+            font: .8em reg;
+          }
+        }
+      }
+    }
+    .popup__search-wrapper {
+      position: relative;
+      i {
+        position: absolute;
+        right: 6px;
+        top: 50%;
+        transform: translate(0,-50%);
+        cursor: pointer;
+        color: springgreen;
+      }
+    }
+    .popup__search-result label {
+      height: 100%;
+      width: 100%;
+      position: absolute;
+      background-color: #006d6c;
+      color: $d0;
+      border: 1px solid $d0;
+      border-radius: 4px;
+      display: none;
+      align-items: center;
+      overflow: hidden;
+      margin-top: 1px;
+      text-shadow: 1px 1px 6px black;
+      input {
+        position: absolute;
+        bottom: 100%;
+        right: 100%;
+      }
+      i {
+        position: relative;
+        left: 5px;
+        top: 10px;
+        font-size: 1.2em;
+        color: $d0;
+      }
+      input ~ .check {
+        display: none;
+      }
+      input ~ .uncheck {
+        display: block;
+      }
+      input:checked ~ .check {
+        display: block;
+      }
+      input:checked ~ .uncheck {
+        display: none;
+      }
+      span {
+        white-space: nowrap;
+        &:first-of-type {
+          margin: 0 6px 0 11px;
+        }
+        &:last-of-type {
+          font: .8em reg;
+        }
+      }
+    }
+    .popup__search-result {
+      &_active {
+        label {
+          display: flex;
+        }
+      }
+    }
+  }
+/* ↑↑↑ group chat ↑↑↑ */
+////////////////////////////////////////////////////////////////////////////////
+/* ↓↓↓ show group list ↓↓↓ */
+  .popup_show-list-group {
+    .popup__list-wrapper {
+      height: 400px;
+      width: 270px;
+    }
+    .popup__item {
+      padding: 5px;
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      &:not(:last-of-type) {
+        border-bottom: 1px solid steelblue;
+      }
+    }
+    .popup__user-name {
+      color: $d0;
+      font: 1em reg;
+      text-shadow: 1px 1px 6px black;
+    }
+  }
+/* ↑↑↑ show group list ↑↑↑ */
+////////////////////////////////////////////////////////////////////////////////
+/* ↓↓↓ show black list ↓↓↓ */
+  .popup_show-black-list {
+    .popup__list-wrapper {
+      height: 400px;
+      width: 270px;
+    }
+    .popup__item {
+      padding: 5px;
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      position: relative;
+      &:not(:last-of-type) {
+        border-bottom: 1px solid steelblue;
+      }
+    }
+    .popup__user-name {
+      color: $d0;
+      font: 1em reg;
+      text-shadow: 1px 1px 6px black;
+    }
+    .popup__user-restore {
+      width: 30px;
+      height: 30px;
+      position: absolute;
+      right: 0;
+      top: 50%;
+      transform: translate(0,-50%);
+      background-color: springgreen;
+      border: 1px solid green;
+      border-radius: 4px;
+      cursor: pointer;
+      i {
+        font-size: 2em;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+        color: white;
+      }
+      @media (min-width: $bpm) {
+        width: 20px;
+        height: 20px;
+        i {
+          font-size: 1.2em;
+        }
+      }
+    }
+  }
+/* ↑↑↑ show black list ↑↑↑ */
+////////////////////////////////////////////////////////////////////////////////

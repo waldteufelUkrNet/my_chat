@@ -1,0 +1,69 @@
+doctype html
+html(lang='ua').wjs-MobileHeightFix
+  head
+    meta(charset='UTF-8')
+    meta(name='viewport' content='width=device-width, initial-scale=1.0')
+    link(rel='icon', href='../img/logo.png')
+    //- script(defer src='../libs-js/wScroll.js')
+    //- script(defer src="../js/login.js")
+    title Login
+    link(rel='stylesheet' type='text/css' href='../css/main.css')
+  body
+    .body-inner.body-inner_notSignedPage
+
+      header.login-header
+        nav.login-header__nav
+          ul
+            li
+              a.login-header__link.login-header__link_active(href='#' data-role="login" data-translate="link1") вхід
+            li
+              a.login-header__link(href='#' data-role="register" data-translate="link2") реєстрація
+        .lang-switcher
+          .lang-switcher__img-wrapper
+            img.lang-switcher__img(src="../img/ukraine.png")
+          i.ico &#x33;
+          .lang-switcher__list
+            .lang-switcher__list-item(data-lang="ua")
+              .lang-switcher__img-wrapper
+                img.lang-switcher__img(src="../img/ukraine.png")
+              span.lang-switcher__name укр
+            .lang-switcher__list-item(data-lang="en")
+              .lang-switcher__img-wrapper
+                img.lang-switcher__img(src="../img/united_kingdom.png")
+              span.lang-switcher__name eng
+      main.login-main
+        .login-main__inner.wjs-scroll(data-scroll='right' data-scroll-hidden="horizontal")
+          .wjs-scroll__content-wrapper
+            .wjs-scroll__content
+              h1 My-cha-cha
+              h4(data-translate="h4") вільний веб-чат
+              h5(data-translate="h51") щоб увійти, введіть пароль і логін
+              h5(data-translate="h52" style="display: none") щоб почати користуватися чатом, пройдіть реєстрацію
+
+              form(name="loginForm" method="post" action="api/authorization/login")
+                input(name="lang" type="hidden" value="ua")
+                input(name="name" type="name" placeholder="логін…")
+                .error-info
+                  i.ico &#x73;
+                  span
+                    //- Введіть логін
+                    //- Довжина логіну не менше 3х символів
+                    //- сервер: Такого користувача не існує
+                input(name="pass1" type="password" placeholder="пароль…")
+                .error-info
+                  i.ico &#x73;
+                  span
+                    //- Введіть пароль
+                    //- Пароль повинен бути щонайменше 6 символів
+                    //- сервер: Не вірний пароль
+                input(name="pass2" type="password" placeholder="повторіть пароль…" style="display: none")
+                .error-info
+                  i.ico &#x73;
+                  span
+                    //- Повторіть пароль
+                    //- Паролі не співпадають
+                button#submitBtn(type="submit" data-translate="btn") увійти
+
+      footer.login-footer © waldteufel@ukr.net
+    script(src='../libs-js/wScroll.js')
+    script(src="../js/login.js")

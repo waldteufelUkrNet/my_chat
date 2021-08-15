@@ -1,0 +1,13 @@
+.menu-list {
+  &__item {
+    padding: 10px;
+    border-bottom: 1px solid $sb;
+    font: 1.2em reg;
+    color: $d0;
+    text-shadow: 1px 1px 2px $c44;
+    cursor: pointer;
+    &:last-of-type {
+      border-bottom: none;
+    }
+  }
+}

@@ -1,4 +1,5 @@
 doctype html
+doctype html
 html(lang='en').wjs-MobileHeightFix
   head
     meta(charset='UTF-8')
@@ -22,35 +23,35 @@ html(lang='en').wjs-MobileHeightFix
                 include ../modules/menu/menu.pug
               .list(data-list-group="aside" data-list="settings")
                 include ../modules/settings/settings.pug
-              .list.list_active(data-list-group="aside" data-list="chatlist")
-                include ../modules/chatlist/chatlist.pug
+              .list(data-list-group="aside" data-list="chatlist")
+                //- include ../modules/chatlist/chatlist.pug
               .list(data-list-group="aside" data-list="contactlist")
-                include ../modules/contactlist/contactlist.pug
+                //- include ../modules/contactlist/contactlist.pug
 
               .list(data-list-group="aside" data-list="usercard")
-                include ../modules/usercard/usercard.pug
+                //- include ../modules/usercard/usercard.pug
               .list(data-list-group="aside" data-list="groupcard")
-                include ../modules/groupcard/groupcard.pug
+                //- include ../modules/groupcard/groupcard.pug
               .list(data-list-group="aside" data-list="chat")
-                include ../modules/chat/chat.pug
-                include ../modules/round-button/round-button.pug
-                include ../modules/chat-form/chat-form.pug
+                //- include ../modules/chat/chat.pug
+                //- include ../modules/round-button/round-button.pug
+                //- include ../modules/chat-form/chat-form.pug
 
       .right-side
-        .list(data-list-group="page" data-list="startP")
+        .list.list_active(data-list-group="page" data-list="startP")
           p.right-side__info Виберіть чат або контакт і почніть спілкування
         .list(data-list-group="page" data-list="usercardP")
-          include ../modules/usercard/usercard.pug
+          //- include ../modules/usercard/usercard.pug
         .list(data-list-group="page" data-list="groupcardP")
-          include ../modules/groupcard/groupcard.pug
-        .list.list_active(data-list-group="page" data-list="chatP")
-          include ../modules/subheader/subheader.pug
-          .chat-wrapper.wjs-scroll(data-scroll='right')
-            .wjs-scroll__content-wrapper
-              .wjs-scroll__content
-                include ../modules/chat/chat.pug
-            include ../modules/round-button/round-button.pug
-          include ../modules/chat-form/chat-form.pug
+          //- include ../modules/groupcard/groupcard.pug
+        .list(data-list-group="page" data-list="chatP")
+          //- include ../modules/subheader/subheader.pug
+          //- .chat-wrapper.wjs-scroll(data-scroll='right')
+            //- .wjs-scroll__content-wrapper
+              //- .wjs-scroll__content
+                //- include ../modules/chat/chat.pug
+            //- include ../modules/round-button/round-button.pug
+          //- include ../modules/chat-form/chat-form.pug
 
     include ../modules/popups/popups.pug
     #widthIndicator

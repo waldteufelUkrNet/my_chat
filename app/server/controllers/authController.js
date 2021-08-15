@@ -25,10 +25,13 @@ exports.loginUser = function(req, res) {
         // res.status(200).send('<p>Hello</p>');
         // res.sendStatus(200);
 
-  let dirArr = __dirname.split(path.sep);
-  dirArr.splice(-1);
-  res.setHeader('Content-type', 'text/html; charset=utf-8');
-  res.sendFile( path.join( dirArr.join('/'), '/public/html/app.html' ) );
+        // let dirArr = __dirname.split(path.sep);
+        // dirArr.splice(-1);
+        // res.setHeader('Content-type', 'text/html; charset=utf-8');
+        // res.sendFile( path.join( dirArr.join('/'), '/public/html/app.html' ) );
+
+        res.status(200).render('header', {username:'Dona Princevalle'})
+
       }
     }
   });

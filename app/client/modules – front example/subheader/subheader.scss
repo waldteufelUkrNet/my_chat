@@ -1,0 +1,18 @@
+.subheader {
+  height: 60px;
+  align-self: stretch;
+  margin: 0 10px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  cursor: pointer;
+  &__text-wrapper {
+    color: $d0;
+  }
+  &__name {
+    font: 1.2em reg;
+  }
+  &__id {
+    font: 1em light;
+  }
+}
