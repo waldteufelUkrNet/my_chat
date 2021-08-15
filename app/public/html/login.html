@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html class="wjs-MobileHeightFix" lang="ua">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="../css/main.css">
+    <link rel="icon" href="../img/logo.png">
+    <title>Login</title>
+  </head>
+  <body>
+    <div class="body-inner body-inner_notSignedPage">
+      <header class="login-header">
+        <nav class="login-header__nav">
+          <ul>
+            <li><a class="login-header__link login-header__link_active" href="#" data-role="login" data-translate="link1">вхід</a></li>
+            <li><a class="login-header__link" href="#" data-role="register" data-translate="link2">реєстрація</a></li>
+          </ul>
+        </nav>
+        <div class="lang-switcher">
+          <div class="lang-switcher__img-wrapper"><img class="lang-switcher__img" src="../img/ukraine.png"></div><i class="ico">&#x33;</i>
+          <div class="lang-switcher__list">
+            <div class="lang-switcher__list-item" data-lang="ua">
+              <div class="lang-switcher__img-wrapper"><img class="lang-switcher__img" src="../img/ukraine.png"></div><span class="lang-switcher__name">укр</span>
+            </div>
+            <div class="lang-switcher__list-item" data-lang="en">
+              <div class="lang-switcher__img-wrapper"><img class="lang-switcher__img" src="../img/united_kingdom.png"></div><span class="lang-switcher__name">eng</span>
+            </div>
+          </div>
+        </div>
+      </header>
+      <main class="login-main">
+        <div class="login-main__inner wjs-scroll" data-scroll="right" data-scroll-hidden="horizontal">
+          <div class="wjs-scroll__content-wrapper">
+            <div class="wjs-scroll__content">
+              <h1>My-cha-cha</h1>
+              <h4 data-translate="h4">вільний веб-чат</h4>
+              <h5 data-translate="h51">щоб увійти, введіть пароль і логін</h5>
+              <h5 data-translate="h52" style="display: none">щоб почати користуватися чатом, пройдіть реєстрацію</h5>
+              <form name="loginForm" method="post" action="api/authorization/login">
+                <input name="lang" type="hidden" value="ua">
+                <input name="name" type="name" placeholder="логін…">
+                <div class="error-info"><i class="ico">&#x73;</i><span></span></div>
+                <input name="pass1" type="password" placeholder="пароль…">
+                <div class="error-info"><i class="ico">&#x73;</i><span></span></div>
+                <input name="pass2" type="password" placeholder="повторіть пароль…" style="display: none">
+                <div class="error-info"><i class="ico">&#x73;</i><span></span></div>
+                <button id="submitBtn" type="submit" data-translate="btn">увійти</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </main>
+      <footer class="login-footer">© waldteufel@ukr.net</footer>
+    </div>
+    <script defer src="../js/main.js"></script>
+  </body>
+</html>

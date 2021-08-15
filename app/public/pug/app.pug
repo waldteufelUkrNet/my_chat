@@ -1,0 +1,55 @@
+doctype html
+doctype html
+html(lang='en').wjs-MobileHeightFix
+  head
+    meta(charset='UTF-8')
+    meta(name='viewport' content='width=device-width, initial-scale=1.0')
+    link(rel='stylesheet' type='text/css' href='../css/main.css')
+    link(rel='icon', href='../img/logo.png')
+    title My-cha-cha
+  body
+    .body-inner
+
+      .left-side
+        include ../../templates/header/header.pug
+        include ../../templates/subheader/subheader.pug
+        .lists-wrapper.wjs-scroll(data-scroll='right')
+          .wjs-scroll__content-wrapper
+            .wjs-scroll__content
+              .list(data-list-group="aside" data-list="menu")
+                include ../../templates/menu/menu.pug
+              .list(data-list-group="aside" data-list="settings")
+                include ../../templates/settings/settings.pug
+              .list(data-list-group="aside" data-list="chatlist")
+                //- include ../../templates/chatlist/chatlist.pug
+              .list(data-list-group="aside" data-list="contactlist")
+                //- include ../../templates/contactlist/contactlist.pug
+
+              .list(data-list-group="aside" data-list="usercard")
+                //- include ../../templates/usercard/usercard.pug
+              .list(data-list-group="aside" data-list="groupcard")
+                //- include ../../templates/groupcard/groupcard.pug
+              .list(data-list-group="aside" data-list="chat")
+                //- include ../../templates/chat/chat.pug
+                //- include ../../templates/round-button/round-button.pug
+                //- include ../../templates/chat-form/chat-form.pug
+
+      .right-side
+        .list.list_active(data-list-group="page" data-list="startP")
+          p.right-side__info Виберіть чат або контакт і почніть спілкування
+        .list(data-list-group="page" data-list="usercardP")
+          //- include ../../templates/usercard/usercard.pug
+        .list(data-list-group="page" data-list="groupcardP")
+          //- include ../../templates/groupcard/groupcard.pug
+        .list(data-list-group="page" data-list="chatP")
+          //- include ../../templates/subheader/subheader.pug
+          //- .chat-wrapper.wjs-scroll(data-scroll='right')
+            //- .wjs-scroll__content-wrapper
+              //- .wjs-scroll__content
+                //- include ../../templates/chat/chat.pug
+            //- include ../../templates/round-button/round-button.pug
+          //- include ../../templates/chat-form/chat-form.pug
+
+    include ../../templates/popups/popups.pug
+    #widthIndicator
+    script(defer src='../js/main.js')
