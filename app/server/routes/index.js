@@ -1,16 +1,21 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express'),
+      path    = require('path'),
+      router  = express.Router();
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  // res.render('index', { title: 'Express' });
-  // res.status(200);
-    // встановлення заголовку-відповіді для коректного відображення кирилиці
-    // res.cookie('Content-type', 'text/html; charset=utf-8');
+router.get('/', function(req, res) {
 
-    // заборона браузеру кешувати відповіді сервера
-    // res.cookie('Cashe-Control', 'no-cashe no-store must-revalidate');
-  res.sendFile('B:/files/work_area/my_chat/app/server/public/html/login.html');
+  let dirArr = __dirname.split(path.sep);
+  dirArr.splice(-1);
+
+  res.sendFile( path.join( dirArr.join('/'), '/public/html/login.html' ) );
+});
+
+router.get('/api/app', function(req, res) {
+
+  let dirArr = __dirname.split(path.sep);
+  dirArr.splice(-1);
+
+  res.sendFile( path.join( dirArr.join('/'), '/public/html/app.html' ) );
 });
 
 module.exports = router;

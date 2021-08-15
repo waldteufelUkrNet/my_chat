@@ -1,13 +1,12 @@
 const config            = require('./config'),
-      // cookieParser      = require('cookie-parser'), // а він взагалі зараз треба? він тепер хіба не вбудований?
       createError       = require('http-errors'),
       express           = require('express'),
-      helmet            = require('helmet'),             // security
-      log               = require('./libs/log')(module), // HTTP logger
-      logger            = require('morgan'),             // logger
-      mongoSessionStore = require('connect-mongo'),      // save cookies in db
+      helmet            = require('helmet'),                   // security
+      log               = require('./libs/log')(module),       // HTTP logger
+      logger            = require('morgan'),                   // logger
+      mongoSessionStore = require('connect-mongo'),            // save cookies in db
       path              = require('path'),
-      session           = require('express-session'),    // cookies generator: request.session
+      session           = require('express-session'),          // cookies generator: request.session
 
       indexRouter       = require('./routes/index.js'),
       authRouter        = require('./routes/authRouter'),
@@ -35,7 +34,6 @@ if (app.get('env') == 'development') {
 
 app.use( express.json() );
 app.use( express.urlencoded({ extended: false }) );
-// app.use( cookieParser() );
 app.use( express.static(path.join(__dirname, 'public')) );
 
 let sessionConfig = config.get('session');
@@ -43,7 +41,6 @@ sessionConfig.store = mongoSessionStore.create({ mongoUrl: config.get('mongoose:
 app.use(session( sessionConfig ));
 
 app.use('/', indexRouter);
-// app.use('/users', usersRouter);
 app.use('/api/authorization', authRouter);
 
 // catch 404 and forward to error handler

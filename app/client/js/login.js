@@ -145,10 +145,6 @@
 /* ↑↑↑ event listeners ↑↑↑ */
 ////////////////////////////////////////////////////////////////////////////////
 /* ↓↓↓ functions declaration ↓↓↓ */
-  function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-  }
-
   function changePageLang(lang) {
     let currentLang = document.querySelector('html').getAttribute('lang') || 'ua';
     if (lang == currentLang) return;
@@ -361,6 +357,25 @@
     }
   }
 
+  async function isLoginFree(login) {
+    const response = await fetch('api/authorization/existUser', {
+      method: "POST",
+      headers: {
+        "Accept": "application/json",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({name:login})
+    });
+    if (response.status == 500) {
+      // error DB?
+      showError(errors[2], dictionary.serverError[lang]);
+    } else if (response.status == 200) {
+      let status = await response.json();
+      if (status.slot == 'used') return false;
+      return true;
+    }
+  }
+
   async function sendData() {
     const form   = document.forms.loginForm,
           url    = form.getAttribute('action'),
@@ -378,14 +393,15 @@
     const response = await fetch(url, {
       method: "POST",
       headers: {
-        "Accept": "application/json",
+        // "Accept": "application/json",
+        // "Accept": "text/html",
         "Content-Type": "application/json"
       },
       body: JSON.stringify(bodyObj)
     });
     if (response.status == 500) {
       // error DB?
-      showError(errors[3], dictionary.serverError[lang]);
+      showError(errors[2], dictionary.serverError[lang]);
     } else if (response.status == 404) {
       // not found
       // сервер: Такого користувача не існує
@@ -394,6 +410,11 @@
       // ok
       // тут подальша обробка запиту
       console.log("200: redirect");
+      let ab = await response.text();
+      document.querySelector('html').innerHTML = ab;
+
+      // window.location.href = 'api/app';
+
     } else if (response.status == 403) {
       // не вірний пароль
       // сервер: Не вірний пароль dictionary.wrongPass
@@ -401,25 +422,6 @@
     } else {
       // unknown error
       showError(errors[2], dictionary.serverError[lang]);
-    }
-  }
-
-  async function isLoginFree(login) {
-    const response = await fetch('api/authorization/existUser', {
-      method: "POST",
-      headers: {
-        "Accept": "application/json",
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({name:login})
-    });
-    if (response.status == 500) {
-      // error DB?
-      showError(errors[3], dictionary.serverError[lang]);
-    } else if (response.status == 200) {
-      let status = await response.json();
-      if (status.slot == 'used') return false;
-      return true;
     }
   }
 /* ↑↑↑ functions declaration ↑↑↑ */

@@ -1,4 +1,5 @@
-const User = require("../models/user.js").User;
+const User = require("../models/user.js").User,
+      path = require('path');
 
 exports.loginUser = function(req, res) {
   const userName = req.body.name,
@@ -17,7 +18,17 @@ exports.loginUser = function(req, res) {
         res.sendStatus(403);
       } else {
         // користувач існує, пароль вірний
-        res.sendStatus(200);
+        req.session.user = res.locals.user = user._id;
+        req.session.save();
+
+        // res.status(200).render();
+        // res.status(200).send('<p>Hello</p>');
+        // res.sendStatus(200);
+
+  let dirArr = __dirname.split(path.sep);
+  dirArr.splice(-1);
+  res.setHeader('Content-type', 'text/html; charset=utf-8');
+  res.sendFile( path.join( dirArr.join('/'), '/public/html/app.html' ) );
       }
     }
   });
@@ -51,4 +62,8 @@ exports.existUser = function(req, res) {
       res.status(200).json({slot:'used'});
     }
   });
+}
+
+exports.logoutUser = function(req,res) {
+  //
 }
