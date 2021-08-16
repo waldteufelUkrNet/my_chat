@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class="wjs-MobileHeightFix" lang="en">
+<html class="wjs-MobileHeightFix" lang="ua">
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,317 +8,62 @@
     <script defer src="../js/main.js"></script>
     <title>My-cha-cha :)</title>
   </head>
-  <body>
-    <div class="body-inner body-inner_notSignedPage">
-      <header class="login-header">
-        <nav class="login-header__nav">
-          <ul>
-            <li><a class="login-header__link login-header__link_active" href="#" data-role="login" data-translate="link1">вхід</a></li>
-            <li><a class="login-header__link" href="#" data-role="register" data-translate="link2">реєстрація</a></li>
-          </ul>
-        </nav>
-        <div class="lang-switcher">
-          <div class="lang-switcher__img-wrapper"><img class="lang-switcher__img" src="../img/ukraine.png"></div><i class="ico">&#x33;</i>
-          <div class="lang-switcher__list">
-            <div class="lang-switcher__list-item" data-lang="ua">
-              <div class="lang-switcher__img-wrapper"><img class="lang-switcher__img" src="../img/ukraine.png"></div><span class="lang-switcher__name">укр</span>
+  <body><!DOCTYPE html>
+    <html class="wjs-MobileHeightFix" lang="ua">
+      <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" type="text/css" href="../css/main.css">
+        <link rel="icon" href="../img/logo.png">
+        <script defer src="../js/main.js"></script>
+        <title>My-cha-cha :)</title>
+      </head>
+      <body>
+        <div class="body-inner body-inner_notSignedPage">
+          <header class="login-header">
+            <nav class="login-header__nav">
+              <ul>
+                <li><a class="login-header__link login-header__link_active" href="#" data-role="login" data-translate="link1">вхід</a></li>
+                <li><a class="login-header__link" href="#" data-role="register" data-translate="link2">реєстрація</a></li>
+              </ul>
+            </nav>
+            <div class="lang-switcher">
+              <div class="lang-switcher__img-wrapper"><img class="lang-switcher__img" src="../img/ukraine.png"></div><i class="ico">&#x33;</i>
+              <div class="lang-switcher__list">
+                <div class="lang-switcher__list-item" data-lang="ua">
+                  <div class="lang-switcher__img-wrapper"><img class="lang-switcher__img" src="../img/ukraine.png"></div><span class="lang-switcher__name">укр</span>
+                </div>
+                <div class="lang-switcher__list-item" data-lang="en">
+                  <div class="lang-switcher__img-wrapper"><img class="lang-switcher__img" src="../img/united_kingdom.png"></div><span class="lang-switcher__name">eng</span>
+                </div>
+              </div>
             </div>
-            <div class="lang-switcher__list-item" data-lang="en">
-              <div class="lang-switcher__img-wrapper"><img class="lang-switcher__img" src="../img/united_kingdom.png"></div><span class="lang-switcher__name">eng</span>
+          </header>
+          <main class="login-main">
+            <div class="login-main__inner wjs-scroll" data-scroll="right" data-scroll-hidden="horizontal">
+              <div class="wjs-scroll__content-wrapper">
+                <div class="wjs-scroll__content">
+                  <h1>My-cha-cha</h1>
+                  <h4 data-translate="h4">вільний веб-чат</h4>
+                  <h5 data-translate="h51">щоб увійти, введіть пароль і логін</h5>
+                  <h5 data-translate="h52" style="display: none">щоб почати користуватися чатом, пройдіть реєстрацію</h5>
+                  <form name="loginForm" method="post" action="api/authorization/login">
+                    <input name="lang" type="hidden" value="ua">
+                    <input name="name" type="name" placeholder="логін…">
+                    <div class="error-info"><i class="ico">&#x73;</i><span></span></div>
+                    <input name="pass1" type="password" placeholder="пароль…">
+                    <div class="error-info"><i class="ico">&#x73;</i><span></span></div>
+                    <input name="pass2" type="password" placeholder="повторіть пароль…" style="display: none">
+                    <div class="error-info"><i class="ico">&#x73;</i><span></span></div>
+                    <button id="submitBtn" type="submit" data-translate="btn">увійти</button>
+                  </form>
+                </div>
+              </div>
             </div>
-          </div>
+          </main>
+          <footer class="login-footer">© waldteufel@ukr.net</footer>
         </div>
-      </header>
-      <main class="login-main">
-        <div class="login-main__inner wjs-scroll" data-scroll="right" data-scroll-hidden="horizontal">
-          <div class="wjs-scroll__content-wrapper">
-            <div class="wjs-scroll__content">
-              <h1>My-cha-cha</h1>
-              <h4 data-translate="h4">вільний веб-чат</h4>
-              <h5 data-translate="h51">щоб увійти, введіть пароль і логін</h5>
-              <h5 data-translate="h52" style="display: none">щоб почати користуватися чатом, пройдіть реєстрацію</h5>
-              <form name="loginForm" method="post" action="api/authorization/login">
-                <input name="lang" type="hidden" value="ua">
-                <input name="name" type="name" placeholder="логін…">
-                <div class="error-info"><i class="ico">&#x73;</i><span></span></div>
-                <input name="pass1" type="password" placeholder="пароль…">
-                <div class="error-info"><i class="ico">&#x73;</i><span></span></div>
-                <input name="pass2" type="password" placeholder="повторіть пароль…" style="display: none">
-                <div class="error-info"><i class="ico">&#x73;</i><span></span></div>
-                <button id="submitBtn" type="submit" data-translate="btn">увійти</button>
-              </form>
-            </div>
-          </div>
-        </div>
-      </main>
-      <footer class="login-footer">© waldteufel@ukr.net</footer>
-    </div>
+      </body>
+    </html>
   </body>
-  <div class="popups-wrapper">
-    <div class="popup" id="popupLogout">
-      <div class="popup__header">
-        <h4 class="popup__header-name">Вийти з чату</h4>
-        <button class="popup__close"><i class="ico">&#x4d;</i></button>
-      </div>
-      <div class="popup__body">
-        <div class="popup__text popup__text_tac">Дійсно вийти з чату?</div>
-      </div>
-      <div class="popup__footer">
-        <button class="popup__btn" type="submit">так</button>
-        <button class="popup__btn" type="button" data-role="resetPopup">скасувати</button>
-      </div>
-    </div>
-    <div class="popup" id="popupDeleteAcc">
-      <div class="popup__header">
-        <h4 class="popup__header-name">Видалити акаунт</h4>
-        <button class="popup__close"><i class="ico">&#x4d;</i></button>
-      </div>
-      <div class="popup__body">
-        <div class="popup__text popup__text_tac">Ви дійсно хочете видалити обліковий запис?</div>
-      </div>
-      <div class="popup__footer">
-        <button class="popup__btn" type="submit">так</button>
-        <button class="popup__btn" type="button" data-role="resetPopup">скасувати</button>
-      </div>
-    </div>
-    <div class="popup" id="popupClearHistory">
-      <div class="popup__header">
-        <h4 class="popup__header-name">Очистити історію</h4>
-        <button class="popup__close"><i class="ico">&#x4d;</i></button>
-      </div>
-      <div class="popup__body">
-        <div class="popup__text">Ви впевнені, що хочете видалити історію чату?</div>
-      </div>
-      <div class="popup__footer">
-        <button class="popup__btn" type="submit">так</button>
-        <button class="popup__btn" type="button" data-role="resetPopup">скасувати</button>
-      </div>
-    </div>
-    <div class="popup" id="popupDeleteGroup">
-      <div class="popup__header">
-        <h4 class="popup__header-name">Видалити групу</h4>
-        <button class="popup__close"><i class="ico">&#x4d;</i></button>
-      </div>
-      <div class="popup__body">
-        <div class="popup__text">Ви впевнені, що хочете видалити групу?</div>
-      </div>
-      <div class="popup__footer">
-        <button class="popup__btn" type="submit">так</button>
-        <button class="popup__btn" type="button" data-role="resetPopup">скасувати</button>
-      </div>
-    </div>
-    <div class="popup" id="popupLeaveGroup">
-      <div class="popup__header">
-        <h4 class="popup__header-name">Покинути групу</h4>
-        <button class="popup__close"><i class="ico">&#x4d;</i></button>
-      </div>
-      <div class="popup__body">
-        <div class="popup__text">Ви впевнені, що хочете вийти з групового чату?</div>
-      </div>
-      <div class="popup__footer">
-        <button class="popup__btn" type="submit">так</button>
-        <button class="popup__btn" type="button" data-role="resetPopup">скасувати</button>
-      </div>
-    </div>
-    <div class="popup" id="popupLangSelect">
-      <div class="popup__header">
-        <h4 class="popup__header-name">Змінити мову чату</h4>
-        <button class="popup__close"><i class="ico">&#x4d;</i></button>
-      </div>
-      <div class="popup__body">
-        <form id="langswitch" name="langswitch">
-          <label class="popup__label">
-            <input type="radio" name="lang" value="ukr"><i class="ico">&#x5c;</i><i class="ico">&#x5b;</i>
-            <div class="popup__divider"></div><img src="../img/ukraine.png"><span>українська</span>
-          </label>
-          <label class="popup__label">
-            <input type="radio" name="lang" value="eng"><i class="ico">&#x5c;</i><i class="ico">&#x5b;</i>
-            <div class="popup__divider"></div><img src="../img/united_kingdom.png"><span>english</span>
-          </label>
-        </form>
-      </div>
-      <div class="popup__footer">
-        <button class="popup__btn" type="submit" form="langswitch">так</button>
-        <button class="popup__btn" type="button" data-role="resetPopup">скасувати</button>
-      </div>
-    </div>
-    <div class="popup" id="popupThemaSelect">
-      <div class="popup__header">
-        <h4 class="popup__header-name">Вибрати тему чату</h4>
-        <button class="popup__close"><i class="ico">&#x4d;</i></button>
-      </div>
-      <div class="popup__body">
-        <form id="langswitch" name="langswitch">
-          <label class="popup__label">
-            <input type="radio" name="thema" value="default"><i class="ico">&#x5c;</i><i class="ico">&#x5b;</i>
-            <div class="popup__divider"></div><span>за замовчуванням</span>
-          </label>
-          <label class="popup__label">
-            <input type="radio" name="thema" value="dark"><i class="ico">&#x5c;</i><i class="ico">&#x5b;</i>
-            <div class="popup__divider"></div><span>dark</span>
-          </label>
-        </form>
-      </div>
-      <div class="popup__footer">
-        <button class="popup__btn" type="submit" form="langswitch">так</button>
-        <button class="popup__btn" type="button" data-role="resetPopup">скасувати</button>
-      </div>
-    </div>
-    <div class="popup popup_password" id="popupChangePass">
-      <div class="popup__header">
-        <h4 class="popup__header-name">Змінити пароль</h4>
-        <button class="popup__close"><i class="ico">&#x4d;</i></button>
-      </div>
-      <div class="popup__body">
-        <form id="changePass" name="changePass">
-          <div class="popup__text">Введіть старий пароль</div>
-          <div class="popup__pass-wrapper">
-            <input type="password" name="oldPass"><i class="ico">&#x7e;</i><i class="ico">&#xe000;</i>
-          </div>
-          <div class="popup__text">Введіть новий пароль</div>
-          <div class="popup__pass-wrapper">
-            <input type="password"><i class="ico">&#x7e;</i><i class="ico">&#xe000;</i>
-          </div>
-          <div class="popup__text">Повторіть новий пароль</div>
-          <div class="popup__pass-wrapper">
-            <input type="password" name="newPass"><i class="ico">&#x7e;</i><i class="ico">&#xe000;</i>
-          </div>
-        </form>
-      </div>
-      <div class="popup__footer">
-        <button class="popup__btn" type="submit" form="changePass">так</button>
-        <button class="popup__btn" type="button" data-role="resetPopup">скасувати</button>
-      </div>
-    </div>
-    <div class="popup" id="popupChangeName">
-      <div class="popup__header">
-        <h4 class="popup__header-name">Зміна імені</h4>
-        <button class="popup__close"><i class="ico">&#x4d;</i></button>
-      </div>
-      <div class="popup__body">
-        <div class="popup__text">Введіть нове ім'я</div>
-        <input type="text" name="name">
-      </div>
-      <div class="popup__footer">
-        <button class="popup__btn" type="submit">так</button>
-        <button class="popup__btn" type="button" data-role="resetPopup">скасувати</button>
-      </div>
-    </div>
-    <div class="popup" id="popupChangeAva">
-      <div class="popup__header">
-        <h4 class="popup__header-name">Зміна аватарки</h4>
-        <button class="popup__close"><i class="ico">&#x4d;</i></button>
-      </div>
-      <div class="popup__body">
-        <div class="popup__text">Виберіть нове зображення для аватарки</div>
-        <input type="file" name="ava">
-      </div>
-      <div class="popup__footer">
-        <button class="popup__btn" type="submit">так</button>
-        <button class="popup__btn" type="button" data-role="resetPopup">скасувати</button>
-      </div>
-    </div>
-    <div class="popup popup_search" id="popupGroupChat">
-      <div class="popup__header">
-        <h4 class="popup__header-name">Створити новий чат</h4>
-        <button class="popup__close"><i class="ico">&#x4d;</i></button>
-      </div>
-      <div class="popup__body">
-        <div class="popup__col-wrapper">
-          <div class="popup__col">
-            <div class="popup__text">Введіть назву чату</div>
-            <input type="text" name="groupName">
-            <div class="popup__text">Список учасників</div>
-            <div class="popup__list-wrapper wjs-scroll" data-scroll="right" data-scroll-hidden="horizontal">
-              <div class="wjs-scroll__content-wrapper">
-                <div class="wjs-scroll__content">
-                  <ul class="popup__list" id="memberslist">
-                    <li class="popup__item">
-                      <label>
-                        <input type="checkbox" checked><i class="ico check">&#x5a;</i><i class="ico uncheck">&#x56;</i><span>Вася Пупкін</span><span>(@WEORI75MoBvQOhNq)</span>
-                      </label>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="popup__col">
-            <div class="popup__text">пошук по id</div>
-            <div class="popup__search-wrapper">
-              <input type="text" name="id"><i class="ico">&#x55;</i>
-              <div class="popup__search-result">
-                <label>
-                  <input type="checkbox"><i class="ico check">&#x5a;</i><i class="ico uncheck">&#x56;</i><span>Вася Пупкін</span><span>(@WEORI75MoBvQOhNq)</span>
-                </label>
-              </div>
-            </div>
-            <div class="popup__text">Вибрати з контактів</div>
-            <div class="popup__list-wrapper wjs-scroll" data-scroll="right" data-scroll-hidden="horizontal">
-              <div class="wjs-scroll__content-wrapper">
-                <div class="wjs-scroll__content">
-                  <ul class="popup__list" id="contactslist">
-                    <li class="popup__item">
-                      <label>
-                        <input type="checkbox"><i class="ico check">&#x5a;</i><i class="ico uncheck">&#x56;</i><span>Вася Пупкін</span><span>(@WEORI75MoBvQOhNq)</span>
-                      </label>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="popup__footer">
-        <button class="popup__btn" type="submit">так</button>
-        <button class="popup__btn" type="button" data-role="resetPopup">скасувати</button>
-      </div>
-    </div>
-    <div class="popup popup_show-list-group" id="popupGroupList">
-      <div class="popup__header">
-        <h4 class="popup__header-name">Список учасників групи</h4>
-        <button class="popup__close"><i class="ico">&#x4d;</i></button>
-      </div>
-      <div class="popup__body">
-        <div class="popup__list-wrapper wjs-scroll" data-scroll="right" data-scroll-hidden="horizontal">
-          <div class="wjs-scroll__content-wrapper">
-            <div class="wjs-scroll__content">
-              <ul class="popup__list">
-                <li class="popup__item">
-                  <div class="logo">
-                    <p class="logo__name">AB</p><img class="logo__img" src="../img/users/user1.jpg">
-                  </div>
-                  <div class="popup__user-name">Estrella Wildauer</div>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="popup popup_show-black-list" id="popupBlackList">
-      <div class="popup__header">
-        <h4 class="popup__header-name">Заблоковані акаунти</h4>
-        <button class="popup__close"><i class="ico">&#x4d;</i></button>
-      </div>
-      <div class="popup__body">
-        <div class="popup__list-wrapper wjs-scroll" data-scroll="right" data-scroll-hidden="horizontal">
-          <div class="wjs-scroll__content-wrapper">
-            <div class="wjs-scroll__content">
-              <ul class="popup__list">
-                <li class="popup__item">
-                  <div class="logo">
-                    <p class="logo__name">AB</p><img class="logo__img" src="../img/users/user1.jpg">
-                  </div>
-                  <div class="popup__user-name">Estrella Wildauer</div>
-                  <button class="popup__user-restore"><i class="ico">&#x4d;</i></button>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
 </html>
