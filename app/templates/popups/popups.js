@@ -1,8 +1,11 @@
 "use strict";
 ////////////////////////////////////////////////////////////////////////////////
+// template: popups
 /* ↓↓↓ event listeners ↓↓↓ */
 
   const roles = {
+    login() {},        // облобник знаходиться в фійлі login.js
+    register() {},     // облобник знаходиться в фійлі login.js
     showLogout()       { showPopup('popupLogout') },
     showDeleteAcc()    { showPopup('popupDeleteAcc') },
     showChangeAva ()   { showPopup('popupChangeAva') },

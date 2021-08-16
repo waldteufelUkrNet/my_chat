@@ -4,10 +4,10 @@ header.header
   .header__info
     .logo
       p.logo__name UN
-      img.logo__img(src="../img/user_logo.png")
+      img.logo__img(src="img/users/" + id + ".jpg")
     .header__text-wrapper
-      h1.header__header User Name
-      h4.header__subheader @hereIsId1239ddfv
+      h1.header__header #{username}
+      h4.header__subheader @#{id}
   input(type="text").header__search
   button(type="button").header__menu-btn.header__menu-btn_secondary
     i.ico(style='font-size: 25px') &#x55;

@@ -1,4 +1,4 @@
-doctype html
+
 doctype html
 html(lang='en').wjs-MobileHeightFix
   head
@@ -6,10 +6,10 @@ html(lang='en').wjs-MobileHeightFix
     meta(name='viewport' content='width=device-width, initial-scale=1.0')
     link(rel='stylesheet' type='text/css' href='../css/main.css')
     link(rel='icon', href='../img/logo.png')
+    script(defer src='../js/main.js')
     title My-cha-cha
   body
     .body-inner
-
       .left-side
         include ../../templates/header/header.pug
         include ../../templates/subheader/subheader.pug
@@ -52,4 +52,3 @@ html(lang='en').wjs-MobileHeightFix
 
     include ../../templates/popups/popups.pug
     #widthIndicator
-    script(defer src='../js/main.js')

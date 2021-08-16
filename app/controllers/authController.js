@@ -1,4 +1,4 @@
-const User = require("../models/user.js").User,
+const User = require('../models/user.js').User,
       path = require('path');
 
 exports.loginUser = function(req, res) {
@@ -18,20 +18,15 @@ exports.loginUser = function(req, res) {
         res.sendStatus(403);
       } else {
         // користувач існує, пароль вірний
-        req.session.user = res.locals.user = user._id;
+        req.session.user = res.locals.user = user;
         req.session.save();
 
-        // res.status(200).render();
-        // res.status(200).send('<p>Hello</p>');
-        // res.sendStatus(200);
+        let params = {
+          username: user.username,
+          id: user._id
+        };
 
-        // let dirArr = __dirname.split(path.sep);
-        // dirArr.splice(-1);
-        // res.setHeader('Content-type', 'text/html; charset=utf-8');
-        // res.sendFile( path.join( dirArr.join('/'), '/public/html/app.html' ) );
-
-        res.status(200).render('header', {username:'Dona Princevalle'})
-
+        res.status(200).render('signedPageBody/signedPageBody.pug', params)
       }
     }
   });

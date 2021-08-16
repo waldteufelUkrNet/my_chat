@@ -20,7 +20,7 @@ app.listen(port, function(err,result){
   console.log(`server start listen on port ${port}`);
 });
 
-app.use( helmet() );
+// app.use( helmet() );
 
 // view engine setup
 app.set('views', path.join(__dirname, 'templates'));

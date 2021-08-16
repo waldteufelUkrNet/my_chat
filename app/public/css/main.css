@@ -242,7 +242,7 @@ html.wjs-MobileHeightFix body {
   font: 1.2em reg;
 }
 .header__subheader {
-  font: 1em light;
+  font: 0.8em light;
 }
 .header__search {
   height: 40px;
@@ -1277,6 +1277,11 @@ html.wjs-MobileHeightFix body {
 }
 .list_active {
   display: block;
+}
+
+.list[data-list=startL] p {
+  text-align: center;
+  color: #40E0D0;
 }
 
 .right-side {

@@ -33,9 +33,9 @@
   }
   exports.startBrowserSync = startBrowserSync;
 
-  // index.pug -> index.html
+  // app.pug -> app.html
   function convertIndexPug(){
-    return src('app/public/index.pug')
+    return src('app/public/app.pug')
            // .pipe(changed('app/', {extension: '.html'}))
            .pipe(pug({
              pretty : true

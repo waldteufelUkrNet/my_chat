@@ -110,22 +110,24 @@
     }
 
     // перемикання мови
-    if ( event.target.closest('.lang-switcher') ) {
-      let currentLang = document.querySelector('html').getAttribute('lang') || 'ua';
-      let ls = event.target.closest('.lang-switcher');
-      ls.classList.toggle('lang-switcher_active');
-    }
-    if ( !event.target.closest('.lang-switcher')
-         && document.querySelector('.lang-switcher').classList.contains('lang-switcher_active') ) {
-      document.querySelector('.lang-switcher').classList.remove('lang-switcher_active')
-    }
-    if ( event.target.closest('.lang-switcher__list-item') ) {
-      let lang = event.target.closest('.lang-switcher__list-item').dataset.lang;
-      changePageLang(lang);
+    if ( document.querySelector('.lang-switcher') ) {
+      if ( event.target.closest('.lang-switcher') ) {
+        let currentLang = document.querySelector('html').getAttribute('lang') || 'ua';
+        let ls = event.target.closest('.lang-switcher');
+        ls.classList.toggle('lang-switcher_active');
+      }
+      if ( !event.target.closest('.lang-switcher')
+           && document.querySelector('.lang-switcher').classList.contains('lang-switcher_active') ) {
+        document.querySelector('.lang-switcher').classList.remove('lang-switcher_active')
+      }
+      if ( event.target.closest('.lang-switcher__list-item') ) {
+        let lang = event.target.closest('.lang-switcher__list-item').dataset.lang;
+        changePageLang(lang);
+      }
     }
 
     // валідація форми, відправка
-    if ( event.target.closest('form button[type="submit"]') ) {
+    if ( event.target.closest('form[name=loginForm] button[type="submit"]') ) {
       event.preventDefault();
       formValidation();
     }
@@ -409,14 +411,9 @@
     } else if (response.status == 200) {
       // ok
       // тут подальша обробка запиту
-      console.log("200: redirect");
-      let answer = await response.text();
-      console.log("answer: ", answer);
-      document.querySelector('body header').innerHTML = answer;
-      // document.querySelector('html').innerHTML = answer;
-
-      // window.location.href = 'api/app';
-
+      let htmlString = await response.text();
+      document.querySelector('body').innerHTML = htmlString;
+      wSetScroll(document.querySelector('.left-side .lists-wrapper'), {right:true, overflowXHidden:true})
     } else if (response.status == 403) {
       // не вірний пароль
       // сервер: Не вірний пароль dictionary.wrongPass

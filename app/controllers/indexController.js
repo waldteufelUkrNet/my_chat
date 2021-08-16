@@ -2,8 +2,18 @@ const path = require('path');
 
 exports.index = function (req, res) {
   let dirArr = __dirname.split(path.sep);
-  console.log("dirArr", dirArr);
   dirArr.splice(-1);
 
-  res.status(200).sendFile( path.join( dirArr.join('/'), '/public/index.html' ) );
+    if(!req.session.user) {
+    // авторизації нема
+    res.status(200).sendFile( path.join( dirArr.join('/'), '/public/app.html' ) );
+  } else {
+    // авторизація є. Завантаження авторизованої сторінки
+    let user   = req.session.user,
+        params = {
+      username: user.username,
+      id: user._id
+    };
+    res.status(200).render('signedPage/signedPage.pug', params);
+  }
 }

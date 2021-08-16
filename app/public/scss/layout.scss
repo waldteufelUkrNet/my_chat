@@ -36,6 +36,11 @@
   }
 }
 
+.list[data-list="startL"] p {
+  text-align: center;
+  color: $d0;
+}
+
 .right-side {
   height: 100%;
   display: none;
