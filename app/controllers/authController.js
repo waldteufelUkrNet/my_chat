@@ -18,34 +18,30 @@ exports.loginUser = function(req, res) {
         res.sendStatus(403);
       } else {
         // користувач існує, пароль вірний
-        req.session.user = res.locals.user = user;
-        req.session.save();
-
-        let params = {
-          username: user.username,
-          id: user._id
-        };
-
-        res.status(200).render('signedPageBody/signedPageBody.pug', params)
+        renderBody(req, res, user);
       }
     }
   });
 }
 
+exports.logoutUser = function(req,res) {
+  req.session.destroy();
+  res.status(200).render('notSignedPageBody/notSignedPageBody.pug')
+}
+
 exports.registerUser = function(req, res) {
-  console.log("authController: registerUser");
   const userName = req.body.name,
         userPass = req.body.pass,
         userLang = req.body.lang;
 
-  User.create({username: userName,password: userPass, language: userLang},function(err,result){
+  User.create({username: userName,password: userPass, language: userLang},function(err,user){
     if (err) throw err;
-    // res.sendFile('B:/files/work_area/my_chat/app/server/public/html/app.html');
+
+    renderBody(req, res, user)
   });
 }
 
 exports.existUser = function(req, res) {
-  console.log("authController: existUser");
   const userName = req.body.name;
 
   User.findOne({'username':userName}, function(err,user){
@@ -62,6 +58,14 @@ exports.existUser = function(req, res) {
   });
 }
 
-exports.logoutUser = function(req,res) {
-  //
+function renderBody(req, res, user) {
+  req.session.user = res.locals.user = user;
+  req.session.save();
+
+  let params = {
+    username: user.username,
+    id: user._id
+  };
+
+  res.status(200).render('signedPageBody/signedPageBody.pug', params)
 }

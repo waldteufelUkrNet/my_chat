@@ -393,8 +393,8 @@ function wSetScroll(elem, params = {}) {
 /* ↓↓↓ event listeners ↓↓↓ */
 
   const roles = {
-    login() {},        // облобник знаходиться в фійлі login.js
-    register() {},     // облобник знаходиться в фійлі login.js
+    login() {},        // обробник знаходиться в файлі login.js
+    register() {},     // обробник знаходиться в файлі login.js
     showLogout()       { showPopup('popupLogout') },
     showDeleteAcc()    { showPopup('popupDeleteAcc') },
     showChangeAva ()   { showPopup('popupChangeAva') },
@@ -425,6 +425,11 @@ function wSetScroll(elem, params = {}) {
       let id = event.target.closest('.popup').getAttribute('id');
       closePopup(id);
     }
+
+    // logout
+    if ( event.target.closest('#popupLogout button[type="submit"]') ) {
+      logoutUser();
+    }
   });
 /* ↑↑↑ event listeners ↑↑↑ */
 ////////////////////////////////////////////////////////////////////////////////
@@ -446,8 +451,21 @@ function wSetScroll(elem, params = {}) {
     document.querySelector('.body-inner').classList.remove('body-inner_active');
     document.getElementById(id).classList.remove('popup_active');
   }
+
+  async function logoutUser() {
+    let response = await fetch('/api/authorization/logout');
+    if (response.status == 200) {
+      let htmlString = await response.text();
+      document.querySelector('body').innerHTML = htmlString;
+      wSetScroll(document.querySelector('.login-main__inner'), {right:true, overflowXHidden:true});
+    } else {
+      window.location.href = 'about:blank';
+    }
+
+  }
 /* ↑↑↑ functions declaration ↑↑↑ */
 ////////////////////////////////////////////////////////////////////////////////
+
 "use strict";
 // wSetScroll(document.querySelector('.login-main__inner.wjs-scroll'), {right:true, overflowXHidden:true});
 ////////////////////////////////////////////////////////////////////////////////
