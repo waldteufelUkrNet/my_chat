@@ -41,6 +41,11 @@
     if ( event.target.closest('#popupLogout button[type="submit"]') ) {
       logoutUser();
     }
+
+    // delete account
+    if ( event.target.closest('#popupDeleteAcc button[type="submit"]') ) {
+      deleteAccount();
+    }
   });
 /* ↑↑↑ event listeners ↑↑↑ */
 ////////////////////////////////////////////////////////////////////////////////
@@ -72,7 +77,19 @@
     } else {
       window.location.href = 'about:blank';
     }
+  }
 
+  async function deleteAccount() {
+    let response = await fetch('/api/authorization/deleteUser', {
+      method: "DELETE"
+    });
+    if (response.status == 200) {
+      let htmlString = await response.text();
+      document.querySelector('body').innerHTML = htmlString;
+      wSetScroll(document.querySelector('.login-main__inner'), {right:true, overflowXHidden:true});
+    } else {
+      window.location.href = 'about:blank';
+    }
   }
 /* ↑↑↑ functions declaration ↑↑↑ */
 ////////////////////////////////////////////////////////////////////////////////

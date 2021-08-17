@@ -4,6 +4,7 @@ const express    = require('express'),
 
 router.post("/login", controller.loginUser);
 router.get("/logout", controller.logoutUser);
+router.delete("/deleteUser", controller.deleteUser);
 router.post("/register", controller.registerUser);
 router.post("/existUser", controller.existUser);
 

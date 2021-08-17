@@ -29,6 +29,19 @@ exports.logoutUser = function(req,res) {
   res.status(200).render('notSignedPageBody/notSignedPageBody.pug')
 }
 
+exports.deleteUser = function(req,res) {
+  let userID = req.session.user._id;
+  console.log("userID", userID);
+
+  User.findByIdAndDelete(userID, function(err, user){
+    if(err) throw err;
+    req.session.destroy();
+    res.status(200).render('notSignedPageBody/notSignedPageBody.pug')
+  });
+
+}
+
+
 exports.registerUser = function(req, res) {
   const userName = req.body.name,
         userPass = req.body.pass,
