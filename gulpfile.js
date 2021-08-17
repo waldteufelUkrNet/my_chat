@@ -26,7 +26,8 @@
   function startBrowserSync() {
     bs.init({
       server : {
-        baseDir : 'app/public/'
+        baseDir : 'app/public/',
+        index: "front.html"
       },
       notify: false // відключення повідомлень browserSync
     });

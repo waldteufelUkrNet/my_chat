@@ -35,7 +35,7 @@ if (app.get('env') == 'development') {
 
 app.use( express.json() );
 app.use( express.urlencoded({ extended: false }) );
-app.use( express.static(path.join(__dirname, 'public')) );
+
 
 let sessionConfig = config.get('session');
 sessionConfig.store = mongoSessionStore.create({ mongoUrl: config.get('mongoose:uri') });
@@ -44,6 +44,8 @@ app.use(session( sessionConfig ));
 app.use('/', indexRouter);
 app.use('/test', testRouter);
 app.use('/api/authorization', authRouter);
+
+app.use( express.static(path.join(__dirname, 'public')) );
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

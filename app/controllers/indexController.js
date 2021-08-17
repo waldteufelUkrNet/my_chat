@@ -6,7 +6,8 @@ exports.index = function (req, res) {
 
     if(!req.session.user) {
     // авторизації нема
-    res.status(200).sendFile( path.join( dirArr.join('/'), '/public/app.html' ) );
+    console.log("авторизації нема");
+    res.status(200).sendFile(path.join(dirArr.join('/'), '/public/app.html'));
   } else {
     // авторизація є. Завантаження авторизованої сторінки
     let user   = req.session.user,
