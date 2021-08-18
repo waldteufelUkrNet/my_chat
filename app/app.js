@@ -10,6 +10,7 @@ const config            = require('./config'),
 
       authRouter        = require('./routes/authRouter'),
       indexRouter       = require('./routes/indexRouter'),
+      settingsRouter    = require('./routes/settingsRouter'),
       testRouter        = require('./routes/testRouter'),
 
       port              = config.get('port'),
@@ -44,6 +45,7 @@ app.use(session( sessionConfig ));
 app.use('/', indexRouter);
 app.use('/test', testRouter);
 app.use('/api/authorization', authRouter);
+app.use('/api/settings', settingsRouter);
 
 app.use( express.static(path.join(__dirname, 'public')) );
 

@@ -1,5 +1,4 @@
-const User = require('../models/user.js').User,
-      path = require('path');
+const User = require('../models/user.js').User;
 
 exports.loginUser = function(req, res) {
   const userName = req.body.name,
@@ -40,7 +39,6 @@ exports.deleteUser = function(req,res) {
   });
 
 }
-
 
 exports.registerUser = function(req, res) {
   const userName = req.body.name,

@@ -89,6 +89,42 @@
       text-align: center;
     }
   }
+  &__messages-area {
+    margin: 0 10px;
+  }
+  &__message {
+    background-color: rgba(0,0,0,.5);
+    display: none;
+    align-items: center;
+    border-left: 3px solid;
+    overflow: hidden;
+    height: auto;
+    padding: 10px;
+    margin: 0px;
+    margin-bottom: 5px;
+    i.ico {
+      margin-right: 10px;
+      font-size: 1.5em;
+    }
+    span {
+      color: $d0;
+    }
+    &_active {
+      display: flex;
+    }
+    &_info {
+      border-left-color: springgreen;
+      i.ico {
+        color: springgreen;
+      }
+    }
+    &_error {
+      border-left-color: red;
+      i.ico {
+        color: red;
+      }
+    }
+  }
   &__footer {
     height: 40px;
     display: flex;
@@ -204,13 +240,29 @@
         top: 50%;
         transform: translate(0,-50%);
         cursor: pointer;
+        display: none;
       }
       i:first-of-type {
         color: springgreen;
       }
       i:last-of-type {
-        display: none;
         color: red;
+      }
+      &_hidden {
+        i.ico:first-of-type {
+          display: block;
+        }
+        i.ico:last-of-type {
+          display: none;
+        }
+      }
+      &_shown {
+        i.ico:first-of-type {
+          display: none;
+        }
+        i.ico:last-of-type {
+          display: block;
+        }
       }
     }
   }

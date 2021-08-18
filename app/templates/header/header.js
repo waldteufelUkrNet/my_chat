@@ -1,4 +1,4 @@
-"use strict"
+"use strict";
 ////////////////////////////////////////////////////////////////////////////////
 /* ↓↓↓ header module ↓↓↓ */
   document.addEventListener('click', function(event){
@@ -10,7 +10,6 @@
       input.focus();
       return
     }
-
 
     // close
     if( document.querySelector('.header__search_active')

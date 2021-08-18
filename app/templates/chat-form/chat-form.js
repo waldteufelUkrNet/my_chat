@@ -1,4 +1,4 @@
-"use strict"
+"use strict";
 ////////////////////////////////////////////////////////////////////////////////
 /* ↓↓↓ chat-form module ↓↓↓ */
   document.addEventListener('click', function(event){

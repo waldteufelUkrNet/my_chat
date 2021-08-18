@@ -132,20 +132,33 @@
     .popup__body
       form#changePass(name="changePass")
         .popup__text Введіть старий пароль
-        .popup__pass-wrapper
-          input(type="password" name="oldPass")
+        .popup__pass-wrapper.popup__pass-wrapper_hidden
+          input#changePass_old(type="password" name="oldPass")
           i.ico &#x7e;
           i.ico &#xe000;
         .popup__text Введіть новий пароль
-        .popup__pass-wrapper
-          input(type="password")
+        .popup__pass-wrapper.popup__pass-wrapper_hidden
+          input#changePass_new(type="password")
           i.ico &#x7e;
           i.ico &#xe000;
         .popup__text Повторіть новий пароль
-        .popup__pass-wrapper
-          input(type="password" name="newPass")
+        .popup__pass-wrapper.popup__pass-wrapper_hidden
+          input#changePass_repeat(type="password" name="newPass")
           i.ico &#x7e;
           i.ico &#xe000;
+    .popup__messages-area
+      .popup__message.popup__message_error
+        i.ico &#x73;
+        span Старий пароль не коректний
+      .popup__message.popup__message_error
+        i.ico &#x73;
+        span Новий пароль повинен бути не менше 6 знаків
+      .popup__message.popup__message_error
+        i.ico &#x73;
+        span Паролі не співпадають
+      .popup__message.popup__message_error
+        i.ico &#x73;
+        span Серверна помилка. Спробуйте ще раз пізніше.
     .popup__footer
       button(type="submit" form="changePass").popup__btn так
       button(type="button" data-role="resetPopup").popup__btn скасувати
@@ -244,7 +257,7 @@
                   img.logo__img(src="../img/users/user1.jpg")
                 .popup__user-name Estrella Wildauer
 
-  //- show bllack list
+  //- show black list
   .popup.popup_show-black-list#popupBlackList
     .popup__header
       h4.popup__header-name Заблоковані акаунти
@@ -262,3 +275,17 @@
                 .popup__user-name Estrella Wildauer
                 button.popup__user-restore
                   i.ico &#x4d;
+
+  //- show info
+  .popup#popupShowInfo
+    .popup__header
+      h4.popup__header-name Інфо
+      button.popup__close
+        i.ico &#x4d;
+    .popup__body
+    .popup__messages-area
+      .popup__message.popup__message_info
+        i.ico &#x73;
+        span lorem
+    .popup__footer
+      button(type="button" data-role="resetPopup").popup__btn ок

@@ -194,18 +194,24 @@
         <div class="popup__body">
           <form id="changePass" name="changePass">
             <div class="popup__text">Введіть старий пароль</div>
-            <div class="popup__pass-wrapper">
-              <input type="password" name="oldPass"><i class="ico">&#x7e;</i><i class="ico">&#xe000;</i>
+            <div class="popup__pass-wrapper popup__pass-wrapper_hidden">
+              <input id="changePass_old" type="password" name="oldPass"><i class="ico">&#x7e;</i><i class="ico">&#xe000;</i>
             </div>
             <div class="popup__text">Введіть новий пароль</div>
-            <div class="popup__pass-wrapper">
-              <input type="password"><i class="ico">&#x7e;</i><i class="ico">&#xe000;</i>
+            <div class="popup__pass-wrapper popup__pass-wrapper_hidden">
+              <input id="changePass_new" type="password"><i class="ico">&#x7e;</i><i class="ico">&#xe000;</i>
             </div>
             <div class="popup__text">Повторіть новий пароль</div>
-            <div class="popup__pass-wrapper">
-              <input type="password" name="newPass"><i class="ico">&#x7e;</i><i class="ico">&#xe000;</i>
+            <div class="popup__pass-wrapper popup__pass-wrapper_hidden">
+              <input id="changePass_repeat" type="password" name="newPass"><i class="ico">&#x7e;</i><i class="ico">&#xe000;</i>
             </div>
           </form>
+        </div>
+        <div class="popup__messages-area">
+          <div class="popup__message popup__message_error"><i class="ico">&#x73;</i><span>Старий пароль не коректний</span></div>
+          <div class="popup__message popup__message_error"><i class="ico">&#x73;</i><span>Новий пароль повинен бути не менше 6 знаків</span></div>
+          <div class="popup__message popup__message_error"><i class="ico">&#x73;</i><span>Паролі не співпадають</span></div>
+          <div class="popup__message popup__message_error"><i class="ico">&#x73;</i><span>Серверна помилка. Спробуйте ще раз пізніше.</span></div>
         </div>
         <div class="popup__footer">
           <button class="popup__btn" type="submit" form="changePass">так</button>
@@ -340,6 +346,19 @@
               </div>
             </div>
           </div>
+        </div>
+      </div>
+      <div class="popup" id="popupShowInfo">
+        <div class="popup__header">
+          <h4 class="popup__header-name">Інфо</h4>
+          <button class="popup__close"><i class="ico">&#x4d;</i></button>
+        </div>
+        <div class="popup__body"></div>
+        <div class="popup__messages-area">
+          <div class="popup__message popup__message_info"><i class="ico">&#x73;</i><span>lorem</span></div>
+        </div>
+        <div class="popup__footer">
+          <button class="popup__btn" type="button" data-role="resetPopup">ок</button>
         </div>
       </div>
     </div>

@@ -35,3 +35,20 @@ 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
 
 api показу сповіщень при згорнутому браузері в операційній системі
 зміна favico, якщо з'явились нові повідомлення
+
+створити front-config.js, в якому будуть дані напр. про мінімальну довжину
+пароля, щоб за потреби не міняти усе в коді в багатьох сісцях, а тільки в одному
+файлі
+
+- в консоль випадає помилка: Uncaught SyntaxError: redeclaration of const roles,
+  яка чомусь вказує на перний рядок файла my_chat/app/public/js/main.js
+  Якщо у файлі my_chat/app/public/js-expanded/login.js:
+    const dictionary -> var dictionary
+  і у файлі my_chat/app/templates/popups/popups.js:
+    const roles -> var roles
+  помилка пропадає, хоча настравді ніякої передекларації не існує.
+
+
+? в mongoose при зміні пароля (це віртуальне поле моделі) метод
+User.findByIdAndUpdate не спрацьовував. Довелося використовувати з'вязку
+User.findById - user.set - user.save

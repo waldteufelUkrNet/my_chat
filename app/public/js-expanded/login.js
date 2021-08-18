@@ -1,8 +1,7 @@
 "use strict";
-// wSetScroll(document.querySelector('.login-main__inner.wjs-scroll'), {right:true, overflowXHidden:true});
 ////////////////////////////////////////////////////////////////////////////////
 /* ↓↓↓ variables declaration ↓↓↓ */
-  let dictionary = {
+  var dictionary = {
     link1: {
       ua: 'вхід',
       en: 'login'
@@ -112,7 +111,6 @@
     // перемикання мови
     if ( document.querySelector('.lang-switcher') ) {
       if ( event.target.closest('.lang-switcher') ) {
-        let currentLang = document.querySelector('html').getAttribute('lang') || 'ua';
         let ls = event.target.closest('.lang-switcher');
         ls.classList.toggle('lang-switcher_active');
       }
@@ -127,7 +125,7 @@
     }
 
     // валідація форми, відправка
-    if ( event.target.closest('form[name=loginForm] button[type="submit"]') ) {
+    if ( event.target.closest('form[name="loginForm"] button[type="submit"]') ) {
       event.preventDefault();
       formValidation();
     }
@@ -213,7 +211,6 @@
     let lang     = document.querySelector('html').getAttribute('lang'),
         form     = document.forms.loginForm,
         formType = form.getAttribute('action'),
-        inpLang  = form.querySelector('input[name="lang"]'),
         inpName  = form.querySelector('input[name="name"]'),
         inpPass  = form.querySelector('input[name="pass1"]'),
         inpRepP  = form.querySelector('input[name="pass2"]'),
@@ -360,6 +357,10 @@
   }
 
   async function isLoginFree(login) {
+    const form   = document.forms.loginForm,
+          lang   = form.querySelector('input[name="lang"]').value,
+          errors = document.querySelectorAll('.error-info');
+
     const response = await fetch('api/authorization/existUser', {
       method: "POST",
       headers: {
@@ -413,6 +414,7 @@
       // тут подальша обробка запиту
       let htmlString = await response.text();
       document.querySelector('body').innerHTML = htmlString;
+      // eslint-disable-next-line no-undef
       wSetScroll(document.querySelector('.left-side .lists-wrapper'), {right:true, overflowXHidden:true})
     } else if (response.status == 403) {
       // не вірний пароль

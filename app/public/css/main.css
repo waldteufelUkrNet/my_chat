@@ -730,6 +730,46 @@ html.wjs-MobileHeightFix body {
 .popup__text_tac {
   text-align: center;
 }
+.popup__messages-area {
+  margin: 0 10px;
+}
+.popup__message {
+  background-color: rgba(0, 0, 0, 0.5);
+  display: none;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  border-left: 3px solid;
+  overflow: hidden;
+  height: auto;
+  padding: 10px;
+  margin: 0px;
+  margin-bottom: 5px;
+}
+.popup__message i.ico {
+  margin-right: 10px;
+  font-size: 1.5em;
+}
+.popup__message span {
+  color: #40E0D0;
+}
+.popup__message_active {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+.popup__message_info {
+  border-left-color: springgreen;
+}
+.popup__message_info i.ico {
+  color: springgreen;
+}
+.popup__message_error {
+  border-left-color: red;
+}
+.popup__message_error i.ico {
+  color: red;
+}
 .popup__footer {
   height: 40px;
   display: -webkit-box;
@@ -871,13 +911,25 @@ html.wjs-MobileHeightFix body {
       -ms-transform: translate(0, -50%);
           transform: translate(0, -50%);
   cursor: pointer;
+  display: none;
 }
 .popup_password .popup__pass-wrapper i:first-of-type {
   color: springgreen;
 }
 .popup_password .popup__pass-wrapper i:last-of-type {
-  display: none;
   color: red;
+}
+.popup_password .popup__pass-wrapper_hidden i.ico:first-of-type {
+  display: block;
+}
+.popup_password .popup__pass-wrapper_hidden i.ico:last-of-type {
+  display: none;
+}
+.popup_password .popup__pass-wrapper_shown i.ico:first-of-type {
+  display: none;
+}
+.popup_password .popup__pass-wrapper_shown i.ico:last-of-type {
+  display: block;
 }
 
 /* ↑↑↑ password change ↑↑↑ */
