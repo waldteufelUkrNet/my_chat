@@ -480,8 +480,8 @@ var dictionary = {
 ////////////////////////////////////////////////////////////////////////////////
 /* ↓↓↓ event listeners ↓↓↓ */
   var roles = {
-    login() {},        // обробник знаходиться в файлі login.js
-    register() {},     // обробник знаходиться в файлі login.js
+    login() {},        // тут - затичка. Обробник знаходиться в файлі login.js
+    register() {},     // тут - затичка. Обробник знаходиться в файлі login.js
     showLogout()       { showPopup('popupLogout') },
     showDeleteAcc()    { showPopup('popupDeleteAcc') },
     showChangeAva ()   { showPopup('popupChangeAva') },
@@ -510,6 +510,65 @@ var dictionary = {
     if ( event.target.closest('.popup__close') ) {
       let id = event.target.closest('.popup').getAttribute('id');
       closePopup(id);
+    }
+  });
+/* ↑↑↑ event listeners ↑↑↑ */
+////////////////////////////////////////////////////////////////////////////////
+/* ↓↓↓ functions declaration ↓↓↓ */
+  function showPopup(id) {
+    document.querySelector('.popups-wrapper').classList
+                                             .add('popups-wrapper_active');
+
+    document.querySelector('.body-inner').classList.add('body-inner_active');
+
+    setTimeout(function(){
+      document.getElementById(id).classList.add('popup_active');
+    },1);
+  }
+
+  function closePopup(id) {
+    document.querySelector('.popups-wrapper').classList
+                                             .remove('popups-wrapper_active');
+    document.querySelector('.body-inner').classList.remove('body-inner_active');
+    let popup = document.getElementById(id);
+    popup.classList.remove('popup_active');
+    if ( popup.querySelector('form') ) {
+      popup.querySelector('form').reset();
+    }
+    if ( popup.querySelector('.popup__message_active') ) {
+      let messages = document.querySelectorAll('.popup__message_active');
+      messages.forEach( message => {
+        message.classList.remove('popup__message_active')
+      } );
+    }
+  }
+
+  function showPopupInfo(message) {
+    let popup       = document.getElementById('popupShowInfo'),
+        messageElem = popup.querySelector('.popup__message');
+
+    messageElem.querySelector('span').textContent = message;
+    messageElem.className = 'popup__message popup__message_active popup__message_info';
+
+    document.querySelector('.popups-wrapper').classList
+                                             .add('popups-wrapper_active');
+
+    document.querySelector('.body-inner').classList.add('body-inner_active');
+
+    setTimeout(function(){
+      popup.classList.add('popup_active');
+    },1);
+  }
+/* ↑↑↑ functions declaration ↑↑↑ */
+////////////////////////////////////////////////////////////////////////////////
+"use strict"; // forms.js
+////////////////////////////////////////////////////////////////////////////////
+/* ↓↓↓ event listeners ↓↓↓ */
+  document.addEventListener('click', async function(event) {
+    // валідація форми, відправка
+    if ( event.target.closest('form[name="loginForm"] button[type="submit"]') ) {
+      event.preventDefault();
+      formValidation();
     }
 
     // toggle password visibility
@@ -545,15 +604,73 @@ var dictionary = {
     // change password
     if ( event.target.closest('#popupChangePass button[type="submit"]') ) {
       event.preventDefault();
-      changePasswordTEMP();
+      let oldPass  = document.querySelectorAll('#popupChangePass .popup__pass-wrapper input')[0].value || '',
+          newPass1 = document.querySelectorAll('#popupChangePass .popup__pass-wrapper input')[1].value || '',
+          newPass2 = document.querySelectorAll('#popupChangePass .popup__pass-wrapper input')[2].value || '';
+
+      let checkOldPassRequest = await checkOldPass(oldPass);
+      if (checkOldPassRequest.status == 200) {
+        if(checkOldPassRequest.result != 'true') {
+          // wrond pass
+          showPopupError('popupChangePass', 0);
+          return
+        }
+      } else {
+        // error DB?
+        showPopupError('popupChangePass', 3);
+        return
+      }
+
+      if (newPass1.length < 6) {
+        showPopupError('popupChangePass', 1);
+        return
+      }
+      if (newPass1 != newPass2) {
+        showPopupError('popupChangePass', 2);
+        return
+      }
+
+      if ( document.querySelector('#popupChangePass .popup__message_active') ) return;
+
+      let changePassRequest = await changePass(newPass2);
+      if (changePassRequest.status == 500) {
+        // error DB?
+        showPopupError('popupChangePass', 3);
+      } else if (changePassRequest.status == 200) {
+        // correct pass
+        closePopup('popupChangePass');
+        showPopupInfo('Пароль успішно змінено');
+      }
     }
   });
 
-  document.addEventListener('input', function(event){
+  document.addEventListener('input', async function(event){
+    if (event.target.name == 'name') {
+      checkInpName();
+    }
+    if (event.target.name == 'pass1') {
+      checkInpPass();
+    }
+    if (event.target.name == 'pass2') {
+      checkInpRepP();
+    }
+
     if ( event.target.closest('#popupChangePass [name="oldPass"]') ) {
       let password = event.target.closest('#popupChangePass [name="oldPass"]').value;
       if (password.length >=6) {
-        checkOldPasswordTEMP(password);
+        let checkOldPassRequest = await checkOldPass(password);
+        if (checkOldPassRequest.status == 500) {
+          // error DB?
+          showPopupError('popupChangePass', 3);
+        } else if (checkOldPassRequest.status == 200) {
+          if(checkOldPassRequest.result == 'true') {
+            // correct pass
+            hidePopupError('popupChangePass');
+          } else if (checkOldPassRequest.result == 'false') {
+            // wrond pass
+            showPopupError('popupChangePass', 0);
+          }
+        }
       }
     }
     if ( event.target.closest('#changePass_new') ) {
@@ -568,150 +685,6 @@ var dictionary = {
       if (value1 == value2) {
         hidePopupError('popupChangePass', 2);
       }
-    }
-  });
-/* ↑↑↑ event listeners ↑↑↑ */
-////////////////////////////////////////////////////////////////////////////////
-/* ↓↓↓ functions declaration ↓↓↓ */
-  function showPopup(id) {
-    document.querySelector('.popups-wrapper').classList
-                                             .add('popups-wrapper_active');
-
-    document.querySelector('.body-inner').classList.add('body-inner_active');
-
-    setTimeout(function(){
-      document.getElementById(id).classList.add('popup_active');
-    },1);
-  }
-
-  function closePopup(id) {
-    document.querySelector('.popups-wrapper').classList
-                                             .remove('popups-wrapper_active');
-    document.querySelector('.body-inner').classList.remove('body-inner_active');
-    let popup = document.getElementById(id);
-    popup.classList.remove('popup_active');
-    if ( popup.querySelector('form') ) {
-      popup.querySelector('form').reset();
-    }
-    if ( popup.querySelector('.popup__message_active') ) {
-      let messages = document.querySelectorAll('.popup__message_active');
-      messages.forEach( message => {
-        message.classList.remove('popup__message_active')
-      } );
-    }
-  }
-
-  function toggleInputVisibility(inputWrapper) {
-    if ( inputWrapper.classList.contains('popup__pass-wrapper_hidden') ) {
-      inputWrapper.classList.remove('popup__pass-wrapper_hidden');
-      inputWrapper.classList.add('popup__pass-wrapper_shown');
-      inputWrapper.querySelector('input').setAttribute('type','text');
-    } else if ( inputWrapper.classList.contains('popup__pass-wrapper_shown') ) {
-      inputWrapper.classList.remove('popup__pass-wrapper_shown');
-      inputWrapper.classList.add('popup__pass-wrapper_hidden');
-      inputWrapper.querySelector('input').setAttribute('type','password');
-    }
-  }
-
-  function showPopupError(popupId, messageNumber) {
-    let popup    = document.getElementById(popupId),
-        messages = popup.querySelectorAll('.popup__message'),
-        message  = messages[messageNumber];
-
-    message.className = 'popup__message popup__message_active popup__message_error';
-  }
-
-  function hidePopupError(popupId) {
-    let popup    = document.getElementById(popupId),
-        messages = popup.querySelectorAll('.popup__message');
-    messages.forEach(message => {
-      message.classList.remove('popup__message_active');
-    });
-  }
-
-  function showPopupInfo(message) {
-    let popup       = document.getElementById('popupShowInfo'),
-        messageElem = popup.querySelector('.popup__message');
-
-    messageElem.querySelector('span').textContent = message;
-    messageElem.className = 'popup__message popup__message_active popup__message_info';
-
-    document.querySelector('.popups-wrapper').classList
-                                             .add('popups-wrapper_active');
-
-    document.querySelector('.body-inner').classList.add('body-inner_active');
-
-    setTimeout(function(){
-      popup.classList.add('popup_active');
-    },1);
-  }
-
-  async function checkOldPasswordTEMP(pass) {
-    let checkOldPassRequest = await checkOldPass(pass);
-    if (checkOldPassRequest.status == 500) {
-      // error DB?
-      showPopupError('popupChangePass', 3);
-    } else if (checkOldPassRequest.status == 200) {
-      if(checkOldPassRequest.result == 'true') {
-        // correct pass
-        hidePopupError('popupChangePass');
-      } else if (checkOldPassRequest.result == 'false') {
-        // wrond pass
-        showPopupError('popupChangePass', 0);
-      }
-    }
-  }
-
-  async function changePasswordTEMP() {
-
-    let oldPass  = document.querySelectorAll('#popupChangePass .popup__pass-wrapper input')[0].value || '',
-        newPass1 = document.querySelectorAll('#popupChangePass .popup__pass-wrapper input')[1].value || '',
-        newPass2 = document.querySelectorAll('#popupChangePass .popup__pass-wrapper input')[2].value || '';
-
-    await checkOldPasswordTEMP(oldPass);
-    if ( document.querySelector('#popupChangePass .popup__message_active') ) return;
-
-    if (newPass1.length < 6) {
-      showPopupError('popupChangePass', 1);
-      return
-    }
-    if (newPass1 != newPass2) {
-      showPopupError('popupChangePass', 2);
-      return
-    }
-
-    let changePassRequest = await changePass(newPass2);
-    if (changePassRequest.status == 500) {
-      // error DB?
-      showPopupError('popupChangePass', 3);
-    } else if (changePassRequest.status == 200) {
-      // correct pass
-      closePopup('popupChangePass');
-      showPopupInfo('Пароль успішно змінено');
-    }
-  }
-/* ↑↑↑ functions declaration ↑↑↑ */
-////////////////////////////////////////////////////////////////////////////////
-"use strict"; // forms.js
-////////////////////////////////////////////////////////////////////////////////
-/* ↓↓↓ event listeners ↓↓↓ */
-  document.addEventListener('click', function(event) {
-    // валідація форми, відправка
-    if ( event.target.closest('form[name="loginForm"] button[type="submit"]') ) {
-      event.preventDefault();
-      formValidation();
-    }
-  });
-
-  document.addEventListener('input', function(event){
-    if (event.target.name == 'name') {
-      checkInpName();
-    }
-    if (event.target.name == 'pass1') {
-      checkInpPass();
-    }
-    if (event.target.name == 'pass2') {
-      checkInpRepP();
     }
   });
 /* ↑↑↑ event listeners ↑↑↑ */
@@ -748,6 +721,22 @@ var dictionary = {
   function hideAllErrors() {
     let errors = document.querySelectorAll('.error-info');
     errors.forEach( elem => hideError(elem) );
+  }
+
+  function showPopupError(popupId, messageNumber) {
+    let popup    = document.getElementById(popupId),
+        messages = popup.querySelectorAll('.popup__message'),
+        message  = messages[messageNumber];
+
+    message.className = 'popup__message popup__message_active popup__message_error';
+  }
+
+  function hidePopupError(popupId) {
+    let popup    = document.getElementById(popupId),
+        messages = popup.querySelectorAll('.popup__message');
+    messages.forEach(message => {
+      message.classList.remove('popup__message_active');
+    });
   }
 
   function formValidation() {
@@ -801,7 +790,7 @@ var dictionary = {
       return;
     }
 
-    sendData();
+    sendRegistrationData();
   }
 
   async function checkInpName() {
@@ -904,9 +893,7 @@ var dictionary = {
     }
   }
 
-
-
-  async function sendData() {
+  async function sendRegistrationData() {
     const form   = document.forms.loginForm,
           url    = form.getAttribute('action'),
           lang   = form.querySelector('input[name="lang"]').value,
@@ -955,6 +942,18 @@ var dictionary = {
         // unknown error
         showError(errors[2], dictionary.serverError[lang]);
       }
+    }
+  }
+
+  function toggleInputVisibility(inputWrapper) {
+    if ( inputWrapper.classList.contains('popup__pass-wrapper_hidden') ) {
+      inputWrapper.classList.remove('popup__pass-wrapper_hidden');
+      inputWrapper.classList.add('popup__pass-wrapper_shown');
+      inputWrapper.querySelector('input').setAttribute('type','text');
+    } else if ( inputWrapper.classList.contains('popup__pass-wrapper_shown') ) {
+      inputWrapper.classList.remove('popup__pass-wrapper_shown');
+      inputWrapper.classList.add('popup__pass-wrapper_hidden');
+      inputWrapper.querySelector('input').setAttribute('type','password');
     }
   }
 /* ↑↑↑ functions declaration ↑↑↑ */

@@ -2,8 +2,8 @@
 ////////////////////////////////////////////////////////////////////////////////
 /* ↓↓↓ event listeners ↓↓↓ */
   var roles = {
-    login() {},        // обробник знаходиться в файлі login.js
-    register() {},     // обробник знаходиться в файлі login.js
+    login() {},        // тут - затичка. Обробник знаходиться в файлі login.js
+    register() {},     // тут - затичка. Обробник знаходиться в файлі login.js
     showLogout()       { showPopup('popupLogout') },
     showDeleteAcc()    { showPopup('popupDeleteAcc') },
     showChangeAva ()   { showPopup('popupChangeAva') },
@@ -32,64 +32,6 @@
     if ( event.target.closest('.popup__close') ) {
       let id = event.target.closest('.popup').getAttribute('id');
       closePopup(id);
-    }
-
-    // toggle password visibility
-    if ( event.target.closest('#popupChangePass .popup__pass-wrapper i.ico') ) {
-      let inputWrapper = event.target.closest('.popup__pass-wrapper');
-      toggleInputVisibility(inputWrapper);
-    }
-
-    // logout
-    if ( event.target.closest('#popupLogout button[type="submit"]') ) {
-      let logoutRequest = await logoutUser();
-      if (logoutRequest.status == 200) {
-        document.querySelector('body').innerHTML = logoutRequest.html;
-        document.querySelector('head title').innerHTML = 'Login';
-        wSetScroll(document.querySelector('.login-main__inner'), {right:true, overflowXHidden:true});
-      } else {
-        window.location.href = 'about:blank';
-      }
-    }
-
-    // delete account
-    if ( event.target.closest('#popupDeleteAcc button[type="submit"]') ) {
-      event.preventDefault();
-      let deleteRequest = await deleteUser();
-      if (deleteRequest.status == 200) {
-        document.querySelector('body').innerHTML = deleteRequest.html;
-        wSetScroll(document.querySelector('.login-main__inner'), {right:true, overflowXHidden:true});
-      } else {
-        window.location.href = 'about:blank';
-      }
-    }
-
-    // change password
-    if ( event.target.closest('#popupChangePass button[type="submit"]') ) {
-      event.preventDefault();
-      changePasswordTEMP();
-    }
-  });
-
-  document.addEventListener('input', function(event){
-    if ( event.target.closest('#popupChangePass [name="oldPass"]') ) {
-      let password = event.target.closest('#popupChangePass [name="oldPass"]').value;
-      if (password.length >=6) {
-        checkOldPasswordTEMP(password);
-      }
-    }
-    if ( event.target.closest('#changePass_new') ) {
-      let value = event.target.closest('#changePass_new').value;
-      if (value.length >= 6) {
-        hidePopupError('popupChangePass', 1);
-      }
-    }
-    if ( event.target.closest('#changePass_repeat') ) {
-      let value1 = document.querySelector('#changePass_new').value,
-          value2 = event.target.closest('#changePass_repeat').value;
-      if (value1 == value2) {
-        hidePopupError('popupChangePass', 2);
-      }
     }
   });
 /* ↑↑↑ event listeners ↑↑↑ */
@@ -123,34 +65,6 @@
     }
   }
 
-  function toggleInputVisibility(inputWrapper) {
-    if ( inputWrapper.classList.contains('popup__pass-wrapper_hidden') ) {
-      inputWrapper.classList.remove('popup__pass-wrapper_hidden');
-      inputWrapper.classList.add('popup__pass-wrapper_shown');
-      inputWrapper.querySelector('input').setAttribute('type','text');
-    } else if ( inputWrapper.classList.contains('popup__pass-wrapper_shown') ) {
-      inputWrapper.classList.remove('popup__pass-wrapper_shown');
-      inputWrapper.classList.add('popup__pass-wrapper_hidden');
-      inputWrapper.querySelector('input').setAttribute('type','password');
-    }
-  }
-
-  function showPopupError(popupId, messageNumber) {
-    let popup    = document.getElementById(popupId),
-        messages = popup.querySelectorAll('.popup__message'),
-        message  = messages[messageNumber];
-
-    message.className = 'popup__message popup__message_active popup__message_error';
-  }
-
-  function hidePopupError(popupId) {
-    let popup    = document.getElementById(popupId),
-        messages = popup.querySelectorAll('.popup__message');
-    messages.forEach(message => {
-      message.classList.remove('popup__message_active');
-    });
-  }
-
   function showPopupInfo(message) {
     let popup       = document.getElementById('popupShowInfo'),
         messageElem = popup.querySelector('.popup__message');
@@ -166,51 +80,6 @@
     setTimeout(function(){
       popup.classList.add('popup_active');
     },1);
-  }
-
-  async function checkOldPasswordTEMP(pass) {
-    let checkOldPassRequest = await checkOldPass(pass);
-    if (checkOldPassRequest.status == 500) {
-      // error DB?
-      showPopupError('popupChangePass', 3);
-    } else if (checkOldPassRequest.status == 200) {
-      if(checkOldPassRequest.result == 'true') {
-        // correct pass
-        hidePopupError('popupChangePass');
-      } else if (checkOldPassRequest.result == 'false') {
-        // wrond pass
-        showPopupError('popupChangePass', 0);
-      }
-    }
-  }
-
-  async function changePasswordTEMP() {
-
-    let oldPass  = document.querySelectorAll('#popupChangePass .popup__pass-wrapper input')[0].value || '',
-        newPass1 = document.querySelectorAll('#popupChangePass .popup__pass-wrapper input')[1].value || '',
-        newPass2 = document.querySelectorAll('#popupChangePass .popup__pass-wrapper input')[2].value || '';
-
-    await checkOldPasswordTEMP(oldPass);
-    if ( document.querySelector('#popupChangePass .popup__message_active') ) return;
-
-    if (newPass1.length < 6) {
-      showPopupError('popupChangePass', 1);
-      return
-    }
-    if (newPass1 != newPass2) {
-      showPopupError('popupChangePass', 2);
-      return
-    }
-
-    let changePassRequest = await changePass(newPass2);
-    if (changePassRequest.status == 500) {
-      // error DB?
-      showPopupError('popupChangePass', 3);
-    } else if (changePassRequest.status == 200) {
-      // correct pass
-      closePopup('popupChangePass');
-      showPopupInfo('Пароль успішно змінено');
-    }
   }
 /* ↑↑↑ functions declaration ↑↑↑ */
 ////////////////////////////////////////////////////////////////////////////////
