@@ -1,4 +1,12 @@
-"use strict";
+"use strict"; // global.js
+////////////////////////////////////////////////////////////////////////////////
+/* ↓↓↓ functions declaration ↓↓↓ */
+  function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+/* ↑↑↑ functions declaration ↑↑↑ */
+////////////////////////////////////////////////////////////////////////////////
+"use strict"; // wScroll.js
 ////////////////////////////////////////////////////////////////////////////////
 /* ↓↓↓ custom scroll ↓↓↓ */
   // ініціалізація
@@ -24,322 +32,322 @@
 /* ↑↑↑ custom scroll ↑↑↑ */
 ////////////////////////////////////////////////////////////////////////////////
 /* ↓↓↓ functions declaration ↓↓↓ */
-/**
- * [wSetScroll відповідає за кастомну прокрутку:
- * 1. зчитує з атрибутів елемента, які прокрутки потрібно додати,
- * 2. слідкує за прокруткою елемента і поправляє положення повзунків прокрутки
- * 3. слідкує за положенням повзунків прокрутки і поправляє прокрутку елемента]
- * @param {[DOM-object]} elem [елемент DOM з класом .wjs-scroll]
- * @param {[object]} params [набір налаштувань для одиночного запуску функції
- * формат даних: {top:boolean, bottom:boolean, left:boolean, right:boolean,
- * overflowXHidden:boolean, overvlowYHidden:boolean}]
- */
-function wSetScroll(elem, params = {}) {
+  /**
+   * [wSetScroll відповідає за кастомну прокрутку:
+   * 1. зчитує з атрибутів елемента, які прокрутки потрібно додати,
+   * 2. слідкує за прокруткою елемента і поправляє положення повзунків прокрутки
+   * 3. слідкує за положенням повзунків прокрутки і поправляє прокрутку елемента]
+   * @param {[DOM-object]} elem [елемент DOM з класом .wjs-scroll]
+   * @param {[object]} params [набір налаштувань для одиночного запуску функції
+   * формат даних: {top:boolean, bottom:boolean, left:boolean, right:boolean,
+   * overflowXHidden:boolean, overvlowYHidden:boolean}]
+   */
+  function wSetScroll(elem, params = {}) {
 
-  if (!elem) return;
+    if (!elem) return;
 
-  if ( !elem.querySelector('.wjs-scroll__content-wrapper')
-       || !elem.querySelector('.wjs-scroll__content') ) {
-    console.log('markup error: wrong html structure');
-    return;
-  }
-
-  let container      = elem,
-      contentWrapper = elem.querySelector('.wjs-scroll__content-wrapper'),
-      content        = elem.querySelector('.wjs-scroll__content');
-
-  /* ↓↓↓ ПІДГОТОВКА ↓↓↓ */
-
-    // заборона прокрутки (якщо потрібно)
-    let settingsString2 = container.dataset.scrollHidden || '';
-    let overflowXProhibition = settingsString2.match(/horizontal/i)
-                               || params.overflowXHidden;
-    let overflowYProhibition = settingsString2.match(/vertical/i)
-                               || params.overflowYHidden;
-
-    if (overflowXProhibition && overflowYProhibition) {
-      content.style.overflow = 'hidden';
-      return
-    } else if (overflowXProhibition) {
-      content.style.overflowX = 'hidden';
-    } else if (overflowYProhibition) {
-      content.style.overflowY = 'hidden';
+    if ( !elem.querySelector('.wjs-scroll__content-wrapper')
+         || !elem.querySelector('.wjs-scroll__content') ) {
+      console.log('markup error: wrong html structure');
+      return;
     }
-    // корекція розміру контенту: його внутрішній рзмір має бути таким, як і
-    // сам контейнер, а скрол повинен бути прихований за межами контейнеру.
-    let scrollLineHeight = content.offsetHeight - content.clientHeight,
-        scrollLineWidth  = content.offsetWidth - content.clientWidth;
 
-    content.style.height = contentWrapper.clientHeight + scrollLineHeight + 'px';
-    content.style.width  = contentWrapper.clientWidth + scrollLineWidth + 'px';
-  /* ↑↑↑ /ПІДГОТОВКА ↑↑↑ */
+    let container      = elem,
+        contentWrapper = elem.querySelector('.wjs-scroll__content-wrapper'),
+        content        = elem.querySelector('.wjs-scroll__content');
 
-  /* ↓↓↓ ДОДАВАННЯ ПОЛОС ПРОКРУТКИ ↓↓↓ */
-    let lineT, lineB, thumbT, thumbB,
-        lineR, lineL, thumbR, thumbL;
+    /* ↓↓↓ ПІДГОТОВКА ↓↓↓ */
 
-    let settingsString = container.dataset.scroll || '';
+      // заборона прокрутки (якщо потрібно)
+      let settingsString2 = container.dataset.scrollHidden || '';
+      let overflowXProhibition = settingsString2.match(/horizontal/i)
+                                 || params.overflowXHidden;
+      let overflowYProhibition = settingsString2.match(/vertical/i)
+                                 || params.overflowYHidden;
 
-    // додавання полос прокрутки по горизонталі
-    if ( !overflowXProhibition && (content.scrollWidth > content.clientWidth) ) {
+      if (overflowXProhibition && overflowYProhibition) {
+        content.style.overflow = 'hidden';
+        return
+      } else if (overflowXProhibition) {
+        content.style.overflowX = 'hidden';
+      } else if (overflowYProhibition) {
+        content.style.overflowY = 'hidden';
+      }
+      // корекція розміру контенту: його внутрішній рзмір має бути таким, як і
+      // сам контейнер, а скрол повинен бути прихований за межами контейнеру.
+      let scrollLineHeight = content.offsetHeight - content.clientHeight,
+          scrollLineWidth  = content.offsetWidth - content.clientWidth;
 
-      if ( params.top || settingsString.match(/top/i) ) {
-        if ( !container.querySelector('.wjs-scroll__line_top') ) {
-          wAddScrollLine('top');
+      content.style.height = contentWrapper.clientHeight + scrollLineHeight + 'px';
+      content.style.width  = contentWrapper.clientWidth + scrollLineWidth + 'px';
+    /* ↑↑↑ /ПІДГОТОВКА ↑↑↑ */
+
+    /* ↓↓↓ ДОДАВАННЯ ПОЛОС ПРОКРУТКИ ↓↓↓ */
+      let lineT, lineB, thumbT, thumbB,
+          lineR, lineL, thumbR, thumbL;
+
+      let settingsString = container.dataset.scroll || '';
+
+      // додавання полос прокрутки по горизонталі
+      if ( !overflowXProhibition && (content.scrollWidth > content.clientWidth) ) {
+
+        if ( params.top || settingsString.match(/top/i) ) {
+          if ( !container.querySelector('.wjs-scroll__line_top') ) {
+            wAddScrollLine('top');
+          }
+          lineT  = container.querySelector('.wjs-scroll__line_top');
+          thumbT = container.querySelector('.wjs-scroll__thumb_top');
+
+          thumbT.style.width = lineT.clientWidth*content.clientWidth/content.scrollWidth + 'px';
         }
-        lineT  = container.querySelector('.wjs-scroll__line_top');
-        thumbT = container.querySelector('.wjs-scroll__thumb_top');
 
-        thumbT.style.width = lineT.clientWidth*content.clientWidth/content.scrollWidth + 'px';
+        if ( params.bottom
+          || settingsString.match(/bottom/i)
+          || (!params.bottom
+            && !params.top
+            && !settingsString.match(/bottom/i)
+            && !settingsString.match(/top/i) ) ) {
+          if ( !container.querySelector('.wjs-scroll__line_bottom') ) {
+            wAddScrollLine('bottom');
+          }
+          lineB  = container.querySelector('.wjs-scroll__line_bottom');
+          thumbB = container.querySelector('.wjs-scroll__thumb_bottom');
+
+          thumbB.style.width = lineB.clientWidth*content.clientWidth/content.scrollWidth + 'px';
+        }
+      } else {
+        wRemoveScrollLine('gorizontal');
       }
 
-      if ( params.bottom
-        || settingsString.match(/bottom/i)
-        || (!params.bottom
-          && !params.top
-          && !settingsString.match(/bottom/i)
-          && !settingsString.match(/top/i) ) ) {
-        if ( !container.querySelector('.wjs-scroll__line_bottom') ) {
-          wAddScrollLine('bottom');
+      // додавання полос прокрутки по вертикалі
+      if ( !overflowYProhibition && (content.scrollHeight > content.clientHeight) ) {
+
+        if ( params.left || settingsString.match(/left/i) ) {
+          if ( !container.querySelector('.wjs-scroll__line_left') ) {
+            wAddScrollLine('left');
+          }
+          lineL  = container.querySelector('.wjs-scroll__line_left');
+          thumbL = container.querySelector('.wjs-scroll__thumb_left');
+
+          thumbL.style.height = lineL.clientHeight*content.clientHeight/content.scrollHeight + 'px';
         }
+
+        if ( params.right
+          || settingsString.match(/right/i)
+          || (!params.left
+            && !params.right
+            && !settingsString.match(/left/i)
+            && !settingsString.match(/right/i) ) ) {
+          if ( !container.querySelector('.wjs-scroll__line_right') ) {
+            wAddScrollLine('right');
+          }
+          lineR  = container.querySelector('.wjs-scroll__line_right');
+          thumbR = container.querySelector('.wjs-scroll__thumb_right');
+
+          thumbR.style.height = lineR.clientHeight*content.clientHeight/content.scrollHeight + 'px';
+        }
+      } else {
+        wRemoveScrollLine('vertical');
+      }
+    /* ↑↑↑ ДОДАВАННЯ ПОЛОС ПРОКРУТКИ ↑↑↑ */
+
+    /* ↓↓↓ ПРОКРУТКА КОЛІЩАТКОМ МИШІ ↓↓↓ */
+      content.onscroll = function (event) {
+
+        // кожного разу після повторного виклику функції формується нове
+        // лексичне оточення, тому ці змінні потрібно постійно перепризначати
+        lineL  = container.querySelector('.wjs-scroll__line_left');
+        thumbL = container.querySelector('.wjs-scroll__thumb_left');
+        lineR  = container.querySelector('.wjs-scroll__line_right');
+        thumbR = container.querySelector('.wjs-scroll__thumb_right');
+        lineT  = container.querySelector('.wjs-scroll__line_top');
+        thumbT = container.querySelector('.wjs-scroll__thumb_top');
         lineB  = container.querySelector('.wjs-scroll__line_bottom');
         thumbB = container.querySelector('.wjs-scroll__thumb_bottom');
 
-        thumbB.style.width = lineB.clientWidth*content.clientWidth/content.scrollWidth + 'px';
-      }
-    } else {
-      wRemoveScrollLine('gorizontal');
-    }
+        // вертикальний скрол
+        let maxContentYScroll = content.scrollHeight - content.clientHeight;
+        let maxThumbYScroll;
 
-    // додавання полос прокрутки по вертикалі
-    if ( !overflowYProhibition && (content.scrollHeight > content.clientHeight) ) {
-
-      if ( params.left || settingsString.match(/left/i) ) {
-        if ( !container.querySelector('.wjs-scroll__line_left') ) {
-          wAddScrollLine('left');
-        }
-        lineL  = container.querySelector('.wjs-scroll__line_left');
-        thumbL = container.querySelector('.wjs-scroll__thumb_left');
-
-        thumbL.style.height = lineL.clientHeight*content.clientHeight/content.scrollHeight + 'px';
-      }
-
-      if ( params.right
-        || settingsString.match(/right/i)
-        || (!params.left
-          && !params.right
-          && !settingsString.match(/left/i)
-          && !settingsString.match(/right/i) ) ) {
-        if ( !container.querySelector('.wjs-scroll__line_right') ) {
-          wAddScrollLine('right');
-        }
-        lineR  = container.querySelector('.wjs-scroll__line_right');
-        thumbR = container.querySelector('.wjs-scroll__thumb_right');
-
-        thumbR.style.height = lineR.clientHeight*content.clientHeight/content.scrollHeight + 'px';
-      }
-    } else {
-      wRemoveScrollLine('vertical');
-    }
-  /* ↑↑↑ ДОДАВАННЯ ПОЛОС ПРОКРУТКИ ↑↑↑ */
-
-  /* ↓↓↓ ПРОКРУТКА КОЛІЩАТКОМ МИШІ ↓↓↓ */
-    content.onscroll = function (event) {
-
-      // кожного разу після повторного виклику функції формується нове
-      // лексичне оточення, тому ці змінні потрібно постійно перепризначати
-      lineL  = container.querySelector('.wjs-scroll__line_left');
-      thumbL = container.querySelector('.wjs-scroll__thumb_left');
-      lineR  = container.querySelector('.wjs-scroll__line_right');
-      thumbR = container.querySelector('.wjs-scroll__thumb_right');
-      lineT  = container.querySelector('.wjs-scroll__line_top');
-      thumbT = container.querySelector('.wjs-scroll__thumb_top');
-      lineB  = container.querySelector('.wjs-scroll__line_bottom');
-      thumbB = container.querySelector('.wjs-scroll__thumb_bottom');
-
-      // вертикальний скрол
-      let maxContentYScroll = content.scrollHeight - content.clientHeight;
-      let maxThumbYScroll;
-
-      if (lineL) {
-        maxThumbYScroll = lineL.clientHeight - thumbL.clientHeight;
-      } else if (lineR) {
-        maxThumbYScroll = lineR.clientHeight - thumbR.clientHeight;
-      }
-
-      let thumbCurrentTop = maxThumbYScroll*content.scrollTop/maxContentYScroll;
-      if (thumbR) {
-        thumbR.style.top = thumbCurrentTop + 'px';
-      }
-      if (thumbL) {
-        thumbL.style.top = thumbCurrentTop + 'px';
-      }
-
-      // горизонтальний скрол
-      let maxContentXScroll = content.scrollWidth - content.clientWidth;
-      let maxThumbXScroll;
-
-      if (lineT) {
-        maxThumbXScroll = lineT.clientWidth- thumbT.clientWidth;
-      } else if (lineB) {
-        maxThumbXScroll = lineB.clientWidth - thumbB.clientWidth;
-      }
-
-      let thumbCurrentLeft = maxThumbXScroll*content.scrollLeft/maxContentXScroll;
-      if (thumbB) {
-        thumbB.style.left = thumbCurrentLeft + 'px';
-      }
-      if (thumbT) {
-        thumbT.style.left = thumbCurrentLeft + 'px';
-      }
-    }
-  /* ↑↑↑ /ПРОКРУТКА КОЛІЩАТКОМ МИШІ ↑↑↑ */
-
-  /* ↓↓↓ ПРОКРУТКА ПОВЗУНКОМ ↓↓↓ */
-    // Drag'n'Drop
-    if ( container.querySelector('.wjs-scroll__thumb_right') ) {
-      container.querySelector('.wjs-scroll__thumb_right').addEventListener('mousedown', verticalThumbScroll);
-      container.querySelector('.wjs-scroll__thumb_right').ondragstart = function() {return false;};
-    }
-    if ( container.querySelector('.wjs-scroll__thumb_left') ) {
-      container.querySelector('.wjs-scroll__thumb_left').addEventListener('mousedown', verticalThumbScroll);
-      container.querySelector('.wjs-scroll__thumb_left').ondragstart = function() {return false;};
-    }
-    if ( container.querySelector('.wjs-scroll__thumb_top') ) {
-      container.querySelector('.wjs-scroll__thumb_top').addEventListener('mousedown', gorizontalThumbScroll);
-      container.querySelector('.wjs-scroll__thumb_top').ondragstart = function() {return false;};
-    }
-    if ( container.querySelector('.wjs-scroll__thumb_bottom') ) {
-      container.querySelector('.wjs-scroll__thumb_bottom').addEventListener('mousedown', gorizontalThumbScroll);
-      container.querySelector('.wjs-scroll__thumb_bottom').ondragstart = function() {return false;};
-    }
-
-    function verticalThumbScroll(event) {
-      let thumb = container.querySelector('.wjs-scroll__thumb_right')
-               || container.querySelector('.wjs-scroll__thumb_left');
-      let line = container.querySelector('.wjs-scroll__line_right')
-              || container.querySelector('.wjs-scroll__line_left');
-
-      event.target.closest('.wjs-scroll__wrapper').classList.add('wjs-scroll__wrapper_active-v');
-
-      let startClientY          = event.clientY;
-      let thumbStartAbsPosition = parseFloat( getComputedStyle(thumb).top );
-      let thumbTopFixPosition   = thumb.getBoundingClientRect().top;
-      let maxThumbScroll        = line.clientHeight - thumb.clientHeight;
-      let maxContentScroll      = content.scrollHeight - content.clientHeight;
-
-      function onMouseMove(event) {
-        let shift = event.clientY - startClientY;
-
-        let thumbCurrentAbsPosition = thumbStartAbsPosition + shift;
-        if (thumbCurrentAbsPosition < 0) {
-          thumbCurrentAbsPosition = 0;
-        }
-        if ( thumbCurrentAbsPosition > maxThumbScroll) {
-          thumbCurrentAbsPosition = maxThumbScroll;
+        if (lineL) {
+          maxThumbYScroll = lineL.clientHeight - thumbL.clientHeight;
+        } else if (lineR) {
+          maxThumbYScroll = lineR.clientHeight - thumbR.clientHeight;
         }
 
-        content.scrollTop = parseFloat( getComputedStyle(thumb).top )*maxContentScroll/maxThumbScroll;
-
-        if ( container.querySelector('.wjs-scroll__thumb_right') ) {
-          container.querySelector('.wjs-scroll__thumb_right').style.top = thumbCurrentAbsPosition + 'px';
+        let thumbCurrentTop = maxThumbYScroll*content.scrollTop/maxContentYScroll;
+        if (thumbR) {
+          thumbR.style.top = thumbCurrentTop + 'px';
         }
-        if ( container.querySelector('.wjs-scroll__thumb_left') ) {
-          container.querySelector('.wjs-scroll__thumb_left').style.top = thumbCurrentAbsPosition + 'px';
-        }
-      }
-
-      function onMouseUp() {
-        document.removeEventListener('mousemove', onMouseMove);
-        thumb.onmouseup = null;
-        event.target.closest('.wjs-scroll__wrapper').classList.remove('wjs-scroll__wrapper_active-v');
-      };
-
-      document.addEventListener('mousemove', onMouseMove);
-      document.addEventListener('mouseup', onMouseUp);
-    }
-
-    function gorizontalThumbScroll(event) {
-      let thumb = container.querySelector('.wjs-scroll__thumb_bottom')
-               || container.querySelector('.wjs-scroll__thumb_top');
-      let line = container.querySelector('.wjs-scroll__line_bottom')
-              || container.querySelector('.wjs-scroll__line_top');
-
-      event.target.closest('.wjs-scroll__wrapper').classList.add('wjs-scroll__wrapper_active-h');
-
-      let startClientX          = event.clientX;
-      let thumbStartAbsPosition = parseFloat( getComputedStyle(thumb).left );
-      let thumbLeftFixPosition  = thumb.getBoundingClientRect().left;
-      let maxThumbScroll        = line.clientWidth - thumb.clientWidth;
-      let maxContentScroll      = content.scrollWidth - content.clientWidth;
-
-      function onMouseMove(event) {
-        let shift = event.clientX - startClientX;
-
-        let thumbCurrentAbsPosition = thumbStartAbsPosition + shift;
-        if (thumbCurrentAbsPosition < 0) {
-          thumbCurrentAbsPosition = 0;
-        }
-        if ( thumbCurrentAbsPosition > maxThumbScroll) {
-          thumbCurrentAbsPosition = maxThumbScroll;
+        if (thumbL) {
+          thumbL.style.top = thumbCurrentTop + 'px';
         }
 
-        content.scrollLeft = parseFloat( getComputedStyle(thumb).left )*maxContentScroll/maxThumbScroll;
+        // горизонтальний скрол
+        let maxContentXScroll = content.scrollWidth - content.clientWidth;
+        let maxThumbXScroll;
 
-
-        if ( container.querySelector('.wjs-scroll__thumb_bottom') ) {
-          container.querySelector('.wjs-scroll__thumb_bottom').style.left = thumbCurrentAbsPosition + 'px';
+        if (lineT) {
+          maxThumbXScroll = lineT.clientWidth- thumbT.clientWidth;
+        } else if (lineB) {
+          maxThumbXScroll = lineB.clientWidth - thumbB.clientWidth;
         }
-        if ( container.querySelector('.wjs-scroll__thumb_top') ) {
-          container.querySelector('.wjs-scroll__thumb_top').style.left = thumbCurrentAbsPosition + 'px';
+
+        let thumbCurrentLeft = maxThumbXScroll*content.scrollLeft/maxContentXScroll;
+        if (thumbB) {
+          thumbB.style.left = thumbCurrentLeft + 'px';
+        }
+        if (thumbT) {
+          thumbT.style.left = thumbCurrentLeft + 'px';
         }
       }
+    /* ↑↑↑ /ПРОКРУТКА КОЛІЩАТКОМ МИШІ ↑↑↑ */
 
-      function onMouseUp() {
-        document.removeEventListener('mousemove', onMouseMove);
-        thumb.onmouseup = null;
-        event.target.closest('.wjs-scroll__wrapper').classList.remove('wjs-scroll__wrapper_active-h');
-      };
+    /* ↓↓↓ ПРОКРУТКА ПОВЗУНКОМ ↓↓↓ */
+      // Drag'n'Drop
+      if ( container.querySelector('.wjs-scroll__thumb_right') ) {
+        container.querySelector('.wjs-scroll__thumb_right').addEventListener('mousedown', verticalThumbScroll);
+        container.querySelector('.wjs-scroll__thumb_right').ondragstart = function() {return false;};
+      }
+      if ( container.querySelector('.wjs-scroll__thumb_left') ) {
+        container.querySelector('.wjs-scroll__thumb_left').addEventListener('mousedown', verticalThumbScroll);
+        container.querySelector('.wjs-scroll__thumb_left').ondragstart = function() {return false;};
+      }
+      if ( container.querySelector('.wjs-scroll__thumb_top') ) {
+        container.querySelector('.wjs-scroll__thumb_top').addEventListener('mousedown', gorizontalThumbScroll);
+        container.querySelector('.wjs-scroll__thumb_top').ondragstart = function() {return false;};
+      }
+      if ( container.querySelector('.wjs-scroll__thumb_bottom') ) {
+        container.querySelector('.wjs-scroll__thumb_bottom').addEventListener('mousedown', gorizontalThumbScroll);
+        container.querySelector('.wjs-scroll__thumb_bottom').ondragstart = function() {return false;};
+      }
 
-      document.addEventListener('mousemove', onMouseMove);
-      document.addEventListener('mouseup', onMouseUp);
-    }
-  /* ↑↑↑ /ПРОКРУТКА ПОВЗУНКОМ ↑↑↑ */
+      function verticalThumbScroll(event) {
+        let thumb = container.querySelector('.wjs-scroll__thumb_right')
+                 || container.querySelector('.wjs-scroll__thumb_left');
+        let line = container.querySelector('.wjs-scroll__line_right')
+                || container.querySelector('.wjs-scroll__line_left');
 
-  function wAddScrollLine(name) {
-    let html = '\
-                <div class="wjs-scroll__wrapper wjs-scroll__wrapper_' + name + '">\
-                  <div class="wjs-scroll__line wjs-scroll__line_' + name + '">\
-                    <div class="wjs-scroll__thumb wjs-scroll__thumb_' + name + '"></div>\
+        event.target.closest('.wjs-scroll__wrapper').classList.add('wjs-scroll__wrapper_active-v');
+
+        let startClientY          = event.clientY;
+        let thumbStartAbsPosition = parseFloat( getComputedStyle(thumb).top );
+        let thumbTopFixPosition   = thumb.getBoundingClientRect().top;
+        let maxThumbScroll        = line.clientHeight - thumb.clientHeight;
+        let maxContentScroll      = content.scrollHeight - content.clientHeight;
+
+        function onMouseMove(event) {
+          let shift = event.clientY - startClientY;
+
+          let thumbCurrentAbsPosition = thumbStartAbsPosition + shift;
+          if (thumbCurrentAbsPosition < 0) {
+            thumbCurrentAbsPosition = 0;
+          }
+          if ( thumbCurrentAbsPosition > maxThumbScroll) {
+            thumbCurrentAbsPosition = maxThumbScroll;
+          }
+
+          content.scrollTop = parseFloat( getComputedStyle(thumb).top )*maxContentScroll/maxThumbScroll;
+
+          if ( container.querySelector('.wjs-scroll__thumb_right') ) {
+            container.querySelector('.wjs-scroll__thumb_right').style.top = thumbCurrentAbsPosition + 'px';
+          }
+          if ( container.querySelector('.wjs-scroll__thumb_left') ) {
+            container.querySelector('.wjs-scroll__thumb_left').style.top = thumbCurrentAbsPosition + 'px';
+          }
+        }
+
+        function onMouseUp() {
+          document.removeEventListener('mousemove', onMouseMove);
+          thumb.onmouseup = null;
+          event.target.closest('.wjs-scroll__wrapper').classList.remove('wjs-scroll__wrapper_active-v');
+        };
+
+        document.addEventListener('mousemove', onMouseMove);
+        document.addEventListener('mouseup', onMouseUp);
+      }
+
+      function gorizontalThumbScroll(event) {
+        let thumb = container.querySelector('.wjs-scroll__thumb_bottom')
+                 || container.querySelector('.wjs-scroll__thumb_top');
+        let line = container.querySelector('.wjs-scroll__line_bottom')
+                || container.querySelector('.wjs-scroll__line_top');
+
+        event.target.closest('.wjs-scroll__wrapper').classList.add('wjs-scroll__wrapper_active-h');
+
+        let startClientX          = event.clientX;
+        let thumbStartAbsPosition = parseFloat( getComputedStyle(thumb).left );
+        let thumbLeftFixPosition  = thumb.getBoundingClientRect().left;
+        let maxThumbScroll        = line.clientWidth - thumb.clientWidth;
+        let maxContentScroll      = content.scrollWidth - content.clientWidth;
+
+        function onMouseMove(event) {
+          let shift = event.clientX - startClientX;
+
+          let thumbCurrentAbsPosition = thumbStartAbsPosition + shift;
+          if (thumbCurrentAbsPosition < 0) {
+            thumbCurrentAbsPosition = 0;
+          }
+          if ( thumbCurrentAbsPosition > maxThumbScroll) {
+            thumbCurrentAbsPosition = maxThumbScroll;
+          }
+
+          content.scrollLeft = parseFloat( getComputedStyle(thumb).left )*maxContentScroll/maxThumbScroll;
+
+
+          if ( container.querySelector('.wjs-scroll__thumb_bottom') ) {
+            container.querySelector('.wjs-scroll__thumb_bottom').style.left = thumbCurrentAbsPosition + 'px';
+          }
+          if ( container.querySelector('.wjs-scroll__thumb_top') ) {
+            container.querySelector('.wjs-scroll__thumb_top').style.left = thumbCurrentAbsPosition + 'px';
+          }
+        }
+
+        function onMouseUp() {
+          document.removeEventListener('mousemove', onMouseMove);
+          thumb.onmouseup = null;
+          event.target.closest('.wjs-scroll__wrapper').classList.remove('wjs-scroll__wrapper_active-h');
+        };
+
+        document.addEventListener('mousemove', onMouseMove);
+        document.addEventListener('mouseup', onMouseUp);
+      }
+    /* ↑↑↑ /ПРОКРУТКА ПОВЗУНКОМ ↑↑↑ */
+
+    function wAddScrollLine(name) {
+      let html = '\
+                  <div class="wjs-scroll__wrapper wjs-scroll__wrapper_' + name + '">\
+                    <div class="wjs-scroll__line wjs-scroll__line_' + name + '">\
+                      <div class="wjs-scroll__thumb wjs-scroll__thumb_' + name + '"></div>\
+                    </div>\
                   </div>\
-                </div>\
-               ';
-    container.insertAdjacentHTML('afterBegin', html);
-  }
+                 ';
+      container.insertAdjacentHTML('afterBegin', html);
+    }
 
-  function wRemoveScrollLine(name) {
-    if (name == 'vertical') {
-      if ( container.querySelector('.wjs-scroll__wrapper_right') ) {
-        container.querySelector('.wjs-scroll__wrapper_right').remove();
-      }
-      if ( container.querySelector('.wjs-scroll__wrapper_left') ) {
-        container.querySelector('.wjs-scroll__wrapper_left').remove();
-      }
-    } else if (name == 'gorizontal') {
-      if ( container.querySelector('.wjs-scroll__wrapper_top') ) {
-        container.querySelector('.wjs-scroll__wrapper_top').remove();
-      }
-      if ( container.querySelector('.wjs-scroll__wrapper_bottomleft') ) {
-        container.querySelector('.wjs-scroll__wrapper_bottomleft').remove();
+    function wRemoveScrollLine(name) {
+      if (name == 'vertical') {
+        if ( container.querySelector('.wjs-scroll__wrapper_right') ) {
+          container.querySelector('.wjs-scroll__wrapper_right').remove();
+        }
+        if ( container.querySelector('.wjs-scroll__wrapper_left') ) {
+          container.querySelector('.wjs-scroll__wrapper_left').remove();
+        }
+      } else if (name == 'gorizontal') {
+        if ( container.querySelector('.wjs-scroll__wrapper_top') ) {
+          container.querySelector('.wjs-scroll__wrapper_top').remove();
+        }
+        if ( container.querySelector('.wjs-scroll__wrapper_bottomleft') ) {
+          container.querySelector('.wjs-scroll__wrapper_bottomleft').remove();
+        }
       }
     }
   }
-}
 /* ↑↑↑ functions declaration ↑↑↑ */
 ////////////////////////////////////////////////////////////////////////////////
-"use strict";
+"use strict"; // chat-form module
 ////////////////////////////////////////////////////////////////////////////////
-/* ↓↓↓ chat-form module ↓↓↓ */
+/* ↓↓↓ event listeners ↓↓↓ */
   document.addEventListener('click', function(event){
     // open form
     if ( event.target.closest('.chat-form__textarea')
@@ -361,11 +369,11 @@ function wSetScroll(elem, params = {}) {
     ta.blur();
   }
   });
-/* ↑↑↑ chat-form module ↑↑↑ */
+/* ↑↑↑ event listeners ↑↑↑ */
 ////////////////////////////////////////////////////////////////////////////////
-"use strict";
+"use strict"; // header module
 ////////////////////////////////////////////////////////////////////////////////
-/* ↓↓↓ header module ↓↓↓ */
+/* ↓↓↓ event listeners ↓↓↓ */
   document.addEventListener('click', function(event){
     // open
     if ( event.target.closest('.header__menu-btn_secondary')
@@ -384,10 +392,9 @@ function wSetScroll(elem, params = {}) {
       input.blur();
     }
   });
-/* ↑↑↑ header module ↑↑↑ */
+/* ↑↑↑ event listeners ↑↑↑ */
 ////////////////////////////////////////////////////////////////////////////////
-"use strict";
-// template: popups
+"use strict"; // template: popups
 ////////////////////////////////////////////////////////////////////////////////
 /* ↓↓↓ event listeners ↓↓↓ */
   var roles = {
@@ -411,7 +418,7 @@ function wSetScroll(elem, params = {}) {
       closePopup(id);
     }
   };
-  document.addEventListener('click', function(event){
+  document.addEventListener('click', async function(event){
     if ( event.target.closest('[data-role]') ) {
       let foo = event.target.closest('[data-role]').dataset.role;
       roles[foo](event)
@@ -431,19 +438,31 @@ function wSetScroll(elem, params = {}) {
 
     // logout
     if ( event.target.closest('#popupLogout button[type="submit"]') ) {
-      logoutUser();
+      let logoutRequest = await logoutUser();
+      if (logoutRequest.status == 200) {
+        document.querySelector('body').innerHTML = logoutRequest.html;
+        wSetScroll(document.querySelector('.login-main__inner'), {right:true, overflowXHidden:true});
+      } else {
+        window.location.href = 'about:blank';
+      }
     }
 
     // delete account
     if ( event.target.closest('#popupDeleteAcc button[type="submit"]') ) {
       event.preventDefault();
-      deleteAccount();
+      let deleteRequest = await deleteUser();
+      if (deleteRequest.status == 200) {
+        document.querySelector('body').innerHTML = deleteRequest.html;
+        wSetScroll(document.querySelector('.login-main__inner'), {right:true, overflowXHidden:true});
+      } else {
+        window.location.href = 'about:blank';
+      }
     }
 
     // change password
     if ( event.target.closest('#popupChangePass button[type="submit"]') ) {
       event.preventDefault();
-      changePassword();
+      changePasswordTEMP();
     }
   });
 
@@ -451,7 +470,7 @@ function wSetScroll(elem, params = {}) {
     if ( event.target.closest('#popupChangePass [name="oldPass"]') ) {
       let password = event.target.closest('#popupChangePass [name="oldPass"]').value;
       if (password.length >=6) {
-        checkOldPassword(password);
+        checkOldPasswordTEMP(password);
       }
     }
     if ( event.target.closest('#changePass_new') ) {
@@ -542,66 +561,31 @@ function wSetScroll(elem, params = {}) {
     setTimeout(function(){
       popup.classList.add('popup_active');
     },1);
-
   }
 
-  async function logoutUser() {
-    let response = await fetch('/api/authorization/logout');
-    if (response.status == 200) {
-      let htmlString = await response.text();
-      document.querySelector('body').innerHTML = htmlString;
-      // eslint-disable-next-line no-undef
-      wSetScroll(document.querySelector('.login-main__inner'), {right:true, overflowXHidden:true});
-    } else {
-      window.location.href = 'about:blank';
-    }
-  }
-
-  async function deleteAccount() {
-    let response = await fetch('/api/authorization/deleteUser', {
-      method: "DELETE"
-    });
-    if (response.status == 200) {
-      let htmlString = await response.text();
-      document.querySelector('body').innerHTML = htmlString;
-      // eslint-disable-next-line no-undef
-      wSetScroll(document.querySelector('.login-main__inner'), {right:true, overflowXHidden:true});
-    } else {
-      window.location.href = 'about:blank';
-    }
-  }
-
-  async function checkOldPassword(pass) {
-    let response = await fetch('/api/settings/checkOldPassword', {
-      method: 'POST',
-      body: JSON.stringify({pass:pass}),
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      }
-    });
-    if (response.status == 500) {
+  async function checkOldPasswordTEMP(pass) {
+    let checkOldPassRequest = await checkOldPass(pass);
+    if (checkOldPassRequest.status == 500) {
       // error DB?
       showPopupError('popupChangePass', 3);
-    } else if (response.status == 200) {
-      let answer = await response.json();
-      if(answer.result) {
+    } else if (checkOldPassRequest.status == 200) {
+      if(checkOldPassRequest.result == 'true') {
         // correct pass
         hidePopupError('popupChangePass');
-      } else {
+      } else if (checkOldPassRequest.result == 'false') {
         // wrond pass
         showPopupError('popupChangePass', 0);
       }
     }
   }
 
-  async function changePassword() {
+  async function changePasswordTEMP() {
 
     let oldPass  = document.querySelectorAll('#popupChangePass .popup__pass-wrapper input')[0].value || '',
         newPass1 = document.querySelectorAll('#popupChangePass .popup__pass-wrapper input')[1].value || '',
         newPass2 = document.querySelectorAll('#popupChangePass .popup__pass-wrapper input')[2].value || '';
 
-    await checkOldPassword(oldPass);
+    await checkOldPasswordTEMP(oldPass);
     if ( document.querySelector('#popupChangePass .popup__message_active') ) return;
 
     if (newPass1.length < 6) {
@@ -613,31 +597,19 @@ function wSetScroll(elem, params = {}) {
       return
     }
 
-    let response = await fetch('/api/settings/changePassword', {
-      method: 'POST',
-      body: JSON.stringify({pass:newPass2}),
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      }
-    });
-    if (response.status == 500) {
+    let changePassRequest = await changePass(newPass2);
+    if (changePassRequest.status == 500) {
       // error DB?
       showPopupError('popupChangePass', 3);
-    } else if (response.status == 200) {
-      let answer = await response.json();
-      if(answer.result == 'changed') {
-        // correct pass
-        closePopup('popupChangePass');
-        showPopupInfo('Пароль успішно змінено');
-      }
+    } else if (changePassRequest.status == 200) {
+      // correct pass
+      closePopup('popupChangePass');
+      showPopupInfo('Пароль успішно змінено');
     }
   }
-
 /* ↑↑↑ functions declaration ↑↑↑ */
 ////////////////////////////////////////////////////////////////////////////////
-
-"use strict";
+"use strict"; // login.js
 ////////////////////////////////////////////////////////////////////////////////
 /* ↓↓↓ variables declaration ↓↓↓ */
   var dictionary = {
@@ -932,7 +904,7 @@ function wSetScroll(elem, params = {}) {
 
     // перевірка зайнятості логіна
     if (formType == 'api/authorization/register' && value.length >= 3 ) {
-      if ( !await isLoginFree(value) ) {
+      if ( !await isLoginFreeTEMP(value) ) {
         showError(errors[0], dictionary.loginIsUsed[lang]);
         submitBtn.setAttribute('type','button');
       } else {
@@ -995,26 +967,19 @@ function wSetScroll(elem, params = {}) {
     }
   }
 
-  async function isLoginFree(login) {
+  async function isLoginFreeTEMP(login) {
     const form   = document.forms.loginForm,
           lang   = form.querySelector('input[name="lang"]').value,
           errors = document.querySelectorAll('.error-info');
 
-    const response = await fetch('api/authorization/existUser', {
-      method: "POST",
-      headers: {
-        "Accept": "application/json",
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({name:login})
-    });
-    if (response.status == 500) {
+    let loginStatus = await isLoginFree(login);
+    if (loginStatus) {
+      return true
+    } else if (loginStatus == false) {
+      return false
+    } else {
       // error DB?
       showError(errors[2], dictionary.serverError[lang]);
-    } else if (response.status == 200) {
-      let status = await response.json();
-      if (status.slot == 'used') return false;
-      return true;
     }
   }
 
@@ -1026,47 +991,50 @@ function wSetScroll(elem, params = {}) {
           pass   = form.querySelector('input[name="pass1"]').value,
           errors = document.querySelectorAll('.error-info');
 
-    let bodyObj = {name,pass};
+    let user = {name,pass};
 
     if (url == 'api/authorization/register') {
-      bodyObj.lang = lang;
-    }
+      user.lang = lang;
 
-    const response = await fetch(url, {
-      method: "POST",
-      headers: {
-        // "Accept": "application/json",
-        "Accept": "text/html",
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(bodyObj)
-    });
-    if (response.status == 500) {
-      // error DB?
-      showError(errors[2], dictionary.serverError[lang]);
-    } else if (response.status == 404) {
-      // not found
-      // сервер: Такого користувача не існує
-      showError(errors[0], dictionary.noUser[lang]);
-    } else if (response.status == 200) {
-      // ok
-      // тут подальша обробка запиту
-      let htmlString = await response.text();
-      document.querySelector('body').innerHTML = htmlString;
-      // eslint-disable-next-line no-undef
-      wSetScroll(document.querySelector('.left-side .lists-wrapper'), {right:true, overflowXHidden:true})
-    } else if (response.status == 403) {
-      // не вірний пароль
-      // сервер: Не вірний пароль dictionary.wrongPass
-      showError(errors[1], dictionary.wrongPass[lang]);
-    } else {
-      // unknown error
-      showError(errors[2], dictionary.serverError[lang]);
+      let registerResult = await registerUser(user);
+      if (registerResult.status == 200) {
+        document.querySelector('body').innerHTML = registerResult.html;
+        wSetScroll(document.querySelector('.left-side .lists-wrapper'), {right:true, overflowXHidden:true});
+      } else if (registerResult.status == 500) {
+        // error DB?
+        showError(errors[2], dictionary.serverError[lang]);
+      } else if (registerResult.status == 404) {
+        showError(errors[0], dictionary.noUser[lang]);
+      } else if (registerResult.status == 403) {
+        // не вірний пароль
+        showError(errors[1], dictionary.wrongPass[lang]);
+      } else {
+        // unknown error
+        showError(errors[2], dictionary.serverError[lang]);
+      }
+    } else if (url == 'api/authorization/login') {
+
+      let loginResult = await loginUser(user);
+      if (loginResult.status == 200) {
+        document.querySelector('body').innerHTML = loginResult.html;
+        wSetScroll(document.querySelector('.left-side .lists-wrapper'), {right:true, overflowXHidden:true});
+      } else if (loginResult.status == 500) {
+        // error DB?
+        showError(errors[2], dictionary.serverError[lang]);
+      } else if (loginResult.status == 404) {
+        showError(errors[0], dictionary.noUser[lang]);
+      } else if (loginResult.status == 403) {
+        // не вірний пароль
+        showError(errors[1], dictionary.wrongPass[lang]);
+      } else {
+        // unknown error
+        showError(errors[2], dictionary.serverError[lang]);
+      }
     }
   }
 /* ↑↑↑ functions declaration ↑↑↑ */
 ////////////////////////////////////////////////////////////////////////////////
-"use strict";
+"use strict"; // main.js
 ////////////////////////////////////////////////////////////////////////////////
 /* ↓↓↓ event listeners ↓↓↓ */
   document.addEventListener('click', function(event){
@@ -1203,68 +1171,116 @@ function wSetScroll(elem, params = {}) {
   }
 /* ↑↑↑ functions declaration ↑↑↑ */
 ////////////////////////////////////////////////////////////////////////////////
+'use strict'; // requests.js
+////////////////////////////////////////////////////////////////////////////////
+/* ↓↓↓ functions declaration ↓↓↓ */
+  async function isLoginFree(login) {
+    let result;
+    let response = await fetch('api/authorization/existUser', {
+      method: 'POST',
+      headers: {
+        'Accept'       : 'text/html',
+        'Content-Type' : 'application/json'
+      },
+      body: JSON.stringify({name:login})
+    });
+    if (response.status == 500) {
+      return result;
+    } else if (response.status == 200) {
+      let status = await response.text();
+      if (status == 'used') return false;
+      return true;
+    }
+  }
 
+  async function registerUser(user) {
+    console.log("registerUser", registerUser);
+    let response = await fetch('api/authorization/register', {
+      method: 'POST',
+      headers: {
+        'Accept'       : 'text/html',
+        'Content-Type' : 'application/json'
+      },
+      body: JSON.stringify(user)
+    });
+    if (response.status == 200) {
+      let html = await response.text();
+      return {status: 200, html}
+    } else {
+      return {status: response.status}
+    }
+  }
 
+  async function loginUser(user) {
+    let response = await fetch('api/authorization/login', {
+      method: 'POST',
+      headers: {
+        'Accept'       : 'text/html',
+        'Content-Type' : 'application/json'
+      },
+      body: JSON.stringify(user)
+    });
+    if (response.status == 200) {
+      let html = await response.text();
+      return {status: 200, html}
+    } else {
+      return {status: response.status}
+    }
+  }
 
+  async function logoutUser () {
+    let response = await fetch('api/authorization/logout');
+    if (response.status == 200) {
+      let html = await response.text();
+      return {status: 200, html}
+    } else {
+      return {status: response.status}
+    }
+  }
 
+  async function deleteUser () {
+    let response = await fetch('api/authorization/deleteUser', {
+      method: 'DELETE'
+    });
+    if (response.status == 200) {
+      let html = await response.text();
+      return {status: 200, html}
+    } else {
+      return {status: response.status}
+    }
+  }
 
+  async function checkOldPass(pass) {
+    let response = await fetch('api/settings/checkOldPassword', {
+      method: 'POST',
+      headers: {
+        'Accept'       : 'text/html',
+        'Content-Type' : 'application/json'
+      },
+      body: JSON.stringify({pass:pass})
+    });
+    if (response.status == 200) {
+      let result = await response.text();
+      return {status: 200, result}
+    } else {
+      return {status: response.status}
+    }
+  }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
-}
-
-async function test() {
-  await showMenuItem('aside', 'menu');
-  await sleep(2000);
-  await showMenuItem('aside', 'settings');
-  await sleep(2000);
-  await showMenuItem('aside', 'chatlist');
-  await sleep(2000);
-  await showMenuItem('aside', 'contactlist');
-  await sleep(2000);
-  await showMenuItem('aside', 'usercard');
-  await sleep(2000);
-  await showMenuItem('aside', 'groupcard');
-  await sleep(2000);
-  await showMenuItem('aside', 'chat');
-  await sleep(2000);
-  await showMenuItem('page', 'startP');
-  await sleep(2000);
-  await showMenuItem('page', 'usercardP');
-  await sleep(2000);
-  await showMenuItem('page', 'groupcardP');
-  await sleep(2000);
-  await showMenuItem('page', 'chatP');
-}
-// test();
+  async function changePass(newPass) {
+    let response = await fetch('api/settings/changePassword', {
+      method: 'POST',
+      headers: {
+        'Accept'       : 'text/html',
+        'Content-Type' : 'application/json'
+      },
+      body: JSON.stringify({pass:newPass})
+    });
+    if (response.status == 200) {
+      return {status: 200}
+    } else {
+      return {status: response.status}
+    }
+  }
+/* ↑↑↑ functions declaration ↑↑↑ */
+////////////////////////////////////////////////////////////////////////////////

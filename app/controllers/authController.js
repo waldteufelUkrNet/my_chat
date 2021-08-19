@@ -30,14 +30,12 @@ exports.logoutUser = function(req,res) {
 
 exports.deleteUser = function(req,res) {
   let userID = req.session.user._id;
-  console.log("userID", userID);
 
   User.findByIdAndDelete(userID, function(err, user){
     if(err) throw err;
     req.session.destroy();
     res.status(200).render('notSignedPageBody/notSignedPageBody.pug')
   });
-
 }
 
 exports.registerUser = function(req, res) {
@@ -57,14 +55,14 @@ exports.existUser = function(req, res) {
 
   User.findOne({'username':userName}, function(err,user){
     if (err) {
-      res.sendStatus(500);
+      res.status(500);
       throw err;
     }
     if (!user) {
-      res.status(200).json({slot:'free'});
+      res.status(200).send('free');
     }
     if (user) {
-      res.status(200).json({slot:'used'});
+      res.status(200).send('used');
     }
   });
 }

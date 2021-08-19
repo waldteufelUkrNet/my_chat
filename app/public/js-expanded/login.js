@@ -1,4 +1,4 @@
-"use strict";
+"use strict"; // login.js
 ////////////////////////////////////////////////////////////////////////////////
 /* ↓↓↓ variables declaration ↓↓↓ */
   var dictionary = {
@@ -293,7 +293,7 @@
 
     // перевірка зайнятості логіна
     if (formType == 'api/authorization/register' && value.length >= 3 ) {
-      if ( !await isLoginFree(value) ) {
+      if ( !await isLoginFreeTEMP(value) ) {
         showError(errors[0], dictionary.loginIsUsed[lang]);
         submitBtn.setAttribute('type','button');
       } else {
@@ -356,26 +356,19 @@
     }
   }
 
-  async function isLoginFree(login) {
+  async function isLoginFreeTEMP(login) {
     const form   = document.forms.loginForm,
           lang   = form.querySelector('input[name="lang"]').value,
           errors = document.querySelectorAll('.error-info');
 
-    const response = await fetch('api/authorization/existUser', {
-      method: "POST",
-      headers: {
-        "Accept": "application/json",
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({name:login})
-    });
-    if (response.status == 500) {
+    let loginStatus = await isLoginFree(login);
+    if (loginStatus) {
+      return true
+    } else if (loginStatus == false) {
+      return false
+    } else {
       // error DB?
       showError(errors[2], dictionary.serverError[lang]);
-    } else if (response.status == 200) {
-      let status = await response.json();
-      if (status.slot == 'used') return false;
-      return true;
     }
   }
 
@@ -387,42 +380,45 @@
           pass   = form.querySelector('input[name="pass1"]').value,
           errors = document.querySelectorAll('.error-info');
 
-    let bodyObj = {name,pass};
+    let user = {name,pass};
 
     if (url == 'api/authorization/register') {
-      bodyObj.lang = lang;
-    }
+      user.lang = lang;
 
-    const response = await fetch(url, {
-      method: "POST",
-      headers: {
-        // "Accept": "application/json",
-        "Accept": "text/html",
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(bodyObj)
-    });
-    if (response.status == 500) {
-      // error DB?
-      showError(errors[2], dictionary.serverError[lang]);
-    } else if (response.status == 404) {
-      // not found
-      // сервер: Такого користувача не існує
-      showError(errors[0], dictionary.noUser[lang]);
-    } else if (response.status == 200) {
-      // ok
-      // тут подальша обробка запиту
-      let htmlString = await response.text();
-      document.querySelector('body').innerHTML = htmlString;
-      // eslint-disable-next-line no-undef
-      wSetScroll(document.querySelector('.left-side .lists-wrapper'), {right:true, overflowXHidden:true})
-    } else if (response.status == 403) {
-      // не вірний пароль
-      // сервер: Не вірний пароль dictionary.wrongPass
-      showError(errors[1], dictionary.wrongPass[lang]);
-    } else {
-      // unknown error
-      showError(errors[2], dictionary.serverError[lang]);
+      let registerResult = await registerUser(user);
+      if (registerResult.status == 200) {
+        document.querySelector('body').innerHTML = registerResult.html;
+        wSetScroll(document.querySelector('.left-side .lists-wrapper'), {right:true, overflowXHidden:true});
+      } else if (registerResult.status == 500) {
+        // error DB?
+        showError(errors[2], dictionary.serverError[lang]);
+      } else if (registerResult.status == 404) {
+        showError(errors[0], dictionary.noUser[lang]);
+      } else if (registerResult.status == 403) {
+        // не вірний пароль
+        showError(errors[1], dictionary.wrongPass[lang]);
+      } else {
+        // unknown error
+        showError(errors[2], dictionary.serverError[lang]);
+      }
+    } else if (url == 'api/authorization/login') {
+
+      let loginResult = await loginUser(user);
+      if (loginResult.status == 200) {
+        document.querySelector('body').innerHTML = loginResult.html;
+        wSetScroll(document.querySelector('.left-side .lists-wrapper'), {right:true, overflowXHidden:true});
+      } else if (loginResult.status == 500) {
+        // error DB?
+        showError(errors[2], dictionary.serverError[lang]);
+      } else if (loginResult.status == 404) {
+        showError(errors[0], dictionary.noUser[lang]);
+      } else if (loginResult.status == 403) {
+        // не вірний пароль
+        showError(errors[1], dictionary.wrongPass[lang]);
+      } else {
+        // unknown error
+        showError(errors[2], dictionary.serverError[lang]);
+      }
     }
   }
 /* ↑↑↑ functions declaration ↑↑↑ */

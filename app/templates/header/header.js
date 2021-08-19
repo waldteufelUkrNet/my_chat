@@ -1,6 +1,6 @@
-"use strict";
+"use strict"; // header module
 ////////////////////////////////////////////////////////////////////////////////
-/* ↓↓↓ header module ↓↓↓ */
+/* ↓↓↓ event listeners ↓↓↓ */
   document.addEventListener('click', function(event){
     // open
     if ( event.target.closest('.header__menu-btn_secondary')
@@ -19,5 +19,5 @@
       input.blur();
     }
   });
-/* ↑↑↑ header module ↑↑↑ */
+/* ↑↑↑ event listeners ↑↑↑ */
 ////////////////////////////////////////////////////////////////////////////////

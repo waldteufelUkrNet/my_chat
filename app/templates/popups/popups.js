@@ -1,5 +1,4 @@
-"use strict";
-// template: popups
+"use strict"; // template: popups
 ////////////////////////////////////////////////////////////////////////////////
 /* ↓↓↓ event listeners ↓↓↓ */
   var roles = {
@@ -23,7 +22,7 @@
       closePopup(id);
     }
   };
-  document.addEventListener('click', function(event){
+  document.addEventListener('click', async function(event){
     if ( event.target.closest('[data-role]') ) {
       let foo = event.target.closest('[data-role]').dataset.role;
       roles[foo](event)
@@ -43,19 +42,31 @@
 
     // logout
     if ( event.target.closest('#popupLogout button[type="submit"]') ) {
-      logoutUser();
+      let logoutRequest = await logoutUser();
+      if (logoutRequest.status == 200) {
+        document.querySelector('body').innerHTML = logoutRequest.html;
+        wSetScroll(document.querySelector('.login-main__inner'), {right:true, overflowXHidden:true});
+      } else {
+        window.location.href = 'about:blank';
+      }
     }
 
     // delete account
     if ( event.target.closest('#popupDeleteAcc button[type="submit"]') ) {
       event.preventDefault();
-      deleteAccount();
+      let deleteRequest = await deleteUser();
+      if (deleteRequest.status == 200) {
+        document.querySelector('body').innerHTML = deleteRequest.html;
+        wSetScroll(document.querySelector('.login-main__inner'), {right:true, overflowXHidden:true});
+      } else {
+        window.location.href = 'about:blank';
+      }
     }
 
     // change password
     if ( event.target.closest('#popupChangePass button[type="submit"]') ) {
       event.preventDefault();
-      changePassword();
+      changePasswordTEMP();
     }
   });
 
@@ -63,7 +74,7 @@
     if ( event.target.closest('#popupChangePass [name="oldPass"]') ) {
       let password = event.target.closest('#popupChangePass [name="oldPass"]').value;
       if (password.length >=6) {
-        checkOldPassword(password);
+        checkOldPasswordTEMP(password);
       }
     }
     if ( event.target.closest('#changePass_new') ) {
@@ -154,66 +165,31 @@
     setTimeout(function(){
       popup.classList.add('popup_active');
     },1);
-
   }
 
-  async function logoutUser() {
-    let response = await fetch('/api/authorization/logout');
-    if (response.status == 200) {
-      let htmlString = await response.text();
-      document.querySelector('body').innerHTML = htmlString;
-      // eslint-disable-next-line no-undef
-      wSetScroll(document.querySelector('.login-main__inner'), {right:true, overflowXHidden:true});
-    } else {
-      window.location.href = 'about:blank';
-    }
-  }
-
-  async function deleteAccount() {
-    let response = await fetch('/api/authorization/deleteUser', {
-      method: "DELETE"
-    });
-    if (response.status == 200) {
-      let htmlString = await response.text();
-      document.querySelector('body').innerHTML = htmlString;
-      // eslint-disable-next-line no-undef
-      wSetScroll(document.querySelector('.login-main__inner'), {right:true, overflowXHidden:true});
-    } else {
-      window.location.href = 'about:blank';
-    }
-  }
-
-  async function checkOldPassword(pass) {
-    let response = await fetch('/api/settings/checkOldPassword', {
-      method: 'POST',
-      body: JSON.stringify({pass:pass}),
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      }
-    });
-    if (response.status == 500) {
+  async function checkOldPasswordTEMP(pass) {
+    let checkOldPassRequest = await checkOldPass(pass);
+    if (checkOldPassRequest.status == 500) {
       // error DB?
       showPopupError('popupChangePass', 3);
-    } else if (response.status == 200) {
-      let answer = await response.json();
-      if(answer.result) {
+    } else if (checkOldPassRequest.status == 200) {
+      if(checkOldPassRequest.result == 'true') {
         // correct pass
         hidePopupError('popupChangePass');
-      } else {
+      } else if (checkOldPassRequest.result == 'false') {
         // wrond pass
         showPopupError('popupChangePass', 0);
       }
     }
   }
 
-  async function changePassword() {
+  async function changePasswordTEMP() {
 
     let oldPass  = document.querySelectorAll('#popupChangePass .popup__pass-wrapper input')[0].value || '',
         newPass1 = document.querySelectorAll('#popupChangePass .popup__pass-wrapper input')[1].value || '',
         newPass2 = document.querySelectorAll('#popupChangePass .popup__pass-wrapper input')[2].value || '';
 
-    await checkOldPassword(oldPass);
+    await checkOldPasswordTEMP(oldPass);
     if ( document.querySelector('#popupChangePass .popup__message_active') ) return;
 
     if (newPass1.length < 6) {
@@ -225,26 +201,15 @@
       return
     }
 
-    let response = await fetch('/api/settings/changePassword', {
-      method: 'POST',
-      body: JSON.stringify({pass:newPass2}),
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      }
-    });
-    if (response.status == 500) {
+    let changePassRequest = await changePass(newPass2);
+    if (changePassRequest.status == 500) {
       // error DB?
       showPopupError('popupChangePass', 3);
-    } else if (response.status == 200) {
-      let answer = await response.json();
-      if(answer.result == 'changed') {
-        // correct pass
-        closePopup('popupChangePass');
-        showPopupInfo('Пароль успішно змінено');
-      }
+    } else if (changePassRequest.status == 200) {
+      // correct pass
+      closePopup('popupChangePass');
+      showPopupInfo('Пароль успішно змінено');
     }
   }
-
 /* ↑↑↑ functions declaration ↑↑↑ */
 ////////////////////////////////////////////////////////////////////////////////

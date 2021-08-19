@@ -3,20 +3,20 @@
 /* ↓↓↓ VARIABLES ↓↓↓ */
   const { src,
           dest,
-          task,
+          // task,
           series,
           parallel,
           watch
         } = require('gulp');
 
   const bs      = require('browser-sync').create(),
-        del     = require('del'),
+        // del     = require('del'),
         autopre = require('gulp-autoprefixer'),
         concat  = require('gulp-concat'), // ??? а css?
-        imgmin  = require('gulp-imagemin'),
+        // imgmin  = require('gulp-imagemin'),
         notify  = require('gulp-notify'),
         pug     = require('gulp-pug'),
-        rename  = require('gulp-rename'),
+        // rename  = require('gulp-rename'),
         scss    = require('gulp-sass')(require('sass')),
         uglify  = require('gulp-uglify-es').default;
 /* ↑↑↑ /VARIABLES ↑↑↑ */
@@ -85,9 +85,11 @@
 
   // convert js
   function convertJS() {
-    return src(['app/public/libs-js/*.js',
+    return src(['app/public/js-global/*global.js',
+                'app/public/libs-js/*.js',
                 'app/templates/**/*.js',
-                'app/public/js-expanded/*.js'])
+                'app/public/js-expanded/*.js'
+              ])
            // .pipe( uglify() )
            .on('error', notify.onError({
               message : 'Error: <%= error.message %>',

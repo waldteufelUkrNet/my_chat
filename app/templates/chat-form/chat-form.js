@@ -1,6 +1,6 @@
-"use strict";
+"use strict"; // chat-form module
 ////////////////////////////////////////////////////////////////////////////////
-/* ↓↓↓ chat-form module ↓↓↓ */
+/* ↓↓↓ event listeners ↓↓↓ */
   document.addEventListener('click', function(event){
     // open form
     if ( event.target.closest('.chat-form__textarea')
@@ -22,5 +22,5 @@
     ta.blur();
   }
   });
-/* ↑↑↑ chat-form module ↑↑↑ */
+/* ↑↑↑ event listeners ↑↑↑ */
 ////////////////////////////////////////////////////////////////////////////////

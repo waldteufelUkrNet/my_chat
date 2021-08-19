@@ -1,4 +1,4 @@
-"use strict";
+"use strict"; // main.js
 ////////////////////////////////////////////////////////////////////////////////
 /* ↓↓↓ event listeners ↓↓↓ */
   document.addEventListener('click', function(event){
@@ -135,68 +135,3 @@
   }
 /* ↑↑↑ functions declaration ↑↑↑ */
 ////////////////////////////////////////////////////////////////////////////////
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
-}
-
-async function test() {
-  await showMenuItem('aside', 'menu');
-  await sleep(2000);
-  await showMenuItem('aside', 'settings');
-  await sleep(2000);
-  await showMenuItem('aside', 'chatlist');
-  await sleep(2000);
-  await showMenuItem('aside', 'contactlist');
-  await sleep(2000);
-  await showMenuItem('aside', 'usercard');
-  await sleep(2000);
-  await showMenuItem('aside', 'groupcard');
-  await sleep(2000);
-  await showMenuItem('aside', 'chat');
-  await sleep(2000);
-  await showMenuItem('page', 'startP');
-  await sleep(2000);
-  await showMenuItem('page', 'usercardP');
-  await sleep(2000);
-  await showMenuItem('page', 'groupcardP');
-  await sleep(2000);
-  await showMenuItem('page', 'chatP');
-}
-// test();
