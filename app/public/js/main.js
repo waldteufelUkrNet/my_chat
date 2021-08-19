@@ -1,4 +1,86 @@
 "use strict"; // global.js
+
+// це тимчасове рішення. Багатомовність потрібно вирішити шляхом звернення до бд
+// сюди переніс, щоб звільнити інші модулі від цього мотлоху
+var dictionary = {
+  link1: {
+    ua: 'вхід',
+    en: 'login'
+  },
+  link2: {
+    ua: 'реєстрація',
+    en: 'registration'
+  },
+  h4: {
+    ua: 'вільний веб-чат',
+    en: 'free web chat'
+  },
+  h51: {
+    ua: 'щоб увійти, введіть пароль і логін',
+    en: 'to log in, enter the password and login'
+  },
+  h52: {
+    ua: 'щоб почати користуватися чатом, пройдіть реєстрацію',
+    en: 'register to start using the chat'
+  },
+  btn: {
+    ua: 'увійти',
+    en: 'login'
+  },
+  phname: {
+    ua: 'логін…',
+    en: 'login…'
+  },
+  phpass1: {
+    ua: 'пароль…',
+    en: 'password…'
+  },
+  phpass2: {
+    ua: 'повторіть пароль…',
+    en: 'repeat password…'
+  },
+  login: {
+    ua: 'Введіть логін',
+    en: 'Enter your login'
+  },
+  loginLength: {
+    ua: 'Довжина логіну не менше 3х символів',
+    en: 'Login length is at least 3 characters'
+  },
+  noUser: {
+    ua: 'Такого користувача не існує',
+    en: 'There is no such user'
+  },
+  password: {
+    ua: 'Введіть пароль',
+    en: 'Enter the password'
+  },
+  passLength: {
+    ua: 'Пароль повинен бути щонайменше 6 символів',
+    en: 'Password must be at least 6 characters long'
+  },
+  repeat: {
+    ua: 'Повторіть пароль',
+    en: 'Repeat the password'
+  },
+  notMatch: {
+    ua: 'Паролі не співпадають',
+    en: 'Passwords do not match'
+  },
+  wrongPass: {
+    ua: 'Не вірний пароль',
+    en: 'Incorrect password'
+  },
+  serverError: {
+    ua: 'Серверна помилка. Спробуйте ще раз пізніше',
+    en: 'Server error. Please try again later'
+  },
+  loginIsUsed: {
+    ua: 'Ім\'я зайняте',
+    en: 'The name is busy'
+  },
+};
+
 ////////////////////////////////////////////////////////////////////////////////
 /* ↓↓↓ functions declaration ↓↓↓ */
   function sleep(ms) {
@@ -441,6 +523,7 @@
       let logoutRequest = await logoutUser();
       if (logoutRequest.status == 200) {
         document.querySelector('body').innerHTML = logoutRequest.html;
+        document.querySelector('head title').innerHTML = 'Login';
         wSetScroll(document.querySelector('.login-main__inner'), {right:true, overflowXHidden:true});
       } else {
         window.location.href = 'about:blank';
@@ -609,132 +692,10 @@
   }
 /* ↑↑↑ functions declaration ↑↑↑ */
 ////////////////////////////////////////////////////////////////////////////////
-"use strict"; // login.js
-////////////////////////////////////////////////////////////////////////////////
-/* ↓↓↓ variables declaration ↓↓↓ */
-  var dictionary = {
-    link1: {
-      ua: 'вхід',
-      en: 'login'
-    },
-    link2: {
-      ua: 'реєстрація',
-      en: 'registration'
-    },
-    h4: {
-      ua: 'вільний веб-чат',
-      en: 'free web chat'
-    },
-    h51: {
-      ua: 'щоб увійти, введіть пароль і логін',
-      en: 'to log in, enter the password and login'
-    },
-    h52: {
-      ua: 'щоб почати користуватися чатом, пройдіть реєстрацію',
-      en: 'register to start using the chat'
-    },
-    btn: {
-      ua: 'увійти',
-      en: 'login'
-    },
-    phname: {
-      ua: 'логін…',
-      en: 'login…'
-    },
-    phpass1: {
-      ua: 'пароль…',
-      en: 'password…'
-    },
-    phpass2: {
-      ua: 'повторіть пароль…',
-      en: 'repeat password…'
-    },
-    login: {
-      ua: 'Введіть логін',
-      en: 'Enter your login'
-    },
-    loginLength: {
-      ua: 'Довжина логіну не менше 3х символів',
-      en: 'Login length is at least 3 characters'
-    },
-    noUser: {
-      ua: 'Такого користувача не існує',
-      en: 'There is no such user'
-    },
-    password: {
-      ua: 'Введіть пароль',
-      en: 'Enter the password'
-    },
-    passLength: {
-      ua: 'Пароль повинен бути щонайменше 6 символів',
-      en: 'Password must be at least 6 characters long'
-    },
-    repeat: {
-      ua: 'Повторіть пароль',
-      en: 'Repeat the password'
-    },
-    notMatch: {
-      ua: 'Паролі не співпадають',
-      en: 'Passwords do not match'
-    },
-    wrongPass: {
-      ua: 'Не вірний пароль',
-      en: 'Incorrect password'
-    },
-    serverError: {
-      ua: 'Серверна помилка. Спробуйте ще раз пізніше',
-      en: 'Server error. Please try again later'
-    },
-    loginIsUsed: {
-      ua: 'Ім\'я зайняте',
-      en: 'The name is busy'
-    },
-  };
-/* ↑↑↑ variables declaration ↑↑↑ */
+"use strict"; // forms.js
 ////////////////////////////////////////////////////////////////////////////////
 /* ↓↓↓ event listeners ↓↓↓ */
   document.addEventListener('click', function(event) {
-    // переключення на вкладку "вхід"
-    if ( event.target.closest('[data-role="login"]') ) {
-      document.querySelector('[data-role="login"]').classList.add('login-header__link_active');
-      document.querySelector('[data-role="register"]').classList.remove('login-header__link_active');
-      document.querySelector('main.login-main h5:first-of-type').style.display = 'block';
-      document.querySelector('main.login-main h5:last-of-type').style.display = 'none';
-      document.forms.loginForm.setAttribute('action','api/authorization/login');
-      document.forms.loginForm.reset();
-      document.querySelector('input[name="pass2"]').style.display = 'none';
-      document.querySelector('head title').innerHTML = 'Login';
-      hideAllErrors();
-    }
-    // переключення на вкладку "реєстрація"
-    if ( event.target.closest('[data-role="register"]') ) {
-      document.querySelector('[data-role="register"]').classList.add('login-header__link_active');
-      document.querySelector('[data-role="login"]').classList.remove('login-header__link_active');
-      document.querySelector('main.login-main h5:first-of-type').style.display = 'none';
-      document.querySelector('main.login-main h5:last-of-type').style.display = 'block';
-      document.forms.loginForm.setAttribute('action','api/authorization/register');
-      document.forms.loginForm.reset();
-      document.querySelector('input[name="pass2"]').style.display = 'block';
-      document.querySelector('head title').innerHTML = 'Registration';
-      hideAllErrors();
-    }
-
-    // перемикання мови
-    if ( document.querySelector('.lang-switcher') ) {
-      if ( event.target.closest('.lang-switcher') ) {
-        let ls = event.target.closest('.lang-switcher');
-        ls.classList.toggle('lang-switcher_active');
-      }
-      if ( !event.target.closest('.lang-switcher')
-           && document.querySelector('.lang-switcher').classList.contains('lang-switcher_active') ) {
-        document.querySelector('.lang-switcher').classList.remove('lang-switcher_active')
-      }
-      if ( event.target.closest('.lang-switcher__list-item') ) {
-        let lang = event.target.closest('.lang-switcher__list-item').dataset.lang;
-        changePageLang(lang);
-      }
-    }
-
     // валідація форми, відправка
     if ( event.target.closest('form[name="loginForm"] button[type="submit"]') ) {
       event.preventDefault();
@@ -756,35 +717,6 @@
 /* ↑↑↑ event listeners ↑↑↑ */
 ////////////////////////////////////////////////////////////////////////////////
 /* ↓↓↓ functions declaration ↓↓↓ */
-  function changePageLang(lang) {
-    let currentLang = document.querySelector('html').getAttribute('lang') || 'ua';
-    if (lang == currentLang) return;
-
-    let currentImg = document.querySelector('.lang-switcher > .lang-switcher__img-wrapper > .lang-switcher__img');
-    let html = document.querySelector('html');
-    if (lang == "ua") {
-      currentImg.setAttribute('src','../img/ukraine.png');
-      html.setAttribute('lang', 'ua');
-    } else {
-      currentImg.setAttribute('src','../img/united_kingdom.png');
-      html.setAttribute('lang', 'en');
-    }
-
-    let translatedArr = document.querySelectorAll('[data-translate]');
-    translatedArr.forEach(item=>{
-      let attr = item.dataset.translate;
-      item.innerText = dictionary[attr][lang];
-    });
-
-    let form = document.forms.loginForm;
-    form.name.setAttribute('placeholder', dictionary.phname[lang]);
-    form.pass1.setAttribute('placeholder', dictionary.phpass1[lang]);
-    form.pass2.setAttribute('placeholder', dictionary.phpass2[lang]);
-    form.lang.value = lang;
-
-    hideAllErrors();
-  }
-
   async function showError(elem,text) {
     if (elem.clientHeight != 0) {
       elem.querySelector('span').innerText = text;
@@ -904,12 +836,17 @@
 
     // перевірка зайнятості логіна
     if (formType == 'api/authorization/register' && value.length >= 3 ) {
-      if ( !await isLoginFreeTEMP(value) ) {
+
+      let loginStatus = await isLoginFree(value);
+      if (loginStatus) {
+        hideError(errors[0]);
+        submitBtn.setAttribute('type','submit');
+      } else if (loginStatus == false) {
         showError(errors[0], dictionary.loginIsUsed[lang]);
         submitBtn.setAttribute('type','button');
       } else {
-        hideError(errors[0]);
-        submitBtn.setAttribute('type','submit');
+        // error DB?
+        showError(errors[2], dictionary.serverError[lang]);
       }
     }
   }
@@ -967,21 +904,7 @@
     }
   }
 
-  async function isLoginFreeTEMP(login) {
-    const form   = document.forms.loginForm,
-          lang   = form.querySelector('input[name="lang"]').value,
-          errors = document.querySelectorAll('.error-info');
 
-    let loginStatus = await isLoginFree(login);
-    if (loginStatus) {
-      return true
-    } else if (loginStatus == false) {
-      return false
-    } else {
-      // error DB?
-      showError(errors[2], dictionary.serverError[lang]);
-    }
-  }
 
   async function sendData() {
     const form   = document.forms.loginForm,
@@ -999,6 +922,7 @@
       let registerResult = await registerUser(user);
       if (registerResult.status == 200) {
         document.querySelector('body').innerHTML = registerResult.html;
+        document.querySelector('head title').innerHTML = 'My-cha-cha :-)';
         wSetScroll(document.querySelector('.left-side .lists-wrapper'), {right:true, overflowXHidden:true});
       } else if (registerResult.status == 500) {
         // error DB?
@@ -1017,6 +941,7 @@
       let loginResult = await loginUser(user);
       if (loginResult.status == 200) {
         document.querySelector('body').innerHTML = loginResult.html;
+        document.querySelector('head title').innerHTML = 'My-cha-cha :-)';
         wSetScroll(document.querySelector('.left-side .lists-wrapper'), {right:true, overflowXHidden:true});
       } else if (loginResult.status == 500) {
         // error DB?
@@ -1031,6 +956,84 @@
         showError(errors[2], dictionary.serverError[lang]);
       }
     }
+  }
+/* ↑↑↑ functions declaration ↑↑↑ */
+////////////////////////////////////////////////////////////////////////////////
+"use strict"; // login.js
+////////////////////////////////////////////////////////////////////////////////
+/* ↓↓↓ event listeners ↓↓↓ */
+  document.addEventListener('click', function(event) {
+    // переключення на вкладку "вхід"
+    if ( event.target.closest('[data-role="login"]') ) {
+      document.querySelector('[data-role="login"]').classList.add('login-header__link_active');
+      document.querySelector('[data-role="register"]').classList.remove('login-header__link_active');
+      document.querySelector('main.login-main h5:first-of-type').style.display = 'block';
+      document.querySelector('main.login-main h5:last-of-type').style.display = 'none';
+      document.forms.loginForm.setAttribute('action','api/authorization/login');
+      document.forms.loginForm.reset();
+      document.querySelector('input[name="pass2"]').style.display = 'none';
+      document.querySelector('head title').innerHTML = 'Login';
+      hideAllErrors();
+    }
+    // переключення на вкладку "реєстрація"
+    if ( event.target.closest('[data-role="register"]') ) {
+      document.querySelector('[data-role="register"]').classList.add('login-header__link_active');
+      document.querySelector('[data-role="login"]').classList.remove('login-header__link_active');
+      document.querySelector('main.login-main h5:first-of-type').style.display = 'none';
+      document.querySelector('main.login-main h5:last-of-type').style.display = 'block';
+      document.forms.loginForm.setAttribute('action','api/authorization/register');
+      document.forms.loginForm.reset();
+      document.querySelector('input[name="pass2"]').style.display = 'block';
+      document.querySelector('head title').innerHTML = 'Registration';
+      hideAllErrors();
+    }
+
+    // перемикання мови
+    if ( document.querySelector('.lang-switcher') ) {
+      if ( event.target.closest('.lang-switcher') ) {
+        let ls = event.target.closest('.lang-switcher');
+        ls.classList.toggle('lang-switcher_active');
+      }
+      if ( !event.target.closest('.lang-switcher')
+           && document.querySelector('.lang-switcher').classList.contains('lang-switcher_active') ) {
+        document.querySelector('.lang-switcher').classList.remove('lang-switcher_active')
+      }
+      if ( event.target.closest('.lang-switcher__list-item') ) {
+        let lang = event.target.closest('.lang-switcher__list-item').dataset.lang;
+        changePageLang(lang);
+      }
+    }
+  });
+/* ↑↑↑ event listeners ↑↑↑ */
+////////////////////////////////////////////////////////////////////////////////
+/* ↓↓↓ functions declaration ↓↓↓ */
+  function changePageLang(lang) {
+    let currentLang = document.querySelector('html').getAttribute('lang') || 'ua';
+    if (lang == currentLang) return;
+
+    let currentImg = document.querySelector('.lang-switcher > .lang-switcher__img-wrapper > .lang-switcher__img');
+    let html = document.querySelector('html');
+    if (lang == "ua") {
+      currentImg.setAttribute('src','../img/ukraine.png');
+      html.setAttribute('lang', 'ua');
+    } else {
+      currentImg.setAttribute('src','../img/united_kingdom.png');
+      html.setAttribute('lang', 'en');
+    }
+
+    let translatedArr = document.querySelectorAll('[data-translate]');
+    translatedArr.forEach(item=>{
+      let attr = item.dataset.translate;
+      item.innerText = dictionary[attr][lang];
+    });
+
+    let form = document.forms.loginForm;
+    form.name.setAttribute('placeholder', dictionary.phname[lang]);
+    form.pass1.setAttribute('placeholder', dictionary.phpass1[lang]);
+    form.pass2.setAttribute('placeholder', dictionary.phpass2[lang]);
+    form.lang.value = lang;
+
+    hideAllErrors();
   }
 /* ↑↑↑ functions declaration ↑↑↑ */
 ////////////////////////////////////////////////////////////////////////////////
@@ -1194,7 +1197,6 @@
   }
 
   async function registerUser(user) {
-    console.log("registerUser", registerUser);
     let response = await fetch('api/authorization/register', {
       method: 'POST',
       headers: {

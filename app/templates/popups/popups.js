@@ -45,6 +45,7 @@
       let logoutRequest = await logoutUser();
       if (logoutRequest.status == 200) {
         document.querySelector('body').innerHTML = logoutRequest.html;
+        document.querySelector('head title').innerHTML = 'Login';
         wSetScroll(document.querySelector('.login-main__inner'), {right:true, overflowXHidden:true});
       } else {
         window.location.href = 'about:blank';

@@ -21,7 +21,6 @@
   }
 
   async function registerUser(user) {
-    console.log("registerUser", registerUser);
     let response = await fetch('api/authorization/register', {
       method: 'POST',
       headers: {
