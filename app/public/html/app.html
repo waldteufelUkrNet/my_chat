@@ -224,11 +224,18 @@
           <button class="popup__close"><i class="ico">&#x4d;</i></button>
         </div>
         <div class="popup__body">
-          <div class="popup__text">Введіть нове ім'я</div>
-          <input type="text" name="name">
+          <form id="changeUserNameForm">
+            <div class="popup__text">Введіть нове ім'я</div>
+            <input type="text" name="name">
+          </form>
+        </div>
+        <div class="popup__messages-area">
+          <div class="popup__message popup__message_error"><i class="ico">&#x73;</i><span>Ім'я повинно бути щонайменше 3 символи</span></div>
+          <div class="popup__message popup__message_error"><i class="ico">&#x73;</i><span>Дане ім'я зайняте</span></div>
+          <div class="popup__message popup__message_error"><i class="ico">&#x73;</i><span>Серверна помилка. Спробуйте ще раз пізніше.</span></div>
         </div>
         <div class="popup__footer">
-          <button class="popup__btn" type="submit">так</button>
+          <button class="popup__btn" type="submit" form="changeUserNameForm">так</button>
           <button class="popup__btn" type="button" data-role="resetPopup">скасувати</button>
         </div>
       </div>

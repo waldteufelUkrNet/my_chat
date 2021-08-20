@@ -35,7 +35,15 @@ exports.changePassword = function(req, res) {
 }
 
 exports.changeUserName = function(req,res) {
-  const user = req.session.user;
-  console.log(user);
+  const userID  = req.session.user._id,
+        newName = req.body.username;
+
+  User.findByIdAndUpdate(userID, {username: newName}, function(err, user){
+    if(err) {
+      res.sendStatus(500);
+      throw err;
+    }
+    res.sendStatus(200);
+  });
 }
 exports.changeAva = function(req, res) {}

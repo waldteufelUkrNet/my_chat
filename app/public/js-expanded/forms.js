@@ -74,15 +74,37 @@
         // error DB?
         showPopupError('popupChangePass', 3);
       } else if (changePassRequest.status == 200) {
-        // correct pass
         closePopup('popupChangePass');
         showPopupInfo('Пароль успішно змінено');
+      }
+    }
+
+    // change username
+    if ( event.target.closest('#popupChangeName button[type="submit"]') ) {
+      event.preventDefault();
+      let newLogin = document.querySelector('#changeUserNameForm input[name="name"]').value;
+
+      if (!newLogin || newLogin.lengtn < 3) {
+        showPopupError('popupChangeName', 0);
+        return
+      }
+
+      let changeNameRequest = await changeName(newLogin);
+      if (changeNameRequest.status == 500) {
+        // error DB?
+        showPopupError('popupChangeName', 2);
+      } else if (changeNameRequest.status == 200) {
+        closePopup('popupChangeName');
+        showPopupInfo('Ім\'я успішно змінено');
+        document.querySelector('h1.header__header').textContent = newLogin;
       }
     }
   });
 
   document.addEventListener('input', async function(event){
-    if (event.target.name == 'name') {
+
+    // check inputs in login/regster form
+    if (event.target.name == 'name' && event.target.closest('[name="loginForm"]') ) {
       checkInpName();
     }
     if (event.target.name == 'pass1') {
@@ -92,6 +114,7 @@
       checkInpRepP();
     }
 
+    // check change password inputs
     if ( event.target.closest('#popupChangePass [name="oldPass"]') ) {
       let password = event.target.closest('#popupChangePass [name="oldPass"]').value;
       if (password.length >=6) {
@@ -121,6 +144,29 @@
           value2 = event.target.closest('#changePass_repeat').value;
       if (value1 == value2) {
         hidePopupError('popupChangePass', 2);
+      }
+    }
+
+    // check change name input
+    if (event.target.name == 'name' && event.target.closest('#changeUserNameForm')) {
+
+      let input     = event.target,
+          newLogin  = input.value,
+          submitBtn = input.closest('#popupChangeName').querySelector('[form="changeUserNameForm"]');
+      // перевірка зайнятості логіна
+      if (newLogin.length >= 3 ) {
+
+        let loginStatus = await isLoginFree(newLogin);
+        if (loginStatus) {
+          submitBtn.setAttribute('type','submit');
+          hidePopupError('popupChangeName')
+        } else if (loginStatus == false) {
+          submitBtn.setAttribute('type','button');
+          showPopupError('popupChangeName', 1)
+        } else {
+          // error DB?
+          showPopupError('popupChangeName', 2)
+        }
       }
     }
   });

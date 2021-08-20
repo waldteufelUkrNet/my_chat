@@ -108,5 +108,21 @@
       return {status: response.status}
     }
   }
+
+  async function changeName(newName) {
+    let response = await fetch('api/settings/changeUserName', {
+      method: 'POST',
+      headers: {
+        'Accept'       : 'text/html',
+        'Content-Type' : 'application/json'
+      },
+      body: JSON.stringify({username:newName})
+    });
+    if (response.status == 200) {
+      return {status: 200}
+    } else {
+      return {status: response.status}
+    }
+  }
 /* ↑↑↑ functions declaration ↑↑↑ */
 ////////////////////////////////////////////////////////////////////////////////

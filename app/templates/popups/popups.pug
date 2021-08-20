@@ -170,10 +170,21 @@
       button.popup__close
         i.ico &#x4d;
     .popup__body
-      .popup__text Введіть нове ім'я
-      input(type="text" name="name")
+      form#changeUserNameForm
+        .popup__text Введіть нове ім'я
+        input(type="text" name="name")
+    .popup__messages-area
+      .popup__message.popup__message_error
+        i.ico &#x73;
+        span Ім'я повинно бути щонайменше 3 символи
+      .popup__message.popup__message_error
+        i.ico &#x73;
+        span Дане ім'я зайняте
+      .popup__message.popup__message_error
+        i.ico &#x73;
+        span Серверна помилка. Спробуйте ще раз пізніше.
     .popup__footer
-      button(type="submit").popup__btn так
+      button(type="submit" form="changeUserNameForm").popup__btn так
       button(type="button" data-role="resetPopup").popup__btn скасувати
 
   //- avatar change
