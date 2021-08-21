@@ -245,11 +245,19 @@
           <button class="popup__close"><i class="ico">&#x4d;</i></button>
         </div>
         <div class="popup__body">
-          <div class="popup__text">Виберіть нове зображення для аватарки</div>
-          <input type="file" name="ava">
+          <form id="changeUserAvaForm">
+            <!--(enctype="multipart/form-data")-->
+            <div class="popup__text">Виберіть нове зображення для аватарки</div>
+            <input type="file" name="ava">
+          </form>
+        </div>
+        <div class="popup__messages-area">
+          <div class="popup__message popup__message_error"><i class="ico">&#x73;</i><span>Виберіть картинку</span></div>
+          <div class="popup__message popup__message_error"><i class="ico">&#x73;</i><span>Не коректний тип файлу. Картинка повинна бути у форматі jpg, jpeg або png</span></div>
+          <div class="popup__message popup__message_error"><i class="ico">&#x73;</i><span>Завеликий розмір файлу. Картинка повинна бути меншою за 2 мегабайти</span></div>
         </div>
         <div class="popup__footer">
-          <button class="popup__btn" type="submit">так</button>
+          <button class="popup__btn" type="submit" form="changeUserAvaForm">так</button>
           <button class="popup__btn" type="button" data-role="resetPopup">скасувати</button>
         </div>
       </div>

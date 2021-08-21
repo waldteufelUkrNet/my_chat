@@ -24,26 +24,26 @@ function getLogger(module) {
   // create transports
   let transports = [
     new winston.transports.Console({
-      level     : ENV == 'development' ? 'debug' : 'error',
-      format    : winston.format.combine(
+      level  : ENV == 'development' ? 'debug' : 'error',
+      format : winston.format.combine(
         label({ label: path }),
         winston.format.colorize(),
         consoleFormat
       )
     }),
     new winston.transports.File({
-      filename  :'logs/debug.log',
-      level     : 'debug',
-      format    : winston.format.combine(
+      filename :'logs/debug.log',
+      level    : 'debug',
+      format   : winston.format.combine(
         label({ label: path }),
         timestamp(),
         fileFormat
       )
     }),
     new winston.transports.File({
-      filename  :'logs/error.log',
-      level     : 'error',
-      format    : winston.format.combine(
+      filename :'logs/error.log',
+      level    : 'error',
+      format   : winston.format.combine(
         label({ label: path }),
         timestamp(),
         fileFormat

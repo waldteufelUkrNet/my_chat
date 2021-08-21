@@ -19,5 +19,6 @@
       "secure"             : false,
       "maxAge"             : null
     }
-  }
+  },
+  "avatarPath"             : "app/public/img/users"
 }

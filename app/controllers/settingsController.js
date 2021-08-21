@@ -1,5 +1,13 @@
 const User = require('../models/user.js').User;
 
+exports.changeAva = function(req,res){
+  if(req.file) {
+    res.status(200).send(req.file.filename);
+  } else {
+    res.sendStatus(500);
+  }
+}
+
 exports.checkOldPassword = function(req, res) {
   const userID = req.session.user._id,
         pass   = req.body.pass;
@@ -34,7 +42,7 @@ exports.changePassword = function(req, res) {
   });
 }
 
-exports.changeUserName = function(req,res) {
+exports.changeUserName = function(req, res) {
   const userID  = req.session.user._id,
         newName = req.body.username;
 
@@ -46,4 +54,3 @@ exports.changeUserName = function(req,res) {
     res.sendStatus(200);
   });
 }
-exports.changeAva = function(req, res) {}

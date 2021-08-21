@@ -124,5 +124,20 @@
       return {status: response.status}
     }
   }
+
+  async function changeAva() {
+    let formData = new FormData( document.querySelector('#changeUserAvaForm') );
+
+    let response = await fetch('api/settings/changeAva', {
+      method: 'POST',
+      body: formData
+    });
+    if (response.status == 200) {
+      let filename = await response.text();
+      return {status: 200, filename: filename}
+    } else {
+      return {status: response.status}
+    }
+  }
 /* ↑↑↑ functions declaration ↑↑↑ */
 ////////////////////////////////////////////////////////////////////////////////

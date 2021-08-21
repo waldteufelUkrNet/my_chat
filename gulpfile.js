@@ -85,7 +85,7 @@
 
   // convert js
   function convertJS() {
-    return src(['app/public/js-global/*global.js',
+    return src(['app/public/js-global/*.js',
                 'app/public/libs-js/*.js',
                 'app/templates/**/*.js',
                 'app/public/js-expanded/*.js'

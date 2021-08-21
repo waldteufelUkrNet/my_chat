@@ -99,6 +99,42 @@
         document.querySelector('h1.header__header').textContent = newLogin;
       }
     }
+
+    // change avatar
+    if ( event.target.closest('#popupChangeAva button[type="submit"]') ) {
+      event.preventDefault();
+      let input = document.querySelector('#popupChangeAva input[type="file"]');
+
+      if (!input.files[0]) {
+        // файл не обрано
+        showPopupError('popupChangeAva', 0);
+        return
+      }
+
+      let image = input.files[0];
+
+      if (image.type != 'image/png' && image.type != 'image/jpeg') {
+        // не підходящий mime-тип файлу
+        showPopupError('popupChangeAva', 1);
+        return
+      }
+
+      if (image.size > 2097152) {
+        // розмір більше 2мб
+        showPopupError('popupChangeAva', 2);
+        return
+      }
+
+      let changeAvaRequest = await changeAva();
+      if (changeAvaRequest.status == 500) {
+        // error DB?
+        showPopupError('popupChangeAva', 2);
+      } else if (changeAvaRequest.status == 200) {
+        closePopup('popupChangeAva');
+        showPopupInfo('Аватарку успішно змінено');
+        document.querySelector('.header .logo__img').setAttribute('src', userConfig.pathToUserLogo + changeAvaRequest.filename + '?v=' + Date.now());
+      }
+    }
   });
 
   document.addEventListener('input', async function(event){
@@ -167,6 +203,23 @@
           // error DB?
           showPopupError('popupChangeName', 2)
         }
+      }
+    }
+
+    // check file input (avatar img)
+    if (event.target.name == "ava" && event.target.closest('#popupChangeAva') ) {
+      let input = event.target;
+      if (input.files[0]) {
+        hidePopupError('popupChangeAva', 0);
+      }
+
+      let image = input.files[0];
+      if (image.type == 'image/png' || image.type == 'image/jpeg') {
+        hidePopupError('popupChangeAva', 1);
+      }
+
+      if (image.size <= 2097152) {
+        hidePopupError('popupChangeAva', 2);
       }
     }
   });
