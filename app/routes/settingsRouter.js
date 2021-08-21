@@ -6,7 +6,7 @@ const express    = require('express'),
 
 const storageConfig = multer.diskStorage({
         destination : (req, res, cb) => {
-          cb(null, config.get('avatarPath'));
+          cb(null, config.get('avatarPathFromServer'));
         },
         filename    : (req, res, cb) => {
           cb(null, req.session.user._id + '.jpg');

@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/waldteufelUkrNet/my_chat#readme",
   "dependencies": {
+    "chalk": "^3.0.0",
     "connect-mongo": "^4.4.1",
     "cookie-parser": "~1.4.4",
     "express": "^4.17.1",

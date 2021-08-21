@@ -20,5 +20,6 @@
       "maxAge"             : null
     }
   },
-  "avatarPath"             : "app/public/img/users"
+  "avatarPathFromServer"   : "app/public/img/users/",
+  "avatarPathFromClient"   : "img/users/"
 }

@@ -1,4 +1,7 @@
-const config            = require('./config'),
+process.env.NODE_ENV = 'development';
+
+const chalk             = require('chalk'),
+      config            = require('./config'),
       createError       = require('http-errors'),
       express           = require('express'),
       helmet            = require('helmet'),                   // security
@@ -18,7 +21,8 @@ const config            = require('./config'),
       app               = express();
 
 app.listen(port, function(err,result){
-  console.log(`server start listen on port ${port}`);
+  console.log( chalk.black.bgGreen(`server start listen on port ${port}` ));
+  log.debug(`server start listen on port ${port}`);
 });
 
 // app.use( helmet() );

@@ -468,7 +468,7 @@ var dictionary = {
     // open
     if ( event.target.closest('.header__menu-btn_secondary')
          && ! document.querySelector('.header__search_active') ) {
-      let input   = document.querySelector('.header__search');
+      let input = document.querySelector('.header__search');
       input.classList.add('header__search_active');
       input.focus();
       return
@@ -477,7 +477,7 @@ var dictionary = {
     // close
     if( document.querySelector('.header__search_active')
         && !event.target.closest('.header__search_active') ) {
-      let input   = document.querySelector('.header__search');
+      let input = document.querySelector('.header__search');
       input.classList.remove('header__search_active');
       input.blur();
     }
@@ -690,8 +690,8 @@ var dictionary = {
         return
       }
 
-      if (image.size > 2097152) {
-        // розмір більше 2мб
+      if (image.size > 5242880) {
+        // розмір більше 5мб
         showPopupError('popupChangeAva', 2);
         return
       }
@@ -789,7 +789,7 @@ var dictionary = {
         hidePopupError('popupChangeAva', 1);
       }
 
-      if (image.size <= 2097152) {
+      if (image.size <= 5242880) {
         hidePopupError('popupChangeAva', 2);
       }
     }

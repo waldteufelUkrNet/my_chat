@@ -119,8 +119,8 @@
         return
       }
 
-      if (image.size > 2097152) {
-        // розмір більше 2мб
+      if (image.size > 5242880) {
+        // розмір більше 5мб
         showPopupError('popupChangeAva', 2);
         return
       }
@@ -218,7 +218,7 @@
         hidePopupError('popupChangeAva', 1);
       }
 
-      if (image.size <= 2097152) {
+      if (image.size <= 5242880) {
         hidePopupError('popupChangeAva', 2);
       }
     }
