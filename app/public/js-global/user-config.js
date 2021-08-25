@@ -1,7 +1,7 @@
 "use strict"; // user-config.js
 ////////////////////////////////////////////////////////////////////////////////
 /* ↓↓↓ xxx ↓↓↓ */
-  const userConfig = {
+  var userConfig = {
     pathToUserLogo : 'img/users/'
   };
 /* ↑↑↑ xxx ↑↑↑ */

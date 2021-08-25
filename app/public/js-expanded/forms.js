@@ -1,11 +1,12 @@
 "use strict"; // forms.js
 ////////////////////////////////////////////////////////////////////////////////
 /* ↓↓↓ event listeners ↓↓↓ */
+
   document.addEventListener('click', async function(event) {
-    // валідація форми, відправка
     if ( event.target.closest('form[name="loginForm"] button[type="submit"]') ) {
       event.preventDefault();
       formValidation();
+      return
     }
 
     // toggle password visibility
@@ -431,7 +432,7 @@
 
   async function sendRegistrationData() {
     const form   = document.forms.loginForm,
-          url    = form.getAttribute('action'),
+          url    = form.dataset.action,
           lang   = form.querySelector('input[name="lang"]').value,
           name   = form.querySelector('input[name="name"]').value,
           pass   = form.querySelector('input[name="pass1"]').value,

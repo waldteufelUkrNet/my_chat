@@ -1,4 +1,5 @@
-const User = require('../models/user.js').User;
+const log  = require('../libs/log')(module),
+      User = require('../models/user.js').User;
 
 exports.loginUser = function(req, res) {
   const userName = req.body.name,
@@ -6,18 +7,20 @@ exports.loginUser = function(req, res) {
 
   User.findOne({'username':userName}, function(err,user){
     if (err) {
+      log.error('\nerr.name:\n    ' + err.name + '\nerr.message:\n    ' + err.message + '\nerr.stack:\n    ' +err.stack);
       res.sendStatus(500);
       throw err;
-    }
-    if (!user) {
-      res.sendStatus(404);
-    }
-    if (user) {
-      if( !user.checkPassword(userPass) ) {
-        res.sendStatus(403);
-      } else {
-        // користувач існує, пароль вірний
-        renderBody(req, res, user);
+    } else {
+      if (!user) {
+        res.sendStatus(404);
+      }
+      if (user) {
+        if( !user.checkPassword(userPass) ) {
+          res.sendStatus(403);
+        } else {
+          // користувач існує, пароль вірний
+          renderBody(req, res, user);
+        }
       }
     }
   });
@@ -32,9 +35,13 @@ exports.deleteUser = function(req,res) {
   let userID = req.session.user._id;
 
   User.findByIdAndDelete(userID, function(err, user){
-    if(err) throw err;
-    req.session.destroy();
-    res.status(200).render('notSignedPageBody/notSignedPageBody.pug')
+    if (err) {
+      log.error('\nerr.name:\n    ' + err.name + '\nerr.message:\n    ' + err.message + '\nerr.stack:\n    ' +err.stack);
+      throw err;
+    } else {
+      req.session.destroy();
+      res.status(200).render('notSignedPageBody/notSignedPageBody.pug')
+    }
   });
 }
 
@@ -43,10 +50,12 @@ exports.registerUser = function(req, res) {
         userPass = req.body.pass,
         userLang = req.body.lang;
 
-  User.create({username: userName,password: userPass, language: userLang},function(err,user){
-    if (err) throw err;
-
-    renderBody(req, res, user)
+  User.create({username: userName,password: userPass, language: userLang},function(err,user) {
+    if (err) {
+      log.error('\nerr.name:\n    ' + err.name + '\nerr.message:\n    ' + err.message + '\nerr.stack:\n    ' +err.stack);
+    } else {
+      renderBody(req, res, user)
+    }
   });
 }
 
@@ -55,14 +64,16 @@ exports.existUser = function(req, res) {
 
   User.findOne({'username':userName}, function(err,user){
     if (err) {
+      log.error('\nerr.name:\n    ' + err.name + '\nerr.message:\n    ' + err.message + '\nerr.stack:\n    ' +err.stack);
       res.status(500);
       throw err;
-    }
-    if (!user) {
-      res.status(200).send('free');
-    }
-    if (user) {
-      res.status(200).send('used');
+    } else {
+      if (!user) {
+        res.status(200).send('free');
+      }
+      if (user) {
+        res.status(200).send('used');
+      }
     }
   });
 }

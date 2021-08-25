@@ -13,6 +13,7 @@ const chalk             = require('chalk'),
 
       authRouter        = require('./routes/authRouter'),
       indexRouter       = require('./routes/indexRouter'),
+      searchRouter      = require('./routes/searchRouter'),
       settingsRouter    = require('./routes/settingsRouter'),
       testRouter        = require('./routes/testRouter'),
 
@@ -20,9 +21,13 @@ const chalk             = require('chalk'),
 
       app               = express();
 
-app.listen(port, function(err,result){
-  console.log( chalk.black.bgGreen(`server start listen on port ${port}` ));
-  log.debug(`server start listen on port ${port}`);
+app.listen(3002, function(err,result){
+  if (err) {
+    log.error('\nerr.name:\n    ' + err.name + '\nerr.message:\n    ' + err.message + '\nerr.stack:\n    ' +err.stack);
+  } else {
+    console.log( chalk.black.bgGreen(`server start listen on port ${port}` ));
+    log.debug(`server start listen on port ${port}`);
+  }
 });
 
 // app.use( helmet() );
@@ -46,10 +51,12 @@ let sessionConfig = config.get('session');
 sessionConfig.store = mongoSessionStore.create({ mongoUrl: config.get('mongoose:uri') });
 app.use(session( sessionConfig ));
 
-app.use('/', indexRouter);
+
 app.use('/test', testRouter);
 app.use('/api/authorization', authRouter);
 app.use('/api/settings', settingsRouter);
+app.use('/api/search', searchRouter);
+app.use('/', indexRouter);
 
 app.use( express.static(path.join(__dirname, 'public')) );
 

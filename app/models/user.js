@@ -20,7 +20,7 @@ let schema = new Schema({
     type: Date,
     default: Date.now
   },
-  language: {
+  lang: {
     type: String,
     default: 'ua'
   }

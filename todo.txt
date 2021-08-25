@@ -51,6 +51,28 @@ api показу сповіщень при згорнутому браузері
     const roles -> var roles
   помилка пропадає, хоча настравді ніякої передекларації не існує.
 
+- проблеми при пошуку тексту в полях колекції. Випадають різні помилки, напрю:
+  MongoError: text index required for $text query
+  такий код не працює:
+  let collection = db.collection('users');
+  let cursor = collection.find({$text: {$search: query}});
+  Такий теж:
+  User.find({$text: {$search: query}}, function(err, docs){
+    if(err) return console.log("err: ", err);
+    console.log('docs: ', docs);
+  });
+  замість того, щоб створити індекс username_text, бд створює username_1
+  оголошення в моделі типу: schema.index({username: 'text'}); не працюють
+  це теж не дає результату
+  username: {
+    type: String,
+    unique: true,
+    required: true,
+    text: true
+  }
+  спроба стаорити індекс через компас видає помилку:
+  Index build failed: 21ca888b-e770-4a8d-858b-10c405361f14: Collection my-cha-cha.users ( 2fe116a2-ac79-4375-8fe2-7f54d085e110 ) :: caused by :: language override unsupported: ua
+
 - на майбутні проекти: логіка попапів - тільки відкриття/закриття, а все інше -
   це форми: валідація, відслідковування сабмітів, змін в полях тощо. Зараз просто
   не хочу по десять разів правити код і перейменовувати функції

@@ -1,5 +1,6 @@
 const config = require('../config'),
       fs     = require('fs'),
+      log    = require('../libs/log')(module),
       path   = require('path');
 
 exports.index = function (req, res) {
@@ -20,6 +21,7 @@ exports.index = function (req, res) {
     let avatarPath = config.get('avatarPathFromServer') + user._id + '.jpg';
     fs.access(avatarPath, fs.constants.F_OK, function(err){
       if (err) {
+        log.error('\nerr.name:\n    ' + err.name + '\nerr.message:\n    ' + err.message + '\nerr.stack:\n    ' +err.stack);
         //not exist
       } else {
         params.avaUrl = config.get('avatarPathFromClient') + user._id + '.jpg';

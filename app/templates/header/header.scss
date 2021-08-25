@@ -62,22 +62,37 @@
     padding: 0px;
     color: $d0;
     font: 1.2em light;
+    transition: width .3s, padding .3s;
     @media (min-width: $bpm) {
       height: 30px;
-      transition: width .5s, padding .5s;
     }
     &_active {
       width: calc(100% - 90px);
       padding: 6px;
       border: 1px solid $d0;
       background-color: $c44;
+      transition: width .3s, padding .3s;
       @media (min-width: $bpm) {
         width: calc(100% - 70px);
         right: 35px;
         height: 30px;
         font: 1em light;
-        transition: width .5s, padding .5s;
       }
+    }
+  }
+  &__search-results-wrapper {
+    height: 0px;
+    border: 1px solid $d0;
+    position: absolute;
+    z-index: 3;
+    background-color: #005159;
+    padding: 0 6px;
+    display: none;
+    transition: height .3s;
+    &_active {
+      height: 300px;
+      transition: height .3s;
+      padding: 6px;
     }
   }
 }

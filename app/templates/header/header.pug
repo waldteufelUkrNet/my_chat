@@ -1,7 +1,12 @@
 -
-  let shortName = username.toUpperCase().slice(0,2);
+  let shortName;
+  if (username) {
+    shortName = username.toUpperCase().slice(0,2);
+  } else {
+    shortName = 'UN';
+  }
+
   let url = avaUrl || '';
-  console.log('avaUrl ', avaUrl);
 
 header.header
   button(type="button" data-target-group="aside" data-target="menu").header__menu-btn.header__menu-btn_primary
@@ -14,5 +19,7 @@ header.header
       h1.header__header #{username}
       h4.header__subheader @#{id}
   input(type="text").header__search
+  .header__search-results-wrapper
+    
   button(type="button").header__menu-btn.header__menu-btn_secondary
     i.ico(style='font-size: 25px') &#x55;

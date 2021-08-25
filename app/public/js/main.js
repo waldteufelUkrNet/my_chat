@@ -91,7 +91,7 @@ var dictionary = {
 "use strict"; // user-config.js
 ////////////////////////////////////////////////////////////////////////////////
 /* ↓↓↓ xxx ↓↓↓ */
-  const userConfig = {
+  var userConfig = {
     pathToUserLogo : 'img/users/'
   };
 /* ↑↑↑ xxx ↑↑↑ */
@@ -465,24 +465,73 @@ var dictionary = {
 ////////////////////////////////////////////////////////////////////////////////
 /* ↓↓↓ event listeners ↓↓↓ */
   document.addEventListener('click', function(event){
-    // open
+    // open search input
     if ( event.target.closest('.header__menu-btn_secondary')
          && ! document.querySelector('.header__search_active') ) {
       let input = document.querySelector('.header__search');
+      input.value = '';
       input.classList.add('header__search_active');
       input.focus();
       return
     }
 
-    // close
+    // close search input
     if( document.querySelector('.header__search_active')
         && !event.target.closest('.header__search_active') ) {
       let input = document.querySelector('.header__search');
       input.classList.remove('header__search_active');
       input.blur();
     }
+
+    // close search result wrapper
+    if( document.querySelector('.header__search-results-wrapper_active') ) {
+      hideSearchResultWrapper()
+    }
+  });
+
+  document.addEventListener('input', async function(event) {
+    // show search-results area
+    if ( event.target.classList.contains('header__search') ) {
+      let query = event.target.value;
+      if (query.length >= 3) {
+        // let wrapper = document.querySelector('.header__search-results-wrapper');
+        // if ( !wrapper.classList.contains('.header__search-results-wrapper_active') ) {
+        //   showSearchResultWrapper();
+        // }
+        let queryRequest = await searchInDB(query);
+        console.log("queryRequest", queryRequest);
+      }
+    }
   });
 /* ↑↑↑ event listeners ↑↑↑ */
+////////////////////////////////////////////////////////////////////////////////
+/* ↓↓↓ functions declaration ↓↓↓ */
+  function showSearchResultWrapper() {
+    let input     = document.querySelector('.header__search'),
+        inpWidth  = input.clientWidth,
+        inpHeight = input.clientHeight,
+        inpTop    = input.getBoundingClientRect().top,
+        inpLeft   = input.getBoundingClientRect().left;
+
+    let wrapper = document.querySelector('.header__search-results-wrapper');
+    wrapper.style.left = inpLeft + 'px';
+    wrapper.style.width = inpWidth + 2 + 'px';
+    wrapper.style.top = inpTop + 3 + inpHeight + 'px';
+    wrapper.style.display = 'block';
+
+    setTimeout(function(){
+      wrapper.classList.add('header__search-results-wrapper_active');
+    },100);
+  }
+
+  function hideSearchResultWrapper() {
+    let wrapper = document.querySelector('.header__search-results-wrapper');
+    wrapper.classList.remove('header__search-results-wrapper_active');
+    setTimeout(function(){
+      wrapper.style.display = 'none';
+    }, 400);
+  }
+/* ↑↑↑ functions declaration ↑↑↑ */
 ////////////////////////////////////////////////////////////////////////////////
 "use strict"; // template: popups
 ////////////////////////////////////////////////////////////////////////////////
@@ -572,11 +621,12 @@ var dictionary = {
 "use strict"; // forms.js
 ////////////////////////////////////////////////////////////////////////////////
 /* ↓↓↓ event listeners ↓↓↓ */
+
   document.addEventListener('click', async function(event) {
-    // валідація форми, відправка
     if ( event.target.closest('form[name="loginForm"] button[type="submit"]') ) {
       event.preventDefault();
       formValidation();
+      return
     }
 
     // toggle password visibility
@@ -1002,7 +1052,7 @@ var dictionary = {
 
   async function sendRegistrationData() {
     const form   = document.forms.loginForm,
-          url    = form.getAttribute('action'),
+          url    = form.dataset.action,
           lang   = form.querySelector('input[name="lang"]').value,
           name   = form.querySelector('input[name="name"]').value,
           pass   = form.querySelector('input[name="pass1"]').value,
@@ -1075,7 +1125,7 @@ var dictionary = {
       document.querySelector('[data-role="register"]').classList.remove('login-header__link_active');
       document.querySelector('main.login-main h5:first-of-type').style.display = 'block';
       document.querySelector('main.login-main h5:last-of-type').style.display = 'none';
-      document.forms.loginForm.setAttribute('action','api/authorization/login');
+      document.forms.loginForm.setAttribute('data-action','api/authorization/login');
       document.forms.loginForm.reset();
       document.querySelector('input[name="pass2"]').style.display = 'none';
       document.querySelector('head title').innerHTML = 'Login';
@@ -1087,7 +1137,7 @@ var dictionary = {
       document.querySelector('[data-role="login"]').classList.remove('login-header__link_active');
       document.querySelector('main.login-main h5:first-of-type').style.display = 'none';
       document.querySelector('main.login-main h5:last-of-type').style.display = 'block';
-      document.forms.loginForm.setAttribute('action','api/authorization/register');
+      document.forms.loginForm.setAttribute('data-action','api/authorization/register');
       document.forms.loginForm.reset();
       document.querySelector('input[name="pass2"]').style.display = 'block';
       document.querySelector('head title').innerHTML = 'Registration';
@@ -1417,6 +1467,23 @@ var dictionary = {
     if (response.status == 200) {
       let filename = await response.text();
       return {status: 200, filename: filename}
+    } else {
+      return {status: response.status}
+    }
+  }
+
+  async function searchInDB(query) {
+    console.log("query", query);
+    let response = await fetch('api/search', {
+      method: 'POST',
+      headers: {
+        'Accept'       : 'text/html',
+        'Content-Type' : 'application/json'
+      },
+      body: JSON.stringify({query: query})
+    });
+    if (response.status == 200) {
+      return {status: 200}
     } else {
       return {status: response.status}
     }

@@ -8,7 +8,7 @@
       document.querySelector('[data-role="register"]').classList.remove('login-header__link_active');
       document.querySelector('main.login-main h5:first-of-type').style.display = 'block';
       document.querySelector('main.login-main h5:last-of-type').style.display = 'none';
-      document.forms.loginForm.setAttribute('action','api/authorization/login');
+      document.forms.loginForm.setAttribute('data-action','api/authorization/login');
       document.forms.loginForm.reset();
       document.querySelector('input[name="pass2"]').style.display = 'none';
       document.querySelector('head title').innerHTML = 'Login';
@@ -20,7 +20,7 @@
       document.querySelector('[data-role="login"]').classList.remove('login-header__link_active');
       document.querySelector('main.login-main h5:first-of-type').style.display = 'none';
       document.querySelector('main.login-main h5:last-of-type').style.display = 'block';
-      document.forms.loginForm.setAttribute('action','api/authorization/register');
+      document.forms.loginForm.setAttribute('data-action','api/authorization/register');
       document.forms.loginForm.reset();
       document.querySelector('input[name="pass2"]').style.display = 'block';
       document.querySelector('head title').innerHTML = 'Registration';
