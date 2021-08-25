@@ -899,7 +899,7 @@ var dictionary = {
   function formValidation() {
     let lang     = document.querySelector('html').getAttribute('lang'),
         form     = document.forms.loginForm,
-        formType = form.getAttribute('action'),
+        formType = form.dataset.action,
         inpName  = form.querySelector('input[name="name"]'),
         inpPass  = form.querySelector('input[name="pass1"]'),
         inpRepP  = form.querySelector('input[name="pass2"]'),
@@ -956,7 +956,7 @@ var dictionary = {
         lang      = document.querySelector('html').getAttribute('lang'),
         form      = document.forms.loginForm,
         submitBtn = form.querySelector('#submitBtn'),
-        formType  = form.getAttribute('action');
+        formType  = form.dataset.action;
     // сервер: нема такого користувача
     if (value
         && (errors[0].querySelector('span').innerText == dictionary.noUser[lang]

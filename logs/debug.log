@@ -1,0 +1,162 @@
+2021-08-25T14:34:48.112Z [app/app.js] debug: server start listen on port 3002
+2021-08-25T14:35:11.910Z [app/app.js] debug: server start listen on port 3002
+2021-08-25T14:35:42.531Z [app/app.js] debug: server start listen on port 3002
+2021-08-25T14:51:31.416Z [app/app.js] debug: server start listen on port 3002
+2021-08-25T14:52:45.656Z [app/app.js] debug: server start listen on port 3002
+2021-08-25T17:32:46.979Z [app/app.js] debug: server start listen on port 3002
+2021-08-25T17:36:01.866Z [controllers/indexController.js] error: 
+err.name:
+    Error
+err.message:
+    ENOENT: no such file or directory, access 'B:\files\work_area\my_chat\app\public\img\users\612645043d7e840ec4b3c364.jpg'
+err.stack:
+    Error: ENOENT: no such file or directory, access 'B:\files\work_area\my_chat\app\public\img\users\612645043d7e840ec4b3c364.jpg'
+2021-08-25T17:38:08.256Z [app/app.js] debug: server start listen on port 3002
+2021-08-25T17:40:12.580Z [controllers/authController.js] error: 
+err.name:
+    MongoError
+err.message:
+    E11000 duplicate key error collection: my-cha-cha.users index: username_1 dup key: { username: "qwqw" }
+err.stack:
+    MongoError: E11000 duplicate key error collection: my-cha-cha.users index: username_1 dup key: { username: "qwqw" }
+    at Function.create (B:\files\work_area\my_chat\node_modules\mongoose\node_modules\mongodb\lib\core\error.js:57:12)
+    at toError (B:\files\work_area\my_chat\node_modules\mongoose\node_modules\mongodb\lib\utils.js:130:22)
+    at B:\files\work_area\my_chat\node_modules\mongoose\node_modules\mongodb\lib\operations\common_functions.js:258:39
+    at handler (B:\files\work_area\my_chat\node_modules\mongoose\node_modules\mongodb\lib\core\sdam\topology.js:953:24)
+    at B:\files\work_area\my_chat\node_modules\mongoose\node_modules\mongodb\lib\cmap\connection_pool.js:350:13
+    at handleOperationResult (B:\files\work_area\my_chat\node_modules\mongoose\node_modules\mongodb\lib\core\sdam\server.js:565:5)
+    at MessageStream.messageHandler (B:\files\work_area\my_chat\node_modules\mongoose\node_modules\mongodb\lib\cmap\connection.js:281:5)
+    at MessageStream.emit (node:events:394:28)
+    at processIncomingData (B:\files\work_area\my_chat\node_modules\mongoose\node_modules\mongodb\lib\cmap\message_stream.js:144:12)
+    at MessageStream._write (B:\files\work_area\my_chat\node_modules\mongoose\node_modules\mongodb\lib\cmap\message_stream.js:42:5)
+    at writeOrBuffer (node:internal/streams/writable:389:12)
+    at _write (node:internal/streams/writable:330:10)
+    at MessageStream.Writable.write (node:internal/streams/writable:334:10)
+    at Socket.ondata (node:internal/streams/readable:754:22)
+    at Socket.emit (node:events:394:28)
+    at addChunk (node:internal/streams/readable:315:12)
+2021-08-25T17:40:14.410Z [controllers/authController.js] error: 
+err.name:
+    MongoError
+err.message:
+    E11000 duplicate key error collection: my-cha-cha.users index: username_1 dup key: { username: "qwqw" }
+err.stack:
+    MongoError: E11000 duplicate key error collection: my-cha-cha.users index: username_1 dup key: { username: "qwqw" }
+    at Function.create (B:\files\work_area\my_chat\node_modules\mongoose\node_modules\mongodb\lib\core\error.js:57:12)
+    at toError (B:\files\work_area\my_chat\node_modules\mongoose\node_modules\mongodb\lib\utils.js:130:22)
+    at B:\files\work_area\my_chat\node_modules\mongoose\node_modules\mongodb\lib\operations\common_functions.js:258:39
+    at handler (B:\files\work_area\my_chat\node_modules\mongoose\node_modules\mongodb\lib\core\sdam\topology.js:953:24)
+    at B:\files\work_area\my_chat\node_modules\mongoose\node_modules\mongodb\lib\cmap\connection_pool.js:350:13
+    at handleOperationResult (B:\files\work_area\my_chat\node_modules\mongoose\node_modules\mongodb\lib\core\sdam\server.js:565:5)
+    at MessageStream.messageHandler (B:\files\work_area\my_chat\node_modules\mongoose\node_modules\mongodb\lib\cmap\connection.js:281:5)
+    at MessageStream.emit (node:events:394:28)
+    at processIncomingData (B:\files\work_area\my_chat\node_modules\mongoose\node_modules\mongodb\lib\cmap\message_stream.js:144:12)
+    at MessageStream._write (B:\files\work_area\my_chat\node_modules\mongoose\node_modules\mongodb\lib\cmap\message_stream.js:42:5)
+    at writeOrBuffer (node:internal/streams/writable:389:12)
+    at _write (node:internal/streams/writable:330:10)
+    at MessageStream.Writable.write (node:internal/streams/writable:334:10)
+    at Socket.ondata (node:internal/streams/readable:754:22)
+    at Socket.emit (node:events:394:28)
+    at addChunk (node:internal/streams/readable:315:12)
+2021-08-25T17:40:16.813Z [controllers/authController.js] error: 
+err.name:
+    MongoError
+err.message:
+    E11000 duplicate key error collection: my-cha-cha.users index: username_1 dup key: { username: "qwqw" }
+err.stack:
+    MongoError: E11000 duplicate key error collection: my-cha-cha.users index: username_1 dup key: { username: "qwqw" }
+    at Function.create (B:\files\work_area\my_chat\node_modules\mongoose\node_modules\mongodb\lib\core\error.js:57:12)
+    at toError (B:\files\work_area\my_chat\node_modules\mongoose\node_modules\mongodb\lib\utils.js:130:22)
+    at B:\files\work_area\my_chat\node_modules\mongoose\node_modules\mongodb\lib\operations\common_functions.js:258:39
+    at handler (B:\files\work_area\my_chat\node_modules\mongoose\node_modules\mongodb\lib\core\sdam\topology.js:953:24)
+    at B:\files\work_area\my_chat\node_modules\mongoose\node_modules\mongodb\lib\cmap\connection_pool.js:350:13
+    at handleOperationResult (B:\files\work_area\my_chat\node_modules\mongoose\node_modules\mongodb\lib\core\sdam\server.js:565:5)
+    at MessageStream.messageHandler (B:\files\work_area\my_chat\node_modules\mongoose\node_modules\mongodb\lib\cmap\connection.js:281:5)
+    at MessageStream.emit (node:events:394:28)
+    at processIncomingData (B:\files\work_area\my_chat\node_modules\mongoose\node_modules\mongodb\lib\cmap\message_stream.js:144:12)
+    at MessageStream._write (B:\files\work_area\my_chat\node_modules\mongoose\node_modules\mongodb\lib\cmap\message_stream.js:42:5)
+    at writeOrBuffer (node:internal/streams/writable:389:12)
+    at _write (node:internal/streams/writable:330:10)
+    at MessageStream.Writable.write (node:internal/streams/writable:334:10)
+    at Socket.ondata (node:internal/streams/readable:754:22)
+    at Socket.emit (node:events:394:28)
+    at addChunk (node:internal/streams/readable:315:12)
+2021-08-25T17:40:23.174Z [controllers/authController.js] error: 
+err.name:
+    MongoError
+err.message:
+    E11000 duplicate key error collection: my-cha-cha.users index: username_1 dup key: { username: "qwqw" }
+err.stack:
+    MongoError: E11000 duplicate key error collection: my-cha-cha.users index: username_1 dup key: { username: "qwqw" }
+    at Function.create (B:\files\work_area\my_chat\node_modules\mongoose\node_modules\mongodb\lib\core\error.js:57:12)
+    at toError (B:\files\work_area\my_chat\node_modules\mongoose\node_modules\mongodb\lib\utils.js:130:22)
+    at B:\files\work_area\my_chat\node_modules\mongoose\node_modules\mongodb\lib\operations\common_functions.js:258:39
+    at handler (B:\files\work_area\my_chat\node_modules\mongoose\node_modules\mongodb\lib\core\sdam\topology.js:953:24)
+    at B:\files\work_area\my_chat\node_modules\mongoose\node_modules\mongodb\lib\cmap\connection_pool.js:350:13
+    at handleOperationResult (B:\files\work_area\my_chat\node_modules\mongoose\node_modules\mongodb\lib\core\sdam\server.js:565:5)
+    at MessageStream.messageHandler (B:\files\work_area\my_chat\node_modules\mongoose\node_modules\mongodb\lib\cmap\connection.js:281:5)
+    at MessageStream.emit (node:events:394:28)
+    at processIncomingData (B:\files\work_area\my_chat\node_modules\mongoose\node_modules\mongodb\lib\cmap\message_stream.js:144:12)
+    at MessageStream._write (B:\files\work_area\my_chat\node_modules\mongoose\node_modules\mongodb\lib\cmap\message_stream.js:42:5)
+    at writeOrBuffer (node:internal/streams/writable:389:12)
+    at _write (node:internal/streams/writable:330:10)
+    at MessageStream.Writable.write (node:internal/streams/writable:334:10)
+    at Socket.ondata (node:internal/streams/readable:754:22)
+    at Socket.emit (node:events:394:28)
+    at addChunk (node:internal/streams/readable:315:12)
+2021-08-25T17:40:34.472Z [controllers/authController.js] error: 
+err.name:
+    MongoError
+err.message:
+    E11000 duplicate key error collection: my-cha-cha.users index: username_1 dup key: { username: "qwqw" }
+err.stack:
+    MongoError: E11000 duplicate key error collection: my-cha-cha.users index: username_1 dup key: { username: "qwqw" }
+    at Function.create (B:\files\work_area\my_chat\node_modules\mongoose\node_modules\mongodb\lib\core\error.js:57:12)
+    at toError (B:\files\work_area\my_chat\node_modules\mongoose\node_modules\mongodb\lib\utils.js:130:22)
+    at B:\files\work_area\my_chat\node_modules\mongoose\node_modules\mongodb\lib\operations\common_functions.js:258:39
+    at handler (B:\files\work_area\my_chat\node_modules\mongoose\node_modules\mongodb\lib\core\sdam\topology.js:953:24)
+    at B:\files\work_area\my_chat\node_modules\mongoose\node_modules\mongodb\lib\cmap\connection_pool.js:350:13
+    at handleOperationResult (B:\files\work_area\my_chat\node_modules\mongoose\node_modules\mongodb\lib\core\sdam\server.js:565:5)
+    at MessageStream.messageHandler (B:\files\work_area\my_chat\node_modules\mongoose\node_modules\mongodb\lib\cmap\connection.js:281:5)
+    at MessageStream.emit (node:events:394:28)
+    at processIncomingData (B:\files\work_area\my_chat\node_modules\mongoose\node_modules\mongodb\lib\cmap\message_stream.js:144:12)
+    at MessageStream._write (B:\files\work_area\my_chat\node_modules\mongoose\node_modules\mongodb\lib\cmap\message_stream.js:42:5)
+    at writeOrBuffer (node:internal/streams/writable:389:12)
+    at _write (node:internal/streams/writable:330:10)
+    at MessageStream.Writable.write (node:internal/streams/writable:334:10)
+    at Socket.ondata (node:internal/streams/readable:754:22)
+    at Socket.emit (node:events:394:28)
+    at addChunk (node:internal/streams/readable:315:12)
+2021-08-25T17:42:41.522Z [app/app.js] debug: server start listen on port 3002
+2021-08-25T17:43:36.378Z [controllers/authController.js] error: 
+err.name:
+    MongoError
+err.message:
+    E11000 duplicate key error collection: my-cha-cha.users index: username_1 dup key: { username: "qwqw" }
+err.stack:
+    MongoError: E11000 duplicate key error collection: my-cha-cha.users index: username_1 dup key: { username: "qwqw" }
+    at Function.create (B:\files\work_area\my_chat\node_modules\mongoose\node_modules\mongodb\lib\core\error.js:57:12)
+    at toError (B:\files\work_area\my_chat\node_modules\mongoose\node_modules\mongodb\lib\utils.js:130:22)
+    at B:\files\work_area\my_chat\node_modules\mongoose\node_modules\mongodb\lib\operations\common_functions.js:258:39
+    at handler (B:\files\work_area\my_chat\node_modules\mongoose\node_modules\mongodb\lib\core\sdam\topology.js:953:24)
+    at B:\files\work_area\my_chat\node_modules\mongoose\node_modules\mongodb\lib\cmap\connection_pool.js:350:13
+    at handleOperationResult (B:\files\work_area\my_chat\node_modules\mongoose\node_modules\mongodb\lib\core\sdam\server.js:565:5)
+    at MessageStream.messageHandler (B:\files\work_area\my_chat\node_modules\mongoose\node_modules\mongodb\lib\cmap\connection.js:281:5)
+    at MessageStream.emit (node:events:394:28)
+    at processIncomingData (B:\files\work_area\my_chat\node_modules\mongoose\node_modules\mongodb\lib\cmap\message_stream.js:144:12)
+    at MessageStream._write (B:\files\work_area\my_chat\node_modules\mongoose\node_modules\mongodb\lib\cmap\message_stream.js:42:5)
+    at writeOrBuffer (node:internal/streams/writable:389:12)
+    at _write (node:internal/streams/writable:330:10)
+    at MessageStream.Writable.write (node:internal/streams/writable:334:10)
+    at Socket.ondata (node:internal/streams/readable:754:22)
+    at Socket.emit (node:events:394:28)
+    at addChunk (node:internal/streams/readable:315:12)
+2021-08-25T17:46:24.176Z [app/app.js] debug: server start listen on port 3002
+2021-08-25T17:46:31.072Z [app/app.js] debug: server start listen on port 3002
+2021-08-25T17:47:36.614Z [app/app.js] debug: server start listen on port 3002
+2021-08-25T17:50:56.484Z [app/app.js] debug: server start listen on port 3002
+2021-08-25T17:56:18.808Z [app/app.js] debug: server start listen on port 3002
+2021-08-25T17:57:20.497Z [app/app.js] debug: server start listen on port 3002
+2021-08-25T17:57:45.730Z [app/app.js] debug: server start listen on port 3002
+2021-08-25T17:58:48.666Z [app/app.js] debug: server start listen on port 3002
+2021-08-25T17:59:18.770Z [app/app.js] debug: server start listen on port 3002

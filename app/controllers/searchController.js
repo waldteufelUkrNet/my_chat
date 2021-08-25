@@ -5,13 +5,14 @@ exports.searchInDB = function(req, res) {
   const query = req.body.query;
   console.log("query", query);
 
-    // if (err) {
-    //   log.error('\nerr.name:\n    ' + err.name + '\nerr.message:\n    ' + err.message + '\nerr.stack:\n    ' +err.stack);
-
-  // User.find({$text: {$search: query}}, function(err, docs){
-  //   if(err) return console.log("err: ", err);
-  //   console.log('docs: ', docs);
-  // });
+  User.find({$text: {$search: query}}, function(err, users){
+    if (err) {
+      log.error('\nerr.name:\n    ' + err.name + '\nerr.message:\n    ' + err.message + '\nerr.stack:\n    ' +err.stack);
+      throw err;
+    } else {
+      console.log('users: ', users);
+    }
+  });
 
   // const MongoClient = require('mongodb').MongoClient,
   //       url         = 'mongodb://localhost:27017/';
