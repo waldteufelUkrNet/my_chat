@@ -1,37 +1,44 @@
-const log  = require('../libs/log')(module),
-      User = require('../models/user.js').User;
+const log      = require('../libs/log')(module),
+      objectId = require("mongodb").ObjectId,
+      User     = require('../models/user.js').User;
 
-exports.searchInDB = function(req, res) {
-  const query = req.body.query;
-  console.log("query", query);
+exports.searchInDB = async function(req, res) {
+  const query        = req.body.query,
+        userSet      = new Set(),
+        outputFormat = {_id: 1, username: 1};
 
-  User.find({$text: {$search: query}}, function(err, users){
+  // search by id 61268061afc2912c881e79ac
+  if ( (query.length == 24 && !query.startsWith('@') )
+       ||
+       (query.length == 25 && query.startsWith('@') )
+     ) {
+    let searchedID = query;
+    if ( query.length == 25 && query.startsWith('@') ) {
+      searchedID = query.slice(1);
+    }
+    searchedID = new objectId(searchedID);
+
+    await User.findById(searchedID, outputFormat, function(err, user){
+      if (err) {
+        res.sendStatus(500);
+        log.error('\nerr.name:\n    ' + err.name + '\nerr.message:\n    ' + err.message + '\nerr.stack:\n    ' +err.stack);
+        throw err;
+      }
+      userSet.add(user);
+    });
+  }
+
+  // search by name
+  const regexp = new RegExp(query, 'ui');
+  await User.find({username:regexp}, outputFormat, function(err,users){
     if (err) {
+      res.sendStatus(500);
       log.error('\nerr.name:\n    ' + err.name + '\nerr.message:\n    ' + err.message + '\nerr.stack:\n    ' +err.stack);
       throw err;
     } else {
-      console.log('users: ', users);
+      userSet.add(users);
     }
   });
 
-  // const MongoClient = require('mongodb').MongoClient,
-  //       url         = 'mongodb://localhost:27017/';
-  // MongoClient.connect(url, function(err, client) {
-  //   if (err) throw err;
-  //   let db = client.db('my-cha-cha');
-  //   let collection = db.collection('users');
-
-  //   collection.createIndex({username: "text"});
-
-  //   let cursor = collection.find({$text: {$search: query}});
-  //   cursor.forEach(function(obj){
-  //     print(obj);
-  //   })
-
-  // });
-
+  res.status(200).send( Array.from(userSet) );
 }
-// https://www.youtube.com/watch?v=neroaFo5ELc&list=PL0lO_mIqDDFXcxN3fRjc-EOWZLqW8dLVV&index=7
-// https://mongoosejs.com/docs/guide.html#indexes
-// https://stackoverflow.com/questions/51349764/createindex-in-mongoose
-// https://docs.mongodb.com/manual/indexes/

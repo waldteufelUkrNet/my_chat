@@ -6,8 +6,7 @@ let schema = new Schema({
   username: {
     type: String,
     unique: true,
-    required: true,
-    text:true
+    required: true
   },
   hashedPassword: {
     type: String,

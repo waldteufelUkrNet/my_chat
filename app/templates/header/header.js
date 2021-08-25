@@ -36,7 +36,15 @@
         //   showSearchResultWrapper();
         // }
         let queryRequest = await searchInDB(query);
-        console.log("queryRequest", queryRequest);
+        if (queryRequest.status == 200) {
+          // показ списку
+          let userList = queryRequest.users;
+          console.log("userList", userList);
+          // wSetScroll(document.querySelector('.login-main__inner'), {right:true, overflowXHidden:true});
+        } else {
+          // обробка помилки
+          console.log('обробка помилки');
+        }
       }
     }
   });

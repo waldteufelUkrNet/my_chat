@@ -499,7 +499,15 @@ var dictionary = {
         //   showSearchResultWrapper();
         // }
         let queryRequest = await searchInDB(query);
-        console.log("queryRequest", queryRequest);
+        if (queryRequest.status == 200) {
+          // показ списку
+          let userList = queryRequest.users;
+          console.log("userList", userList);
+          // wSetScroll(document.querySelector('.login-main__inner'), {right:true, overflowXHidden:true});
+        } else {
+          // обробка помилки
+          console.log('обробка помилки');
+        }
       }
     }
   });
@@ -1473,17 +1481,17 @@ var dictionary = {
   }
 
   async function searchInDB(query) {
-    console.log("query", query);
     let response = await fetch('api/search', {
       method: 'POST',
       headers: {
-        'Accept'       : 'text/html',
+        'Accept'       : 'application/json',
         'Content-Type' : 'application/json'
       },
       body: JSON.stringify({query: query})
     });
     if (response.status == 200) {
-      return {status: 200}
+      let users = await response.json();
+      return {status: 200, users: users[0]}
     } else {
       return {status: response.status}
     }
