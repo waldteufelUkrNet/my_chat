@@ -1,13 +1,13 @@
-const log      = require('../libs/log')(module),
+const config   = require('../config'),
+      fs       = require('fs'),
+      log      = require('../libs/log')(module),
       objectId = require("mongodb").ObjectId,
       User     = require('../models/user.js').User;
 
 exports.searchInDB = async function(req, res) {
   const query        = req.body.query,
-        userSet      = new Set(),
+        userArr      = new Array(),
         outputFormat = {_id: 1, username: 1};
-
-  // search by id 61268061afc2912c881e79ac
   if ( (query.length == 24 && !query.startsWith('@') )
        ||
        (query.length == 25 && query.startsWith('@') )
@@ -24,7 +24,7 @@ exports.searchInDB = async function(req, res) {
         log.error('\nerr.name:\n    ' + err.name + '\nerr.message:\n    ' + err.message + '\nerr.stack:\n    ' +err.stack);
         throw err;
       }
-      userSet.add(user);
+      userArr.push(user);
     });
   }
 
@@ -36,9 +36,22 @@ exports.searchInDB = async function(req, res) {
       log.error('\nerr.name:\n    ' + err.name + '\nerr.message:\n    ' + err.message + '\nerr.stack:\n    ' +err.stack);
       throw err;
     } else {
-      userSet.add(users);
+      users.forEach(user => {
+        userArr.push(user);
+      });
     }
   });
+  res.status(200).send( userArr );
+}
 
-  res.status(200).send( Array.from(userSet) );
+exports.searchAva = async function(req, res) {
+  const avatarPath = config.get('avatarPathFromServer') + req.body.id + '.jpg';
+  console.log("avatarPath", avatarPath);
+  fs.access(avatarPath, fs.constants.F_OK, function(err){
+    if (err) {
+      res.sendStatus(404);
+    } else {
+      res.sendStatus(200);
+    }
+  });
 }

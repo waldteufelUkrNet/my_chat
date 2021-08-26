@@ -475,6 +475,11 @@ var dictionary = {
       return
     }
 
+    if ( event.target.closest('.header__search-result') ) {
+      let id = event.target.closest('.header__search-result').getAttribute('id');
+      openCard(id);
+    }
+
     // close search input
     if( document.querySelector('.header__search_active')
         && !event.target.closest('.header__search_active') ) {
@@ -502,11 +507,9 @@ var dictionary = {
         if (queryRequest.status == 200) {
           // показ списку
           let userList = queryRequest.users;
-          console.log("userList", userList);
-          // wSetScroll(document.querySelector('.login-main__inner'), {right:true, overflowXHidden:true});
+          buildMatchedList(userList);
         } else {
           // обробка помилки
-          console.log('обробка помилки');
         }
       }
     }
@@ -538,6 +541,43 @@ var dictionary = {
     setTimeout(function(){
       wrapper.style.display = 'none';
     }, 400);
+  }
+
+  function buildMatchedList(list) {
+    let wrapper = document.querySelector('.header__search-results-wrapper .wjs-scroll__content');
+    wrapper.innerHTML = '';
+
+    if (list && list.length) {
+      list.forEach(user => {
+        let html = '<div class="header__search-result" id="' + user._id + '">\
+                      <div class="logo">\
+                        <p class="logo__name">' + user.username.slice(0,2).toUpperCase() + '</p>\
+                        <img class="logo__img" src="">\
+                      </div>\
+                      <div class="header__search-result-name">' + user.username + '</div>\
+                    </div>';
+        wrapper.insertAdjacentHTML('beforeEnd', html);
+      });
+    }
+    showSearchResultWrapper();
+    wSetScroll(document.querySelector('.header__search-results-wrapper .wjs-scroll'), {right:true, overflowXHidden:true});
+
+    downloadMatchedListAvatars();
+  }
+
+  function downloadMatchedListAvatars () {
+    let users = document.querySelectorAll('.header__search-result');
+    users.forEach( async (user) => {
+      let id = user.getAttribute('id');
+      let avaRequest = await searchAva(id);
+      if (avaRequest) {
+        user.querySelector('.logo__img').setAttribute('src', userConfig.pathToUserLogo + id + '.jpg');
+      }
+    });
+  }
+
+  function openCard(id) {
+    console.log("id", id);
   }
 /* ↑↑↑ functions declaration ↑↑↑ */
 ////////////////////////////////////////////////////////////////////////////////
@@ -1481,7 +1521,7 @@ var dictionary = {
   }
 
   async function searchInDB(query) {
-    let response = await fetch('api/search', {
+    let response = await fetch('api/search/user', {
       method: 'POST',
       headers: {
         'Accept'       : 'application/json',
@@ -1491,9 +1531,26 @@ var dictionary = {
     });
     if (response.status == 200) {
       let users = await response.json();
-      return {status: 200, users: users[0]}
+      console.log("users", users);
+      return {status: 200, users: users}
     } else {
       return {status: response.status}
+    }
+  }
+
+  async function searchAva(userID) {
+    let response = await fetch('api/search/ava', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({id:userID})
+    });
+    if (response.status == 200) {
+      return true
+    } else {
+      return false
     }
   }
 /* ↑↑↑ functions declaration ↑↑↑ */

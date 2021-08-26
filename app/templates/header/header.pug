@@ -20,6 +20,13 @@ header.header
       h4.header__subheader @#{id}
   input(type="text").header__search
   .header__search-results-wrapper
-    
+    .wjs-scroll(data-scroll='right').header__search-results-wrapper-inner
+      .wjs-scroll__content-wrapper
+        .wjs-scroll__content
+          //- .header__search-result(id='')
+          //-   .logo
+          //-     p.logo__name AB
+          //-     img.logo__img(src="")
+          //-   .header__search-result-name Вася
   button(type="button").header__menu-btn.header__menu-btn_secondary
     i.ico(style='font-size: 25px') &#x55;

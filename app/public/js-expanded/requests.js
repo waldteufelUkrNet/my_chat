@@ -141,7 +141,7 @@
   }
 
   async function searchInDB(query) {
-    let response = await fetch('api/search', {
+    let response = await fetch('api/search/user', {
       method: 'POST',
       headers: {
         'Accept'       : 'application/json',
@@ -151,9 +151,26 @@
     });
     if (response.status == 200) {
       let users = await response.json();
-      return {status: 200, users: users[0]}
+      console.log("users", users);
+      return {status: 200, users: users}
     } else {
       return {status: response.status}
+    }
+  }
+
+  async function searchAva(userID) {
+    let response = await fetch('api/search/ava', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({id:userID})
+    });
+    if (response.status == 200) {
+      return true
+    } else {
+      return false
     }
   }
 /* ↑↑↑ functions declaration ↑↑↑ */
