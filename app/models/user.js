@@ -23,6 +23,19 @@ let schema = new Schema({
   lang: {
     type: String,
     default: 'ua'
+  },
+  contacts: {
+    type: Array
+  },
+  monochats: {
+    type: Array
+  },
+  groupchats: {
+    type: Array
+  },
+  status: {       // online/ofline
+    type: Boolean,
+    default: false
   }
 });
 

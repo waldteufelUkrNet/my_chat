@@ -476,8 +476,8 @@ var dictionary = {
     }
 
     if ( event.target.closest('.header__search-result') ) {
-      let id = event.target.closest('.header__search-result').getAttribute('id');
-      openCard(id);
+      let id = event.target.closest('.header__search-result').dataset.id;
+      openUserCard(id);
     }
 
     // close search input
@@ -549,7 +549,7 @@ var dictionary = {
 
     if (list && list.length) {
       list.forEach(user => {
-        let html = '<div class="header__search-result" id="' + user._id + '">\
+        let html = '<div class="header__search-result" data-id="' + user._id + '">\
                       <div class="logo">\
                         <p class="logo__name">' + user.username.slice(0,2).toUpperCase() + '</p>\
                         <img class="logo__img" src="">\
@@ -568,16 +568,12 @@ var dictionary = {
   function downloadMatchedListAvatars () {
     let users = document.querySelectorAll('.header__search-result');
     users.forEach( async (user) => {
-      let id = user.getAttribute('id');
+      let id = user.dataset.id;
       let avaRequest = await searchAva(id);
       if (avaRequest) {
         user.querySelector('.logo__img').setAttribute('src', userConfig.pathToUserLogo + id + '.jpg');
       }
     });
-  }
-
-  function openCard(id) {
-    console.log("id", id);
   }
 /* ↑↑↑ functions declaration ↑↑↑ */
 ////////////////////////////////////////////////////////////////////////////////
@@ -669,7 +665,6 @@ var dictionary = {
 "use strict"; // forms.js
 ////////////////////////////////////////////////////////////////////////////////
 /* ↓↓↓ event listeners ↓↓↓ */
-
   document.addEventListener('click', async function(event) {
     if ( event.target.closest('form[name="loginForm"] button[type="submit"]') ) {
       event.preventDefault();
@@ -1115,6 +1110,7 @@ var dictionary = {
       if (registerResult.status == 200) {
         document.querySelector('body').innerHTML = registerResult.html;
         document.querySelector('head title').innerHTML = 'My-cha-cha :-)';
+        showContactsList();
         wSetScroll(document.querySelector('.left-side .lists-wrapper'), {right:true, overflowXHidden:true});
       } else if (registerResult.status == 500) {
         // error DB?
@@ -1134,6 +1130,7 @@ var dictionary = {
       if (loginResult.status == 200) {
         document.querySelector('body').innerHTML = loginResult.html;
         document.querySelector('head title').innerHTML = 'My-cha-cha :-)';
+        showContactsList();
         wSetScroll(document.querySelector('.left-side .lists-wrapper'), {right:true, overflowXHidden:true});
       } else if (loginResult.status == 500) {
         // error DB?
@@ -1243,6 +1240,8 @@ var dictionary = {
 ////////////////////////////////////////////////////////////////////////////////
 "use strict"; // main.js
 ////////////////////////////////////////////////////////////////////////////////
+showContactsList();
+////////////////////////////////////////////////////////////////////////////////
 /* ↓↓↓ event listeners ↓↓↓ */
   document.addEventListener('click', function(event){
     if ( event.target.closest('[data-target-group]') ) {
@@ -1280,30 +1279,30 @@ var dictionary = {
     // open groupcard / usercard (chatlist)
     if ( event.target.closest('.logo')
          && event.target.closest('.chat-item') ) {
-      let chatId  = event.target.closest('.chat-item').dataset.id,
+      let id      = event.target.closest('.chat-item').dataset.id,
           isGroup = event.target.closest('.chat-item').dataset.group;
       if (isGroup) {
-        openGroupCard(chatId);
+        openGroupCard(id);
       } else {
-        openUserCard(chatId);
+        openUserCard(id);
       }
     }
 
     // open usercard (chat)
     if ( event.target.closest('.logo')
          && event.target.closest('.chat-list__item_received') ) {
-      let contactId = event.target.closest('.chat-list__item_received').dataset.id;
-      openUserCard(contactId);
+      let id = event.target.closest('.chat-list__item_received').dataset.id;
+      openUserCard(id);
     }
 
     // open groupcard / usercard (subheader)
     if ( event.target.closest('.subheader') ) {
-      let contactId = event.target.closest('.subheader').dataset.id,
-          isGroup   = event.target.closest('.subheader').dataset.group;
+      let id      = event.target.closest('.subheader').dataset.id,
+          isGroup = event.target.closest('.subheader').dataset.group;
       if (isGroup) {
-        openGroupCard(contactId);
+        openGroupCard(id);
       } else {
-        openUserCard(contactId);
+        openUserCard(id);
       }
     }
 
@@ -1323,6 +1322,11 @@ var dictionary = {
 ////////////////////////////////////////////////////////////////////////////////
 /* ↓↓↓ functions declaration ↓↓↓ */
   function showMenuItem(group, target) {
+    // це свого роду затичка: код для сторінок з формою входу і чатом один і той
+    // же. Для показу контактів викликається функція showContactsList(), а їй
+    // потрібна бокова панель, якої нема на сторінці з формою
+    if( ! document.querySelector('.left-side')) return;
+
     document.querySelector('.left-side').classList.remove('left-side_with-subheader');
     document.querySelector('.left-side .subheader').style.display = 'none';
     let targetGroup = document.querySelectorAll('.list[data-list-group="' + group + '"]'),
@@ -1332,6 +1336,8 @@ var dictionary = {
       item.classList.remove('list_active');
     });
     targetItem.classList.add('list_active');
+
+    if (group == 'aside' && target == 'contactlist') showContactsList();
 
     wSetScroll(document.querySelector('.lists-wrapper'), {right:true, overflowXHidden:true})
   }
@@ -1347,8 +1353,10 @@ var dictionary = {
   function openUserCard(id) {
     console.log(`Відкрити usercard id: ${id}`);
     if ( isSmallView() ) {
+      console.log("smallView");
       showMenuItem('aside', 'usercard')
     } else {
+      console.log("bigView");
       showMenuItem('page', 'usercardP')
     }
   }
@@ -1375,6 +1383,36 @@ var dictionary = {
     } else {
       showMenuItem('page', 'chatP')
     }
+  }
+
+  async function showContactsList() {
+    let contactsListRequest = await renderContactsList();
+    if (contactsListRequest.status == 200) {
+      if (contactsListRequest.html.length > 0) {
+        // показ списку
+        document.querySelector('.left-side .list_active').innerHTML = contactsListRequest.html;
+        downloadContactsListAvatars();
+        wSetScroll( document.querySelector('.lists-wrapper.wjs-scroll'),
+                    { right:true,
+                      overflowXHidden:true
+                  });
+      } else {
+        showMenuItem('aside', 'startL');
+      }
+    } else {
+      showMenuItem('aside', 'startL');
+    }
+  }
+
+  function downloadContactsListAvatars () {
+    let users = document.querySelectorAll('.contact-list .contact-item');
+    users.forEach( async (user) => {
+      let id = user.dataset.id;
+      let avaRequest = await searchAva(id);
+      if (avaRequest) {
+        user.querySelector('.logo__img').setAttribute('src', userConfig.pathToUserLogo + id + '.jpg');
+      }
+    });
   }
 /* ↑↑↑ functions declaration ↑↑↑ */
 ////////////////////////////////////////////////////////////////////////////////
@@ -1531,7 +1569,6 @@ var dictionary = {
     });
     if (response.status == 200) {
       let users = await response.json();
-      console.log("users", users);
       return {status: 200, users: users}
     } else {
       return {status: response.status}
@@ -1551,6 +1588,21 @@ var dictionary = {
       return true
     } else {
       return false
+    }
+  }
+
+  async function renderContactsList() {
+    let response = await fetch('api/render/contactsList', {
+      method: 'GET',
+      headers: {
+        'Accept': 'text/json'
+      }
+    });
+    if (response.status == 200) {
+      let html = await response.text();
+      return {status: 200, html: html}
+    } else {
+      return {status: response.status}
     }
   }
 /* ↑↑↑ functions declaration ↑↑↑ */

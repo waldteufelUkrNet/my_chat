@@ -5,9 +5,11 @@ const config   = require('../config'),
       User     = require('../models/user.js').User;
 
 exports.searchInDB = async function(req, res) {
-  const query        = req.body.query,
-        userArr      = new Array(),
-        outputFormat = {_id: 1, username: 1};
+  const query         = req.body.query,
+        userArr       = new Array(),
+        outputFormat  = {_id: 1, username: 1},
+        currentUserID = req.session.user._id;
+
   if ( (query.length == 24 && !query.startsWith('@') )
        ||
        (query.length == 25 && query.startsWith('@') )
@@ -24,7 +26,9 @@ exports.searchInDB = async function(req, res) {
         log.error('\nerr.name:\n    ' + err.name + '\nerr.message:\n    ' + err.message + '\nerr.stack:\n    ' +err.stack);
         throw err;
       }
-      userArr.push(user);
+      if (user._id != currentUserID) {
+        userArr.push(user);
+      }
     });
   }
 
@@ -37,7 +41,9 @@ exports.searchInDB = async function(req, res) {
       throw err;
     } else {
       users.forEach(user => {
-        userArr.push(user);
+        if (user._id != currentUserID) {
+          userArr.push(user);
+        }
       });
     }
   });
@@ -46,7 +52,6 @@ exports.searchInDB = async function(req, res) {
 
 exports.searchAva = async function(req, res) {
   const avatarPath = config.get('avatarPathFromServer') + req.body.id + '.jpg';
-  console.log("avatarPath", avatarPath);
   fs.access(avatarPath, fs.constants.F_OK, function(err){
     if (err) {
       res.sendStatus(404);

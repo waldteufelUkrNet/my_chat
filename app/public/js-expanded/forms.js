@@ -1,7 +1,6 @@
 "use strict"; // forms.js
 ////////////////////////////////////////////////////////////////////////////////
 /* ↓↓↓ event listeners ↓↓↓ */
-
   document.addEventListener('click', async function(event) {
     if ( event.target.closest('form[name="loginForm"] button[type="submit"]') ) {
       event.preventDefault();
@@ -447,6 +446,7 @@
       if (registerResult.status == 200) {
         document.querySelector('body').innerHTML = registerResult.html;
         document.querySelector('head title').innerHTML = 'My-cha-cha :-)';
+        showContactsList();
         wSetScroll(document.querySelector('.left-side .lists-wrapper'), {right:true, overflowXHidden:true});
       } else if (registerResult.status == 500) {
         // error DB?
@@ -466,6 +466,7 @@
       if (loginResult.status == 200) {
         document.querySelector('body').innerHTML = loginResult.html;
         document.querySelector('head title').innerHTML = 'My-cha-cha :-)';
+        showContactsList();
         wSetScroll(document.querySelector('.left-side .lists-wrapper'), {right:true, overflowXHidden:true});
       } else if (loginResult.status == 500) {
         // error DB?

@@ -151,7 +151,6 @@
     });
     if (response.status == 200) {
       let users = await response.json();
-      console.log("users", users);
       return {status: 200, users: users}
     } else {
       return {status: response.status}
@@ -171,6 +170,21 @@
       return true
     } else {
       return false
+    }
+  }
+
+  async function renderContactsList() {
+    let response = await fetch('api/render/contactsList', {
+      method: 'GET',
+      headers: {
+        'Accept': 'text/json'
+      }
+    });
+    if (response.status == 200) {
+      let html = await response.text();
+      return {status: 200, html: html}
+    } else {
+      return {status: response.status}
     }
   }
 /* ↑↑↑ functions declaration ↑↑↑ */

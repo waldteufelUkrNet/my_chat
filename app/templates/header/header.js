@@ -13,8 +13,8 @@
     }
 
     if ( event.target.closest('.header__search-result') ) {
-      let id = event.target.closest('.header__search-result').getAttribute('id');
-      openCard(id);
+      let id = event.target.closest('.header__search-result').dataset.id;
+      openUserCard(id);
     }
 
     // close search input
@@ -86,7 +86,7 @@
 
     if (list && list.length) {
       list.forEach(user => {
-        let html = '<div class="header__search-result" id="' + user._id + '">\
+        let html = '<div class="header__search-result" data-id="' + user._id + '">\
                       <div class="logo">\
                         <p class="logo__name">' + user.username.slice(0,2).toUpperCase() + '</p>\
                         <img class="logo__img" src="">\
@@ -105,16 +105,12 @@
   function downloadMatchedListAvatars () {
     let users = document.querySelectorAll('.header__search-result');
     users.forEach( async (user) => {
-      let id = user.getAttribute('id');
+      let id = user.dataset.id;
       let avaRequest = await searchAva(id);
       if (avaRequest) {
         user.querySelector('.logo__img').setAttribute('src', userConfig.pathToUserLogo + id + '.jpg');
       }
     });
-  }
-
-  function openCard(id) {
-    console.log("id", id);
   }
 /* ↑↑↑ functions declaration ↑↑↑ */
 ////////////////////////////////////////////////////////////////////////////////
