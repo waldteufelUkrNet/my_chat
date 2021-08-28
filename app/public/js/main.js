@@ -475,6 +475,7 @@ var dictionary = {
       return
     }
 
+    // open user card
     if ( event.target.closest('.header__search-result') ) {
       let id = event.target.closest('.header__search-result').dataset.id;
       openUserCard(id);
@@ -1244,6 +1245,8 @@ showContactsList();
 ////////////////////////////////////////////////////////////////////////////////
 /* ↓↓↓ event listeners ↓↓↓ */
   document.addEventListener('click', function(event){
+
+    // toggle lef-side menus
     if ( event.target.closest('[data-target-group]') ) {
       let elem   = event.target.closest('[data-target-group]'),
           group  = elem.dataset.targetGroup,
@@ -1260,8 +1263,8 @@ showContactsList();
     // open usercard (contactlist)
     if ( event.target.closest('.logo')
          && event.target.closest('.contact-item') ) {
-      let contactId = event.target.closest('.contact-item').dataset.id;
-      console.log(`Відкрити usercard id: ${contactId}`);
+      let id = event.target.closest('.contact-item').dataset.id;
+      openUserCard(id);
     }
 
     // open group chat / mono chat (chatlist)
@@ -1350,13 +1353,22 @@ showContactsList();
     return false
   }
 
-  function openUserCard(id) {
-    console.log(`Відкрити usercard id: ${id}`);
-    if ( isSmallView() ) {
-      console.log("smallView");
-      showMenuItem('aside', 'usercard')
+  async function openUserCard(id) {
+    let userCardRequest = await renderUserCard(id);
+    if (userCardRequest.status == 200) {
+      document.querySelector('[data-list-group="aside"][data-list="usercard"]').innerHTML = userCardRequest.html;
+      document.querySelector('[data-list-group="page"][data-list="usercardP"]').innerHTML = userCardRequest.html;
     } else {
-      console.log("bigView");
+      // помилка
+    }
+
+    if ( isSmallView() ) {
+      showMenuItem('aside', 'usercard')
+      wSetScroll( document.querySelector('.lists-wrapper.wjs-scroll'),
+                  { right:true,
+                    overflowXHidden:true
+                });
+    } else {
       showMenuItem('page', 'usercardP')
     }
   }
@@ -1595,8 +1607,25 @@ showContactsList();
     let response = await fetch('api/render/contactsList', {
       method: 'GET',
       headers: {
-        'Accept': 'text/json'
+        'Accept': 'text/html'
       }
+    });
+    if (response.status == 200) {
+      let html = await response.text();
+      return {status: 200, html: html}
+    } else {
+      return {status: response.status}
+    }
+  }
+
+  async function renderUserCard(id) {
+    let response = await fetch('api/render/userCard', {
+      method: 'POST',
+      headers: {
+        'Accept': 'text/html',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({id:id})
     });
     if (response.status == 200) {
       let html = await response.text();

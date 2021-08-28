@@ -1,22 +1,64 @@
-.logo.logo_user-card
-  p.logo__name PR
-  img.logo__img(src="")
-.user-info
-  .user-info__name Philomena Resendez
-  .user-info__id @philomenaRezzz
-ul.card-menu
-  li
-    p сповіщення увімкнені
-    button(type="button") вимкнути сповіщення
-  li
-    p контакт не заблокований
-    button(type="button") заблокувати
-  li
-    p в контактах
-    button(type="button") видалити з контактів
-  li
-    button(type="button") поділитися контактом
-  li
-    button(type="button" data-role="showClearHistory") очистити історію
+//- {
+//-   id: '6127f3d2d770f515a045836f',
+//-   name: 'Maura Loughner',
+//-   initials: 'MA',
+//-   imgURL: '',
+//-   isInContacts: true,
+//-   isInBlockList: false
+//- }
 
-button(type="button" data-group="false" data-id="3tVc").round-btn: i.ico &#x6a;
+.logo.logo_user-card
+  p.logo__name #{initials}
+  img.logo__img(src='' + imgURL +'')
+.user-info
+  .user-info__name #{name}
+  .user-info__id @#{id}
+ul.card-menu
+  //- Web Push
+  //- li
+  //-   p сповіщення увімкнені
+  //-   button(type="button") вимкнути сповіщення
+  li
+    if isInBlockList
+      p контакт заблокований
+      button(type="button" data-role="removeFromBlockList" data-id="" + id + "") розблокувати
+    else
+      p контакт не заблокований
+      button(type="button" data-role="addToBlockList" data-id="" + id + "") заблокувати
+  li
+    if isInContacts
+      p в контактах
+      button(type="button" data-role="removeFromContacts" data-id="" + id + "") видалити з контактів
+    else
+      p не в контактах
+      button(type="button" data-role="addToContacts" data-id="" + id + "") додати до контактів
+  li
+    button(type="button" data-role="copyContactToClipboard" data-id="" + id + "") скопіювати контакт
+  li
+    button(type="button" data-role="showClearHistory" data-id="" + id + "") очистити історію
+
+button(type="button" data-group="false" data-id="" + id + "").round-btn: i.ico &#x6a;
+
+//- .logo.logo_user-card
+//-   p.logo__name PR
+//-   img.logo__img(src="")
+//- .user-info
+//-   .user-info__name Philomena Resendez
+//-   .user-info__id @philomenaRezzz
+//- ul.card-menu
+//-   //- Web Push
+//-   //- li
+//-   //-   p сповіщення увімкнені
+//-   //-   button(type="button") вимкнути сповіщення
+//-   li
+//-     p контакт не заблокований
+//-     button(type="button") заблокувати
+//-   li
+//-     p в контактах
+//-     button(type="button") видалити з контактів
+//-   li
+//-     button(type="button") поділитися контактом
+//-   li
+//-     button(type="button" data-role="showClearHistory") очистити історію
+
+//- button(type="button" data-group="false" data-id="3tVc").round-btn: i.ico &#x6a;

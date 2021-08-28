@@ -3,5 +3,6 @@ const express    = require('express'),
       router     = express.Router();
 
 router.get("/contactsList", controller.renderContactsList);
+router.post("/userCard", controller.renderUserCard);
 
 module.exports = router;

@@ -177,8 +177,25 @@
     let response = await fetch('api/render/contactsList', {
       method: 'GET',
       headers: {
-        'Accept': 'text/json'
+        'Accept': 'text/html'
       }
+    });
+    if (response.status == 200) {
+      let html = await response.text();
+      return {status: 200, html: html}
+    } else {
+      return {status: response.status}
+    }
+  }
+
+  async function renderUserCard(id) {
+    let response = await fetch('api/render/userCard', {
+      method: 'POST',
+      headers: {
+        'Accept': 'text/html',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({id:id})
     });
     if (response.status == 200) {
       let html = await response.text();

@@ -189,3 +189,63 @@ err.stack:
     at router (B:\files\work_area\my_chat\node_modules\express\lib\router\index.js:47:12)
     at Layer.handle [as handle_request] (B:\files\work_area\my_chat\node_modules\express\lib\router\layer.js:95:5)
     at trim_prefix (B:\files\work_area\my_chat\node_modules\express\lib\router\index.js:317:13)
+2021-08-27T22:39:46.820Z [controllers/renderController.js] error: 
+err.name:
+    undefined
+err.message:
+    undefined
+err.stack:
+    undefined
+2021-08-27T22:41:33.352Z [controllers/renderController.js] error: 
+err.name:
+    undefined
+err.message:
+    undefined
+err.stack:
+    undefined
+2021-08-27T22:42:36.869Z [controllers/renderController.js] error: 
+err.name:
+    undefined
+err.message:
+    undefined
+err.stack:
+    undefined
+2021-08-28T14:50:35.222Z [controllers/renderController.js] error: 
+err.name:
+    undefined
+err.message:
+    undefined
+err.stack:
+    undefined
+2021-08-28T18:22:29.470Z [controllers/renderController.js] error: 
+err.name:
+    Error
+err.message:
+    
+err.stack:
+    Error
+    at B:\files\work_area\my_chat\app\controllers\renderController.js:65:13
+    at processTicksAndRejections (node:internal/process/task_queues:96:5)
+    at async exports.renderUserCard (B:\files\work_area\my_chat\app\controllers\renderController.js:62:3)
+2021-08-28T19:11:09.670Z [controllers/renderController.js] error: 
+err.name:
+    ReferenceError
+err.message:
+    list is not defined
+err.stack:
+    ReferenceError: list is not defined
+    at B:\files\work_area\my_chat\app\controllers\renderController.js:112:7
+    at processTicksAndRejections (node:internal/process/task_queues:96:5)
+    at async isInContactList (B:\files\work_area\my_chat\app\controllers\renderController.js:110:3)
+    at async exports.renderUserCard (B:\files\work_area\my_chat\app\controllers\renderController.js:84:8)
+2021-08-28T19:44:24.687Z [controllers/renderController.js] error: 
+err.name:
+    TypeError
+err.message:
+    Cannot read property 'indexOf' of undefined
+err.stack:
+    TypeError: Cannot read property 'indexOf' of undefined
+    at B:\files\work_area\my_chat\app\controllers\renderController.js:135:25
+    at processTicksAndRejections (node:internal/process/task_queues:96:5)
+    at async isInBlockList (B:\files\work_area\my_chat\app\controllers\renderController.js:133:3)
+    at async exports.renderUserCard (B:\files\work_area\my_chat\app\controllers\renderController.js:88:8)

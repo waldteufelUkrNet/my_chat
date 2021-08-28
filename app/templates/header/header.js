@@ -12,6 +12,7 @@
       return
     }
 
+    // open user card
     if ( event.target.closest('.header__search-result') ) {
       let id = event.target.closest('.header__search-result').dataset.id;
       openUserCard(id);

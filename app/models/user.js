@@ -33,6 +33,9 @@ let schema = new Schema({
   groupchats: {
     type: Array
   },
+  blocklist: {
+    type: Array
+  },
   status: {       // online/ofline
     type: Boolean,
     default: false
