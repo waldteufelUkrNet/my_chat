@@ -604,8 +604,12 @@ var dictionary = {
   };
   document.addEventListener('click', async function(event){
     if ( event.target.closest('[data-role]') ) {
+
+
       let foo = event.target.closest('[data-role]').dataset.role;
-      roles[foo](event)
+      if (roles[foo]) {
+        roles[foo](event)
+      }
     }
 
     // close popup
@@ -661,6 +665,78 @@ var dictionary = {
       popup.classList.add('popup_active');
     },1);
   }
+/* ↑↑↑ functions declaration ↑↑↑ */
+////////////////////////////////////////////////////////////////////////////////
+"use strict"; // usercard module
+////////////////////////////////////////////////////////////////////////////////
+/* ↓↓↓ event listeners ↓↓↓ */
+  var uCArdRoles = {
+    addToBlockList(id) { addToBL(id) },
+    removeFromBlockList(id) { removeFromBL(id) },
+    addToContacts(id) { addToCont(id) },
+    removeFromContacts(id) { removeFromCont(id) },
+    copyContactToClipboard(id) { copyContactToClipboardFn(id) },
+  };
+
+  document.addEventListener('click', async function(event){
+    if ( event.target.closest('[data-role]') ) {
+      let target = event.target.closest('[data-role]'),
+          foo    = target.dataset.role,
+          id     = target.dataset.id;
+
+      if ( uCArdRoles[foo] ) {
+        uCArdRoles[foo](id)
+      }
+    }
+  });
+/* ↑↑↑ event listeners ↑↑↑ */
+////////////////////////////////////////////////////////////////////////////////
+/* ↓↓↓ functions declaration ↓↓↓ */
+  async function addToBL(id) {
+    let addToBlockListRequest = await addContactToBlackList(id);
+    if (addToBlockListRequest.status == 200) {
+      // ok, change html
+      console.log("ok, change html");
+    } else {
+      // error
+      console.log("error with adding to block list");
+    }
+  }
+
+  async function removeFromBL(id) {
+    let removeFromBlockListRequest = await removeContactFromBlockList(id);
+    if (removeFromBlockListRequest.status == 200) {
+      // ok, change html
+      console.log("ok, change html");
+    } else {
+      // error
+      console.log("error with remooving from block list");
+    }
+  }
+
+  async function addToCont(id) {
+    let addToContactsRequest = await addContactToContacts(id);
+    if (addToContactsRequest.status == 200) {
+      // ok, change html
+      console.log("ok, change html");
+    } else {
+      // error
+      console.log("error with adding to contact list");
+    }
+  }
+
+  async function removeFromCont(id) {
+    let removeFromContactsRequest = await removeContactFromContacts(id);
+    if (removeFromContactsRequest.status == 200) {
+      // ok, change html
+      console.log("ok, change html");
+    } else {
+      // error
+      console.log("error with remooving from block list");
+    }
+  }
+
+  function copyContactToClipboardFn(id) {}
 /* ↑↑↑ functions declaration ↑↑↑ */
 ////////////////////////////////////////////////////////////////////////////////
 "use strict"; // forms.js
@@ -1630,6 +1706,70 @@ showContactsList();
     if (response.status == 200) {
       let html = await response.text();
       return {status: 200, html: html}
+    } else {
+      return {status: response.status}
+    }
+  }
+
+  async function addContactToBlackList(id) {
+    let response = await fetch('api/uCard/addToBlockList', {
+      method: 'POST',
+      headers: {
+        'Accept': 'text/html',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({id:id})
+    });
+    if (response.status == 200) {
+      return {status: 200}
+    } else {
+      return {status: response.status}
+    }
+  }
+
+  async function removeContactFromBlockList(id) {
+    let response = await fetch('api/uCard/removeFromBlockList', {
+      method: 'POST',
+      headers: {
+        'Accept': 'text/html',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({id:id})
+    });
+    if (response.status == 200) {
+      return {status: 200}
+    } else {
+      return {status: response.status}
+    }
+  }
+
+  async function addContactToContacts(id) {
+    let response = await fetch('api/uCard/addToContacts', {
+      method: 'POST',
+      headers: {
+        'Accept': 'text/html',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({id:id})
+    });
+    if (response.status == 200) {
+      return {status: 200}
+    } else {
+      return {status: response.status}
+    }
+  }
+
+  async function removeContactFromContacts(id) {
+    let response = await fetch('api/uCard/removeFromContacts', {
+      method: 'POST',
+      headers: {
+        'Accept': 'text/html',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({id:id})
+    });
+    if (response.status == 200) {
+      return {status: 200}
     } else {
       return {status: response.status}
     }

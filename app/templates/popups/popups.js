@@ -24,8 +24,12 @@
   };
   document.addEventListener('click', async function(event){
     if ( event.target.closest('[data-role]') ) {
+
+
       let foo = event.target.closest('[data-role]').dataset.role;
-      roles[foo](event)
+      if (roles[foo]) {
+        roles[foo](event)
+      }
     }
 
     // close popup

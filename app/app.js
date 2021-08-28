@@ -16,7 +16,7 @@ const chalk             = require('chalk'),
       renderRouter      = require('./routes/renderRouter'),
       searchRouter      = require('./routes/searchRouter'),
       settingsRouter    = require('./routes/settingsRouter'),
-      testRouter        = require('./routes/testRouter'),
+      uCardRouter       = require('./routes/uCardRouter'),
 
       port              = config.get('port'),
 
@@ -52,12 +52,11 @@ let sessionConfig = config.get('session');
 sessionConfig.store = mongoSessionStore.create({ mongoUrl: config.get('mongoose:uri') });
 app.use(session( sessionConfig ));
 
-
-app.use('/test', testRouter);
 app.use('/api/authorization', authRouter);
 app.use('/api/settings', settingsRouter);
 app.use('/api/search', searchRouter);
 app.use('/api/render', renderRouter);
+app.use('/api/uCard', uCardRouter);
 app.use('/', indexRouter);
 
 app.use( express.static(path.join(__dirname, 'public')) );
