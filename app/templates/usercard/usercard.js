@@ -26,44 +26,40 @@
   async function addToBL(id) {
     let addToBlockListRequest = await addContactToBlackList(id);
     if (addToBlockListRequest.status == 200) {
-      // ok, change html
-      console.log("ok, change html");
+      document.querySelector('[data-list-group="aside"][data-list="usercard"]').innerHTML = addToBlockListRequest.html;
+      document.querySelector('[data-list-group="page"][data-list="usercardP"]').innerHTML = addToBlockListRequest.html;
     } else {
-      // error
-      console.log("error with adding to block list");
+      showPopupInfo("error with adding to block list");
     }
   }
 
   async function removeFromBL(id) {
     let removeFromBlockListRequest = await removeContactFromBlockList(id);
     if (removeFromBlockListRequest.status == 200) {
-      // ok, change html
-      console.log("ok, change html");
+      document.querySelector('[data-list-group="aside"][data-list="usercard"]').innerHTML = removeFromBlockListRequest.html;
+      document.querySelector('[data-list-group="page"][data-list="usercardP"]').innerHTML = removeFromBlockListRequest.html;
     } else {
-      // error
-      console.log("error with remooving from block list");
+      showPopupInfo("error with remooving from block list");
     }
   }
 
   async function addToCont(id) {
     let addToContactsRequest = await addContactToContacts(id);
     if (addToContactsRequest.status == 200) {
-      // ok, change html
-      console.log("ok, change html");
+      document.querySelector('[data-list-group="aside"][data-list="usercard"]').innerHTML = addToContactsRequest.html;
+      document.querySelector('[data-list-group="page"][data-list="usercardP"]').innerHTML = addToContactsRequest.html;
     } else {
-      // error
-      console.log("error with adding to contact list");
+      showPopupInfo("error with adding to contact list");
     }
   }
 
   async function removeFromCont(id) {
     let removeFromContactsRequest = await removeContactFromContacts(id);
     if (removeFromContactsRequest.status == 200) {
-      // ok, change html
-      console.log("ok, change html");
+      document.querySelector('[data-list-group="aside"][data-list="usercard"]').innerHTML = removeFromContactsRequest.html;
+      document.querySelector('[data-list-group="page"][data-list="usercardP"]').innerHTML = removeFromContactsRequest.html;
     } else {
-      // error
-      console.log("error with remooving from block list");
+      showPopupInfo("error with remooving from block list");
     }
   }
 

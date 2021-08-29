@@ -215,7 +215,8 @@
       body: JSON.stringify({id:id})
     });
     if (response.status == 200) {
-      return {status: 200}
+      let html = await response.text();
+      return {status: 200, html: html}
     } else {
       return {status: response.status}
     }
@@ -231,7 +232,8 @@
       body: JSON.stringify({id:id})
     });
     if (response.status == 200) {
-      return {status: 200}
+      let html = await response.text();
+      return {status: 200, html: html}
     } else {
       return {status: response.status}
     }
@@ -247,7 +249,8 @@
       body: JSON.stringify({id:id})
     });
     if (response.status == 200) {
-      return {status: 200}
+      let html = await response.text();
+      return {status: 200, html: html}
     } else {
       return {status: response.status}
     }
@@ -263,7 +266,8 @@
       body: JSON.stringify({id:id})
     });
     if (response.status == 200) {
-      return {status: 200}
+      let html = await response.text();
+      return {status: 200, html: html}
     } else {
       return {status: response.status}
     }
