@@ -62,7 +62,10 @@
       showPopupInfo("error with remooving from block list");
     }
   }
-
-  function copyContactToClipboardFn(id) {}
+  function copyContactToClipboardFn(id) {
+    let name = document.querySelector('.user-info__name').textContent;
+    let copyStr = '@' + id + ' (' + name + ')';
+    navigator.clipboard.writeText(copyStr).then(result => {}, error => {});
+  }
 /* ↑↑↑ functions declaration ↑↑↑ */
 ////////////////////////////////////////////////////////////////////////////////
