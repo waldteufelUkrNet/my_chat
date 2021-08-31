@@ -417,6 +417,14 @@
     .popup__list-wrapper {
       height: 400px;
       width: 270px;
+      overflow: hidden;
+    }
+    .wjs-scroll {
+      height: 400px;
+      width: 270px;
+    }
+    .popup__list {
+      width: 100%;
     }
     .popup__item {
       padding: 5px;
@@ -437,7 +445,7 @@
       width: 30px;
       height: 30px;
       position: absolute;
-      right: 0;
+      right: 15px;
       top: 50%;
       transform: translate(0,-50%);
       background-color: springgreen;

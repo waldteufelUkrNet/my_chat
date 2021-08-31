@@ -12,7 +12,10 @@
     showChangeThema () { showPopup('popupThemaSelect') },
     showChangeLang ()  { showPopup('popupLangSelect') },
     showGroupChat ()   { showPopup('popupGroupChat') },
-    showBlackList ()   { showPopup('popupBlackList') },
+    showBlackList ()   {
+      showPopup('popupBlackList');
+      showBList();
+    },
     showClearHistory () { showPopup('popupClearHistory') },
     showLeaveGroup () { showPopup('popupLeaveGroup') },
     showGroupList () { showPopup('popupGroupList') },
@@ -36,6 +39,20 @@
     if ( event.target.closest('.popup__close') ) {
       let id = event.target.closest('.popup').getAttribute('id');
       closePopup(id);
+    }
+
+    // delete contact from blacklist
+    if ( event.target.closest('#popupBlackList li.popup__item button.popup__user-restore') ) {
+      let userID = event.target.closest('.popup__item').dataset.id;
+      removeFromBL(userID);
+      showBList();
+    }
+    // show usercard
+    if ( event.target.closest('#popupBlackList li.popup__item')
+         && !event.target.closest('#popupBlackList li.popup__item button.popup__user-restore') ) {
+      let userID = event.target.closest('.popup__item').dataset.id;
+      openUserCard(userID);
+      closePopup('popupBlackList');
     }
   });
 /* ↑↑↑ event listeners ↑↑↑ */
@@ -84,6 +101,17 @@
     setTimeout(function(){
       popup.classList.add('popup_active');
     },1);
+  }
+
+  async function showBList() {
+    let showBListRequest = await loadBlackList();
+    if (showBListRequest.status == 200) {
+      document.querySelector('#popupBlackList ul.popup__list').innerHTML = showBListRequest.html;
+      wSetScroll(document.querySelector('#popupBlackList .popup__list-wrapper .wjs-scroll'), {right:true, overflowXHidden:true});
+      wSetScroll(document.querySelector('#popupBlackList .popup__list-wrapper .wjs-scroll'), {right:true, overflowXHidden:true});
+    } else {
+      showPopupInfo('something went wrong with load blacklist');
+    }
   }
 /* ↑↑↑ functions declaration ↑↑↑ */
 ////////////////////////////////////////////////////////////////////////////////

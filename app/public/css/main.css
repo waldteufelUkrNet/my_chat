@@ -1133,6 +1133,14 @@ html.wjs-MobileHeightFix body {
 .popup_show-black-list .popup__list-wrapper {
   height: 400px;
   width: 270px;
+  overflow: hidden;
+}
+.popup_show-black-list .wjs-scroll {
+  height: 400px;
+  width: 270px;
+}
+.popup_show-black-list .popup__list {
+  width: 100%;
 }
 .popup_show-black-list .popup__item {
   padding: 5px;
@@ -1157,7 +1165,7 @@ html.wjs-MobileHeightFix body {
   width: 30px;
   height: 30px;
   position: absolute;
-  right: 0;
+  right: 15px;
   top: 50%;
   -webkit-transform: translate(0, -50%);
       -ms-transform: translate(0, -50%);

@@ -256,5 +256,20 @@
       return {status: response.status}
     }
   }
+
+  async function loadBlackList() {
+    let response = await fetch('api/render/blackList', {
+      method: 'GET',
+      headers: {
+        'Accept': 'text/html'
+      }
+    });
+    if (response.status == 200) {
+      let html = await response.text();
+      return {status: 200, html: html}
+    } else {
+      return {status: response.status}
+    }
+  }
 /* ↑↑↑ functions declaration ↑↑↑ */
 ////////////////////////////////////////////////////////////////////////////////

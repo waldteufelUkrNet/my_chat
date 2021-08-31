@@ -562,7 +562,10 @@ var dictionary = {
     showChangeThema () { showPopup('popupThemaSelect') },
     showChangeLang ()  { showPopup('popupLangSelect') },
     showGroupChat ()   { showPopup('popupGroupChat') },
-    showBlackList ()   { showPopup('popupBlackList') },
+    showBlackList ()   {
+      showPopup('popupBlackList');
+      showBList();
+    },
     showClearHistory () { showPopup('popupClearHistory') },
     showLeaveGroup () { showPopup('popupLeaveGroup') },
     showGroupList () { showPopup('popupGroupList') },
@@ -586,6 +589,20 @@ var dictionary = {
     if ( event.target.closest('.popup__close') ) {
       let id = event.target.closest('.popup').getAttribute('id');
       closePopup(id);
+    }
+
+    // delete contact from blacklist
+    if ( event.target.closest('#popupBlackList li.popup__item button.popup__user-restore') ) {
+      let userID = event.target.closest('.popup__item').dataset.id;
+      removeFromBL(userID);
+      showBList();
+    }
+    // show usercard
+    if ( event.target.closest('#popupBlackList li.popup__item')
+         && !event.target.closest('#popupBlackList li.popup__item button.popup__user-restore') ) {
+      let userID = event.target.closest('.popup__item').dataset.id;
+      openUserCard(userID);
+      closePopup('popupBlackList');
     }
   });
 /* ↑↑↑ event listeners ↑↑↑ */
@@ -634,6 +651,17 @@ var dictionary = {
     setTimeout(function(){
       popup.classList.add('popup_active');
     },1);
+  }
+
+  async function showBList() {
+    let showBListRequest = await loadBlackList();
+    if (showBListRequest.status == 200) {
+      document.querySelector('#popupBlackList ul.popup__list').innerHTML = showBListRequest.html;
+      wSetScroll(document.querySelector('#popupBlackList .popup__list-wrapper .wjs-scroll'), {right:true, overflowXHidden:true});
+      wSetScroll(document.querySelector('#popupBlackList .popup__list-wrapper .wjs-scroll'), {right:true, overflowXHidden:true});
+    } else {
+      showPopupInfo('something went wrong with load blacklist');
+    }
   }
 /* ↑↑↑ functions declaration ↑↑↑ */
 ////////////////////////////////////////////////////////////////////////////////
@@ -687,7 +715,9 @@ var dictionary = {
     if (addToContactsRequest.status == 200) {
       document.querySelector('[data-list-group="aside"][data-list="usercard"]').innerHTML = addToContactsRequest.html;
       document.querySelector('[data-list-group="page"][data-list="usercardP"]').innerHTML = addToContactsRequest.html;
-      showContactsList();
+      if ( !isSmallView() ) {
+        showContactsList();
+      }
     } else {
       showPopupInfo("error with adding to contact list");
     }
@@ -698,7 +728,9 @@ var dictionary = {
     if (removeFromContactsRequest.status == 200) {
       document.querySelector('[data-list-group="aside"][data-list="usercard"]').innerHTML = removeFromContactsRequest.html;
       document.querySelector('[data-list-group="page"][data-list="usercardP"]').innerHTML = removeFromContactsRequest.html;
-      showContactsList();
+      if ( !isSmallView() ) {
+        showContactsList();
+      }
     } else {
       showPopupInfo("error with remooving from block list");
     }
@@ -1722,6 +1754,21 @@ showContactsList();
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({id:id})
+    });
+    if (response.status == 200) {
+      let html = await response.text();
+      return {status: 200, html: html}
+    } else {
+      return {status: response.status}
+    }
+  }
+
+  async function loadBlackList() {
+    let response = await fetch('api/render/blackList', {
+      method: 'GET',
+      headers: {
+        'Accept': 'text/html'
+      }
     });
     if (response.status == 200) {
       let html = await response.text();

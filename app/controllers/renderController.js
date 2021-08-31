@@ -60,6 +60,56 @@ exports.renderContactsList = function(req, res) {
   });
 }
 
+exports.renderBlackList = function(req, res) {
+  let userID = req.session.user._id;
+
+  User.findById( new objectId(userID), {blocklist:1}, function(err, users) {
+    if (err) {
+      res.sendStatus(500);
+      log.error('\nerr.name:\n    ' + err.name + '\nerr.message:\n    ' + err.message + '\nerr.stack:\n    ' +err.stack);
+      throw err;
+    }
+    let usersIDArr = users.blocklist;
+
+    if ( !usersIDArr.length ) {
+      res.status(200).send('');
+    } else {
+      let userArr = [];
+
+      usersIDArr.forEach( async (id,i) => {
+
+        await User.findById( new objectId(id), {username: 1, status: 1})
+        .then(async function(user){
+          let clone = {};
+          clone.username = user.username;
+          clone._id = user._id;
+
+          if ( await isAvaFileAviable(id) ) {
+            clone.imgURL = config.get('avatarPathFromClient') + id + '.jpg';
+          } else {
+            clone.imgURL = '';
+          }
+          userArr.push(clone);
+        })
+        .catch(function(err){
+          res.sendStatus(500);
+          log.error('\nerr.name:\n    ' + err.name + '\nerr.message:\n    ' + err.message + '\nerr.stack:\n    ' +err.stack);
+          throw err;
+        });
+        if ( i == usersIDArr.length-1) {
+          userArr.sort(function(a,b){
+            if (a.username > b.username) return 1;
+            if (a.username < b.username) return -1;
+            if (a.username == b.username) return 0;
+          });
+
+          res.status(200).render('blackList/blackList.pug', {users:userArr});
+        }
+      });
+    }
+  });
+}
+
 exports.renderUserCard = async function(req,res) {
   const userID    = req.session.user._id,
         contactID = req.body.id;
