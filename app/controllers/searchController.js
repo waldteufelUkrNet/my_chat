@@ -1,15 +1,36 @@
 const config   = require('../config'),
       fs       = require('fs'),
+      fs_promis = require('fs/promises'),
       log      = require('../libs/log')(module),
       objectId = require("mongodb").ObjectId,
-      User     = require('../models/user.js').User;
+
+      User     = require('../models/user.js').User,
+
+      access    = fs_promis.access,
+      constants = fs.constants;
 
 exports.searchInDB = async function(req, res) {
   const query         = req.body.query,
-        userArr       = new Array(),
         outputFormat  = {_id: 1, username: 1},
         currentUserID = req.session.user._id;
 
+  let userArr = new Array();
+
+  // search by name
+  const regexp = new RegExp(query, 'ui');
+  await User.find({username:regexp}, outputFormat)
+  .then(function(users){
+    users.forEach(user => {
+      userArr.push(user)
+    });
+  })
+  .catch(function(err){
+    res.sendStatus(500);
+    log.error('\nerr.name:\n    ' + err.name + '\nerr.message:\n    ' + err.message + '\nerr.stack:\n    ' +err.stack);
+    throw err;
+  });
+
+  // search by id
   if ( (query.length == 24 && !query.startsWith('@') )
        ||
        (query.length == 25 && query.startsWith('@') )
@@ -20,43 +41,50 @@ exports.searchInDB = async function(req, res) {
     }
     searchedID = new objectId(searchedID);
 
-    await User.findById(searchedID, outputFormat, function(err, user){
-      if (err) {
-        res.sendStatus(500);
-        log.error('\nerr.name:\n    ' + err.name + '\nerr.message:\n    ' + err.message + '\nerr.stack:\n    ' +err.stack);
-        throw err;
-      }
+    await User.findById(searchedID, outputFormat)
+    .then(function(user){
       if (user._id != currentUserID) {
         userArr.push(user);
       }
-    });
-  }
-
-  // search by name
-  const regexp = new RegExp(query, 'ui');
-  await User.find({username:regexp}, outputFormat, function(err,users){
-    if (err) {
+    })
+    .catch(function(err){
       res.sendStatus(500);
       log.error('\nerr.name:\n    ' + err.name + '\nerr.message:\n    ' + err.message + '\nerr.stack:\n    ' +err.stack);
       throw err;
-    } else {
-      users.forEach(user => {
-        if (user._id != currentUserID) {
-          userArr.push(user);
-        }
-      });
-    }
-  });
-  res.status(200).send( userArr );
+    });
+  }
+
+  let cloneArr = new Array();
+  for (let i = 0; i<userArr.length; i++) {
+    let clone = {};
+    clone.username = userArr[i].username;
+    clone._id = userArr[i]._id;
+
+    await isAvaFileAviable(clone._id)
+    .then(function(condition){
+      if ( condition ) {
+        clone.imgURL = config.get('avatarPathFromClient') + clone._id + '.jpg';
+      } else {
+        clone.imgURL = '';
+      }
+      cloneArr.push(clone);
+    });
+  }
+
+  userArr = cloneArr;
+
+  res.status(200).render('searchResultList/searchResultList.pug', {users:userArr});
 }
 
-exports.searchAva = async function(req, res) {
-  const avatarPath = config.get('avatarPathFromServer') + req.body.id + '.jpg';
-  fs.access(avatarPath, fs.constants.F_OK, function(err){
-    if (err) {
-      res.sendStatus(404);
-    } else {
-      res.sendStatus(200);
-    }
-  });
+async function isAvaFileAviable(id) {
+  const avatarPath = config.get('avatarPathFromServer') + id + '.jpg';
+  let result;
+
+  try {
+    await access(avatarPath, constants.F_OK);
+    result = true;
+  } catch {
+    result = false;
+  }
+  return result;
 }

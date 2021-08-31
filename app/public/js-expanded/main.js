@@ -162,7 +162,6 @@ showContactsList();
       if (contactsListRequest.html.length > 0) {
         // показ списку
         document.querySelector('.left-side .list_active').innerHTML = contactsListRequest.html;
-        downloadContactsListAvatars();
         wSetScroll( document.querySelector('.lists-wrapper.wjs-scroll'),
                     { right:true,
                       overflowXHidden:true
@@ -173,17 +172,6 @@ showContactsList();
     } else {
       showMenuItem('aside', 'startL');
     }
-  }
-
-  function downloadContactsListAvatars () {
-    let users = document.querySelectorAll('.contact-list .contact-item');
-    users.forEach( async (user) => {
-      let id = user.dataset.id;
-      let avaRequest = await searchAva(id);
-      if (avaRequest) {
-        user.querySelector('.logo__img').setAttribute('src', userConfig.pathToUserLogo + id + '.jpg');
-      }
-    });
   }
 /* ↑↑↑ functions declaration ↑↑↑ */
 ////////////////////////////////////////////////////////////////////////////////

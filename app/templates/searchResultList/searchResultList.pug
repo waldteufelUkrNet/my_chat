@@ -1,0 +1,19 @@
+//- {
+//-   username: 'Aline Bosshart',
+//-   _id: 6127f368d770f515a045835a,
+//-   imgURL: 'img/users/6127f368d770f515a045835a.jpg'
+//- }
+
+
+//- .header__search-result(data-id="...")
+//-   .logo
+//-     p.logo__name UN
+//-     img.logo__img(src="")
+//-   .header__search-result-name username
+
+for user in users
+  .header__search-result(data-id="" + user._id + "")
+    .logo
+      p.logo__name #{user.username.slice(0,2).toUpperCase()}
+      img.logo__img(src="" + user.imgURL + "")
+    .header__search-result-name #{user.username}

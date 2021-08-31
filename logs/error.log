@@ -249,3 +249,13 @@ err.stack:
     at processTicksAndRejections (node:internal/process/task_queues:96:5)
     at async isInBlockList (B:\files\work_area\my_chat\app\controllers\renderController.js:133:3)
     at async exports.renderUserCard (B:\files\work_area\my_chat\app\controllers\renderController.js:88:8)
+2021-08-29T17:48:32.692Z [controllers/renderController.js] error: 
+err.name:
+    TypeError
+err.message:
+    users.sort is not a function
+err.stack:
+    TypeError: users.sort is not a function
+    at B:\files\work_area\my_chat\app\controllers\renderController.js:17:35
+    at processTicksAndRejections (node:internal/process/task_queues:96:5)
+    at async exports.renderContactsList (B:\files\work_area\my_chat\app\controllers\renderController.js:16:3)

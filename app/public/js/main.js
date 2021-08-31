@@ -500,18 +500,11 @@ var dictionary = {
     if ( event.target.classList.contains('header__search') ) {
       let query = event.target.value;
       if (query.length >= 3) {
-        // let wrapper = document.querySelector('.header__search-results-wrapper');
-        // if ( !wrapper.classList.contains('.header__search-results-wrapper_active') ) {
-        //   showSearchResultWrapper();
-        // }
-        let queryRequest = await searchInDB(query);
-        if (queryRequest.status == 200) {
-          // показ списку
-          let userList = queryRequest.users;
-          buildMatchedList(userList);
-        } else {
-          // обробка помилки
+        let wrapper = document.querySelector('.header__search-results-wrapper');
+        if ( !wrapper.classList.contains('.header__search-results-wrapper_active') ) {
+          showSearchResultWrapper();
         }
+        showSearchResultList(query);
       }
     }
   });
@@ -544,37 +537,15 @@ var dictionary = {
     }, 400);
   }
 
-  function buildMatchedList(list) {
-    let wrapper = document.querySelector('.header__search-results-wrapper .wjs-scroll__content');
-    wrapper.innerHTML = '';
-
-    if (list && list.length) {
-      list.forEach(user => {
-        let html = '<div class="header__search-result" data-id="' + user._id + '">\
-                      <div class="logo">\
-                        <p class="logo__name">' + user.username.slice(0,2).toUpperCase() + '</p>\
-                        <img class="logo__img" src="">\
-                      </div>\
-                      <div class="header__search-result-name">' + user.username + '</div>\
-                    </div>';
-        wrapper.insertAdjacentHTML('beforeEnd', html);
-      });
+  async function showSearchResultList(query) {
+    let showSearchResultListRequest = await loadSearchResultList(query);
+    if (showSearchResultListRequest.status == 200) {
+      console.log("showSearchResultListRequest.html", showSearchResultListRequest.html);
+      document.querySelector('.header__search-results-wrapper .wjs-scroll__content').innerHTML = showSearchResultListRequest.html;
+      wSetScroll( document.querySelector('.wjs-scroll.header__search-results-wrapper-inner'), {right:true, overflowXHidden:true} );
+    } else {
+      showPopupInfo("error with searching in data base");
     }
-    showSearchResultWrapper();
-    wSetScroll(document.querySelector('.header__search-results-wrapper .wjs-scroll'), {right:true, overflowXHidden:true});
-
-    downloadMatchedListAvatars();
-  }
-
-  function downloadMatchedListAvatars () {
-    let users = document.querySelectorAll('.header__search-result');
-    users.forEach( async (user) => {
-      let id = user.dataset.id;
-      let avaRequest = await searchAva(id);
-      if (avaRequest) {
-        user.querySelector('.logo__img').setAttribute('src', userConfig.pathToUserLogo + id + '.jpg');
-      }
-    });
   }
 /* ↑↑↑ functions declaration ↑↑↑ */
 ////////////////////////////////////////////////////////////////////////////////
@@ -1487,7 +1458,6 @@ showContactsList();
       if (contactsListRequest.html.length > 0) {
         // показ списку
         document.querySelector('.left-side .list_active').innerHTML = contactsListRequest.html;
-        downloadContactsListAvatars();
         wSetScroll( document.querySelector('.lists-wrapper.wjs-scroll'),
                     { right:true,
                       overflowXHidden:true
@@ -1498,17 +1468,6 @@ showContactsList();
     } else {
       showMenuItem('aside', 'startL');
     }
-  }
-
-  function downloadContactsListAvatars () {
-    let users = document.querySelectorAll('.contact-list .contact-item');
-    users.forEach( async (user) => {
-      let id = user.dataset.id;
-      let avaRequest = await searchAva(id);
-      if (avaRequest) {
-        user.querySelector('.logo__img').setAttribute('src', userConfig.pathToUserLogo + id + '.jpg');
-      }
-    });
   }
 /* ↑↑↑ functions declaration ↑↑↑ */
 ////////////////////////////////////////////////////////////////////////////////
@@ -1654,36 +1613,20 @@ showContactsList();
     }
   }
 
-  async function searchInDB(query) {
-    let response = await fetch('api/search/user', {
+  async function loadSearchResultList(query) {
+    let response = await fetch('api/search/userList', {
       method: 'POST',
       headers: {
-        'Accept'       : 'application/json',
+        'Accept'       : 'text/html',
         'Content-Type' : 'application/json'
       },
       body: JSON.stringify({query: query})
     });
     if (response.status == 200) {
-      let users = await response.json();
-      return {status: 200, users: users}
+      let html = await response.text();
+      return {status: 200, html: html}
     } else {
       return {status: response.status}
-    }
-  }
-
-  async function searchAva(userID) {
-    let response = await fetch('api/search/ava', {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({id:userID})
-    });
-    if (response.status == 200) {
-      return true
-    } else {
-      return false
     }
   }
 

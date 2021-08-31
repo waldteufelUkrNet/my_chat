@@ -2,8 +2,6 @@ const express    = require('express'),
       controller = require('../controllers/searchController.js'),
       router     = express.Router();
 
-router.post("/user", controller.searchInDB);
-router.post("/ava", controller.searchAva);
-
+router.post("/userList", controller.searchInDB);
 
 module.exports = router;

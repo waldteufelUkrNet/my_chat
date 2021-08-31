@@ -1,12 +1,33 @@
-ul.contact-list
+//- {
+//-   status: false,
+//-   username: 'Phil Esposto',
+//-   _id: 6127f3c5d770f515a045836c,
+//-   imgURL: 'img/users/6127f3c5d770f515a045836c.jpg'
+//- }
 
-  li.contact-item(data-id="ELqbedwM7mgMuJfmj4jshanb")
-    .logo
-      p.logo__name JW
-      img.logo__img(src="../img/users/user1.jpg")
-      .logo__status.logo__status_offline
-      //- .logo__status.logo__status_online
-    .contact-item__name Jean Waverly
+ul.contact-list
+  for user in users
+    li.contact-item(data-id="" + user._id + "")
+      .logo
+        p.logo__name #{user.username.slice(0,2).toUpperCase()}
+        img.logo__img(src="" + user.imgURL + "")
+        if user.status
+          .logo__status.logo__status_online
+        else
+          .logo__status.logo__status_offline
+      .contact-item__name #{user.username}
+
+
+
+//- ul.contact-list
+
+//-   li.contact-item(data-id="ELqbedwM7mgMuJfmj4jshanb")
+//-     .logo
+//-       p.logo__name JW
+//-       img.logo__img(src="../img/users/user1.jpg")
+//-       .logo__status.logo__status_offline
+//-       //- .logo__status.logo__status_online
+//-     .contact-item__name Jean Waverly
 
 //- приклад для стилізації фронтенду
 //- ul.contact-list
