@@ -77,7 +77,6 @@
   async function showSearchResultList(query) {
     let showSearchResultListRequest = await loadSearchResultList(query);
     if (showSearchResultListRequest.status == 200) {
-      console.log("showSearchResultListRequest.html", showSearchResultListRequest.html);
       document.querySelector('.header__search-results-wrapper .wjs-scroll__content').innerHTML = showSearchResultListRequest.html;
       wSetScroll( document.querySelector('.wjs-scroll.header__search-results-wrapper-inner'), {right:true, overflowXHidden:true} );
     } else {

@@ -48,6 +48,7 @@
     if (addToContactsRequest.status == 200) {
       document.querySelector('[data-list-group="aside"][data-list="usercard"]').innerHTML = addToContactsRequest.html;
       document.querySelector('[data-list-group="page"][data-list="usercardP"]').innerHTML = addToContactsRequest.html;
+      showContactsList();
     } else {
       showPopupInfo("error with adding to contact list");
     }
@@ -58,6 +59,7 @@
     if (removeFromContactsRequest.status == 200) {
       document.querySelector('[data-list-group="aside"][data-list="usercard"]').innerHTML = removeFromContactsRequest.html;
       document.querySelector('[data-list-group="page"][data-list="usercardP"]').innerHTML = removeFromContactsRequest.html;
+      showContactsList();
     } else {
       showPopupInfo("error with remooving from block list");
     }

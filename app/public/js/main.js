@@ -540,7 +540,6 @@ var dictionary = {
   async function showSearchResultList(query) {
     let showSearchResultListRequest = await loadSearchResultList(query);
     if (showSearchResultListRequest.status == 200) {
-      console.log("showSearchResultListRequest.html", showSearchResultListRequest.html);
       document.querySelector('.header__search-results-wrapper .wjs-scroll__content').innerHTML = showSearchResultListRequest.html;
       wSetScroll( document.querySelector('.wjs-scroll.header__search-results-wrapper-inner'), {right:true, overflowXHidden:true} );
     } else {
@@ -688,6 +687,7 @@ var dictionary = {
     if (addToContactsRequest.status == 200) {
       document.querySelector('[data-list-group="aside"][data-list="usercard"]').innerHTML = addToContactsRequest.html;
       document.querySelector('[data-list-group="page"][data-list="usercardP"]').innerHTML = addToContactsRequest.html;
+      showContactsList();
     } else {
       showPopupInfo("error with adding to contact list");
     }
@@ -698,6 +698,7 @@ var dictionary = {
     if (removeFromContactsRequest.status == 200) {
       document.querySelector('[data-list-group="aside"][data-list="usercard"]').innerHTML = removeFromContactsRequest.html;
       document.querySelector('[data-list-group="page"][data-list="usercardP"]').innerHTML = removeFromContactsRequest.html;
+      showContactsList();
     } else {
       showPopupInfo("error with remooving from block list");
     }
