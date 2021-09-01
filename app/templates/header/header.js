@@ -54,11 +54,21 @@
         inpHeight = input.clientHeight,
         inpTop    = input.getBoundingClientRect().top,
         inpLeft   = input.getBoundingClientRect().left;
+        console.log("inpLeft", inpLeft);
+
+        // милиця
+        // чомусь при розмірах екрану більше 1200px wrapper зсувається вправо
+        let delta = 0;
+        if (document.body.clientWidth > document.querySelector('.body-inner').clientWidth) {
+          delta = ( document.body.clientWidth - document.querySelector('.body-inner').clientWidth )/2
+        }
 
     let wrapper = document.querySelector('.header__search-results-wrapper');
-    wrapper.style.left = inpLeft + 'px';
+
     wrapper.style.width = inpWidth + 2 + 'px';
     wrapper.style.top = inpTop + 3 + inpHeight + 'px';
+    wrapper.style.left = inpLeft - delta + 'px';
+
     wrapper.style.display = 'block';
 
     setTimeout(function(){
@@ -78,6 +88,7 @@
     let showSearchResultListRequest = await loadSearchResultList(query);
     if (showSearchResultListRequest.status == 200) {
       document.querySelector('.header__search-results-wrapper .wjs-scroll__content').innerHTML = showSearchResultListRequest.html;
+      wSetScroll( document.querySelector('.wjs-scroll.header__search-results-wrapper-inner'), {right:true, overflowXHidden:true} );
       wSetScroll( document.querySelector('.wjs-scroll.header__search-results-wrapper-inner'), {right:true, overflowXHidden:true} );
     } else {
       showPopupInfo("error with searching in data base");
