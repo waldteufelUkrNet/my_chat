@@ -1,7 +1,8 @@
 .body-inner
   .left-side
     include ../header/header.pug
-    include ../subheader/subheader.pug
+    .subheader__wrapper
+      //- include ../subheader/subheader.pug
     .lists-wrapper.wjs-scroll(data-scroll='right' data-scroll-hidden='horizontal')
       .wjs-scroll__content-wrapper
         .wjs-scroll__content
@@ -21,9 +22,10 @@
           .list(data-list-group="aside" data-list="groupcard")
             //- include ../groupcard/groupcard.pug
           .list(data-list-group="aside" data-list="chat")
+            .chat-wrapper_small-view
             //- include ../chat/chat.pug
-            //- include ../round-button/round-button.pug
-            //- include ../chat-form/chat-form.pug
+            include ../round-button/round-button.pug
+            include ../chat-form/chat-form.pug
 
   .right-side
     .list.list_active(data-list-group="page" data-list="startP")
@@ -33,13 +35,14 @@
     .list(data-list-group="page" data-list="groupcardP")
       //- include ../groupcard/groupcard.pug
     .list(data-list-group="page" data-list="chatP")
-      //- include ../subheader/subheader.pug
-      //- .chat-wrapper.wjs-scroll(data-scroll='right')
-        //- .wjs-scroll__content-wrapper
-          //- .wjs-scroll__content
+      .subheader__wrapper
+        //- include ../subheader/subheader.pug
+      .chat-wrapper.wjs-scroll(data-scroll='right')
+        .wjs-scroll__content-wrapper
+          .wjs-scroll__content
             //- include ../chat/chat.pug
-        //- include ../round-button/round-button.pug
-      //- include ../chat-form/chat-form.pug
+        include ../round-button/round-button.pug
+      include ../chat-form/chat-form.pug
 
 include ../popups/popups.pug
 #widthIndicator

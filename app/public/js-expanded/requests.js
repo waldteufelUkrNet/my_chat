@@ -271,5 +271,52 @@
       return {status: response.status}
     }
   }
+
+  async function loadChat(id, meta, tzOffset) {
+    if (meta == 'mono') {
+
+      const contactID = id;
+      let response = await fetch('api/render/monoChat', {
+        method: 'POST',
+        headers: {
+          'Accept': 'text/html',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({id:contactID, tzOffset:tzOffset})
+      });
+      if (response.status == 200) {
+        let html = await response.text();
+        return {status: 200, html: html}
+      } else {
+        return {status: response.status}
+      }
+
+    } else if (meta == 'group') {
+      const gChatID = id;
+      //
+    }
+  }
+
+  async function loadContactSubheader(id, meta) {
+    let response;
+    if (meta == 'mono') { // id - ідентифікатор контакта
+      response = await fetch('api/render/contactSubheader', {
+        method: 'POST',
+        headers: {
+          'Accept': 'text/html',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({id:id})
+      });
+    } else if (meta == 'group') { // id - ідентифікатор групи
+      //
+    }
+    if (response.status == 200) {
+      let html = await response.text();
+      return {status: 200, html: html}
+    } else {
+      return {status: response.status}
+    }
+  }
 /* ↑↑↑ functions declaration ↑↑↑ */
 ////////////////////////////////////////////////////////////////////////////////

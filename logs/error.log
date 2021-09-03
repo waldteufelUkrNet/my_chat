@@ -259,3 +259,43 @@ err.stack:
     at B:\files\work_area\my_chat\app\controllers\renderController.js:17:35
     at processTicksAndRejections (node:internal/process/task_queues:96:5)
     at async exports.renderContactsList (B:\files\work_area\my_chat\app\controllers\renderController.js:16:3)
+2021-09-01T21:29:02.250Z [controllers/renderController.js] error: 
+err.name:
+    ReferenceError
+err.message:
+    chat is not defined
+err.stack:
+    ReferenceError: chat is not defined
+    at B:\files\work_area\my_chat\app\controllers\renderController.js:182:29
+    at processTicksAndRejections (node:internal/process/task_queues:96:5)
+    at async exports.renderMonoChat (B:\files\work_area\my_chat\app\controllers\renderController.js:180:5)
+2021-09-03T20:24:45.578Z [controllers/renderController.js] error: 
+err.name:
+    TypeError
+err.message:
+    Cannot read property 'chat' of undefined
+err.stack:
+    TypeError: Cannot read property 'chat' of undefined
+    at B:\files\work_area\my_chat\app\controllers\renderController.js:217:25
+    at processTicksAndRejections (node:internal/process/task_queues:96:5)
+    at async exports.renderMonoChat (B:\files\work_area\my_chat\app\controllers\renderController.js:215:16)
+2021-09-03T20:30:11.543Z [controllers/renderController.js] error: 
+err.name:
+    TypeError
+err.message:
+    Cannot read property 'chat' of undefined
+err.stack:
+    TypeError: Cannot read property 'chat' of undefined
+    at B:\files\work_area\my_chat\app\controllers\renderController.js:217:25
+    at processTicksAndRejections (node:internal/process/task_queues:96:5)
+    at async exports.renderMonoChat (B:\files\work_area\my_chat\app\controllers\renderController.js:215:16)
+2021-09-03T21:02:20.765Z [controllers/renderController.js] error: 
+err.name:
+    TypeError
+err.message:
+    Cannot read property 'username' of null
+err.stack:
+    TypeError: Cannot read property 'username' of null
+    at B:\files\work_area\my_chat\app\controllers\renderController.js:122:30
+    at processTicksAndRejections (node:internal/process/task_queues:96:5)
+    at async exports.renderUserCard (B:\files\work_area\my_chat\app\controllers\renderController.js:120:3)

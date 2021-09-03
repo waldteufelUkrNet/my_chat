@@ -1,11 +1,13 @@
 .subheader {
   height: 60px;
   align-self: stretch;
-  margin: 0 10px;
+  // margin: 0 10px;
+  padding: 0 10px;
   display: flex;
   justify-content: flex-start;
   align-items: center;
   cursor: pointer;
+  border-bottom: 1px solid steelblue;
   &__text-wrapper {
     color: $d0;
   }
@@ -13,6 +15,9 @@
     font: 1.2em reg;
   }
   &__id {
-    font: 1em light;
+    font: .8em light;
+  }
+  &__wrapper {
+    // height: 0px;
   }
 }

@@ -40,6 +40,7 @@
     border                           : 1px solid transparent;
     border-radius                    : 10px;
     position                         : relative;
+    min-width                        : 60px;
   }
   &__message-text {}
   &__message-date {

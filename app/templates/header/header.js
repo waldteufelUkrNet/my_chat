@@ -54,7 +54,6 @@
         inpHeight = input.clientHeight,
         inpTop    = input.getBoundingClientRect().top,
         inpLeft   = input.getBoundingClientRect().left;
-        console.log("inpLeft", inpLeft);
 
         // милиця
         // чомусь при розмірах екрану більше 1200px wrapper зсувається вправо

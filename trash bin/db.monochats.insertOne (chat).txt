@@ -1,0 +1,153 @@
+db.monochats.insertOne({
+  "interlocutors": ["6127f376d770f515a045835d", "6127f48dd770f515a0458394"],
+  "chat": [{
+      "datatime": "1615589683000",
+      "who": "6127f48dd770f515a0458394",
+      "whom": "6127f376d770f515a045835d",
+      "message": "outwill microconidial sciarid"
+    },
+    {
+      "datatime": "1615589685000",
+      "who": "6127f376d770f515a045835d",
+      "whom": "6127f48dd770f515a0458394",
+      "message": "polyalcohol autodigestive nanga dummyism rougemontite"
+    },
+    {
+      "datatime": "1615589865000",
+      "who": "6127f376d770f515a045835d",
+      "whom": "6127f48dd770f515a0458394",
+      "message": "benempt isothiocyano wake carbohydrase overgaiter harshweed Piscataway swell taily blay aesthetically syphilitically floatation monarchianism gardyloo reanswer soleless escaloped Sothiacal gane coolly Brachystomata autocide Roschach"
+    },
+    {
+      "datatime": "1615590045000",
+      "who": "6127f48dd770f515a0458394",
+      "whom": "6127f376d770f515a045835d",
+      "message": "polyamide"
+    },
+    {
+      "datatime": "1615676505000",
+      "who": "6127f376d770f515a045835d",
+      "whom": "6127f48dd770f515a0458394",
+      "message": "undergunner strobila corviform"
+    },
+    {
+      "datatime": "1615676509000",
+      "who": "6127f48dd770f515a0458394",
+      "whom": "6127f376d770f515a045835d",
+      "message": "stridhan fulminator transgressing monoplacular fetal prevolunteer beauteously dissent steganogram diluvianism Criniger"
+    },
+    {
+      "datatime": "1615676580000",
+      "who": "6127f48dd770f515a0458394",
+      "whom": "6127f376d770f515a045835d",
+      "message": "floriparous contrariousness  unfocused consentaneous epulary secularizer spinae Scotchiness"
+    },
+    {
+      "datatime": "1615810260000",
+      "who": "6127f376d770f515a045835d",
+      "whom": "6127f48dd770f515a0458394",
+      "message": "morcellated exhumer syncretist animately acentrous metachronism Myrtus eradicator cyanomaclurin vignetter frightener cushat faineant porching jingbang unwithered diatomist tendance extendibility rhetorically archetypical hardship jubate Silicea"
+    },
+    {
+      "datatime": "1615814100000",
+      "who": "6127f48dd770f515a0458394",
+      "whom": "6127f376d770f515a045835d",
+      "message": "oleostearate uproar lenticulate"
+    },
+    {
+      "datatime": "1615814520000",
+      "who": "6127f376d770f515a045835d",
+      "whom": "6127f48dd770f515a0458394",
+      "message": "superspecialize tangleproof cand gena mnemotechnist Reub skunkhead rebathe donatively Anthophora"
+    },
+    {
+      "datatime": "1615815900000",
+      "who": "6127f48dd770f515a0458394",
+      "whom": "6127f376d770f515a045835d",
+      "message": "unfrightful  pergameneous Iacchos Konstantinos fair thioarsenite geomorphology leatherworking panache demonstrability arterioplasty yeomanhood"
+    },
+    {
+      "datatime": "1615816440000",
+      "who": "6127f48dd770f515a0458394",
+      "whom": "6127f376d770f515a045835d",
+      "message": "superglottal seroimmunity Bysacki roguedom stationmaster isoantibody scribblingly freeholder diagnosable ooglea heritance Paulite quercitrin plethorous annoyance unvibrating violon molybdenum philosophicojuristic arapunga besaint surculus pneumomalacia tabernacler"
+    },
+    {
+      "datatime": "1615843920000",
+      "who": "6127f376d770f515a045835d",
+      "whom": "6127f48dd770f515a0458394",
+      "message": "Salisburia"
+    },
+    {
+      "datatime": "1615869780000",
+      "who": "6127f376d770f515a045835d",
+      "whom": "6127f48dd770f515a0458394",
+      "message": "malik ozonoscope autogenetically asaron parallelepiped conepate plastomere effeteness scream Gobiesocidae premisrepresent Aeolian hawok decimate muscular sciolous assize tyrology zeunerite Leuciferidae tachometer unmirthfully subungual Silicoflagellidae"
+    },
+    {
+      "datatime": "1615875480000",
+      "who": "6127f376d770f515a045835d",
+      "whom": "6127f48dd770f515a0458394",
+      "message": "kahu tatchy scyelite febrific  tercia formagenic rondure iridectome rippleless anally"
+    },
+    {
+      "datatime": "1615885920000",
+      "who": "6127f48dd770f515a0458394",
+      "whom": "6127f376d770f515a045835d",
+      "message": "rebukeful squeeze czar aretaics loiter"
+    },
+    {
+      "datatime": "1615888800000",
+      "who": "6127f376d770f515a045835d",
+      "whom": "6127f48dd770f515a0458394",
+      "message": "cleidoscapular pseudoprimitivism Celanese unbegot overabundant hygroblepharic multicrystalline orthocephalic aponeurositis aelurophobe chantable dikkop Miltos provocational taum supping agog solemnitude blastocolla unbowsome unprostituted everywhither orthopedia insensibilize"
+    },
+    {
+      "datatime": "1615898580000",
+      "who": "6127f48dd770f515a0458394",
+      "whom": "6127f376d770f515a045835d",
+      "message": "undervaluingly"
+    },
+    {
+      "datatime": "1615899300000",
+      "who": "6127f48dd770f515a0458394",
+      "whom": "6127f376d770f515a045835d",
+      "message": "uncommodiously trimesitinice"
+    },
+    {
+      "datatime": "1615900140000",
+      "who": "6127f376d770f515a045835d",
+      "whom": "6127f48dd770f515a0458394",
+      "message": "epigonal sanguinaceous acceleration carbamate neritic aperitive Weissnichtwo galleyman marksmanly"
+    },
+    {
+      "datatime": "1615901520000",
+      "who": "6127f376d770f515a045835d",
+      "whom": "6127f48dd770f515a0458394",
+      "message": "otogenous"
+    },
+    {
+      "datatime": "1615905060000",
+      "who": "6127f376d770f515a045835d",
+      "whom": "6127f48dd770f515a0458394",
+      "message": "flotage rapscallionly suprahepatic rotacism reverentially orthocephaly sclerotiniose matinal trabeculation apostemation lanum"
+    },
+    {
+      "datatime": "1615906560000",
+      "who": "6127f376d770f515a045835d",
+      "whom": "6127f48dd770f515a0458394",
+      "message": "fasciotomy mathematically ectrodactylia"
+    },
+    {
+      "datatime": "1615910100000",
+      "who": "6127f48dd770f515a0458394",
+      "whom": "6127f376d770f515a045835d",
+      "message": "blindfoldly nonmicroscopical anticryptic monologist"
+    },
+    {
+      "datatime": "1615910160000",
+      "who": "6127f48dd770f515a0458394",
+      "whom": "6127f376d770f515a045835d",
+      "message": "symbolization"
+    }]
+});

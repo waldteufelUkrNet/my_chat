@@ -1,7 +1,21 @@
-.subheader(data-id="6gvxcVu6DWcbMZ98UAAh" data-group="true")
+//- {
+//-   username: 'Aline Bosshart',
+//-   _id: 6127f368d770f515a045835a,
+//-   imgURL: 'img/users/6127f368d770f515a045835a.jpg'
+//- }
+
+-
+  let group;
+  let un = username || 'UN';
+  if (username){
+    group = false
+  }
+
+.subheader(data-id="" + _id + "" data-group="" + group + "")
   .logo
-    p.logo__name UN
-    img.logo__img(src="../img/users/user4.jpg")
+    p.logo__name #{un.slice(0,2).toUpperCase()}
+    img.logo__img(src="" + imgURL + "")
   .subheader__text-wrapper
-    h1.subheader__name Current Contact Name
-    h4.subheader__id @hereIsId1239ddfv
+    h1.subheader__name #{username}
+    h4.subheader__id @#{_id}
+

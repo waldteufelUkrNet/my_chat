@@ -337,7 +337,7 @@ html.wjs-MobileHeightFix body {
   -ms-flex-item-align: stretch;
       -ms-grid-row-align: stretch;
       align-self: stretch;
-  margin: 0 10px;
+  padding: 0 10px;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -348,6 +348,7 @@ html.wjs-MobileHeightFix body {
       -ms-flex-align: center;
           align-items: center;
   cursor: pointer;
+  border-bottom: 1px solid steelblue;
 }
 .subheader__text-wrapper {
   color: #40E0D0;
@@ -356,9 +357,8 @@ html.wjs-MobileHeightFix body {
   font: 1.2em reg;
 }
 .subheader__id {
-  font: 1em light;
+  font: 0.8em light;
 }
-
 .round-btn {
   width: 40px;
   height: 40px;
@@ -588,6 +588,7 @@ html.wjs-MobileHeightFix body {
   border: 1px solid transparent;
   border-radius: 10px;
   position: relative;
+  min-width: 60px;
 }
 .chat-list__message-date {
   font: 0.7em reg;

@@ -517,7 +517,6 @@ var dictionary = {
         inpHeight = input.clientHeight,
         inpTop    = input.getBoundingClientRect().top,
         inpLeft   = input.getBoundingClientRect().left;
-        console.log("inpLeft", inpLeft);
 
         // милиця
         // чомусь при розмірах екрану більше 1200px wrapper зсувається вправо
@@ -1383,7 +1382,7 @@ showContactsList();
          && event.target.closest('.chat-item') ) {
       let id      = event.target.closest('.chat-item').dataset.id,
           isGroup = event.target.closest('.chat-item').dataset.group;
-      if (isGroup) {
+      if (isGroup == true) {
         openGroupCard(id);
       } else {
         openUserCard(id);
@@ -1401,7 +1400,7 @@ showContactsList();
     if ( event.target.closest('.subheader') ) {
       let id      = event.target.closest('.subheader').dataset.id,
           isGroup = event.target.closest('.subheader').dataset.group;
-      if (isGroup) {
+      if (isGroup == true) {
         openGroupCard(id);
       } else {
         openUserCard(id);
@@ -1430,7 +1429,9 @@ showContactsList();
     if( ! document.querySelector('.left-side')) return;
 
     document.querySelector('.left-side').classList.remove('left-side_with-subheader');
-    document.querySelector('.left-side .subheader').style.display = 'none';
+    if ( document.querySelector('.left-side .subheader') ) {
+      document.querySelector('.left-side .subheader').style.display = 'none';
+    }
     let targetGroup = document.querySelectorAll('.list[data-list-group="' + group + '"]'),
         targetItem  = document.querySelector('[data-list="' + target + '"]');
 
@@ -1481,18 +1482,36 @@ showContactsList();
     }
   }
 
-  function openChat(id, meta) {
-    console.log(`Відкрити ${meta}-чат з id ${id}`)
+  async function openChat(id, meta) {
+    console.log(`Відкрити ${meta}-чат з id ${id}`);
+
+    await showSubheader(id, meta);
+
+    let tzOffset = new Date().getTimezoneOffset();
+
+    let openChatRequest = await loadChat(id, meta, tzOffset);
+    if (openChatRequest.status == 200) {
+      document.querySelector('.right-side .chat-wrapper .wjs-scroll__content').innerHTML = openChatRequest.html;
+      document.querySelector('.chat-wrapper_small-view').innerHTML = openChatRequest.html;
+    } else {
+      showPopupInfo('something went wrong with chat downloading');
+    }
+
     if ( isSmallView() ) {
       showMenuItem('aside', 'chat');
       document.querySelector('.left-side').classList.add('left-side_with-subheader');
-      document.querySelector('.left-side .subheader').style.display = 'flex';
+      if ( document.querySelector('.left-side .subheader') ) {
+        document.querySelector('.left-side .subheader').style.display = 'flex';
+      }
       wSetScroll( document.querySelector('.lists-wrapper.wjs-scroll'),
-                  { right:true,
-                    overflowXHidden:true
-                });
+                  { right:true, overflowXHidden:true });
     } else {
       showMenuItem('page', 'chatP')
+
+      wSetScroll( document.querySelector('.right-side .chat-wrapper.wjs-scroll'),
+                  { right:true, overflowXHidden:true });
+      wSetScroll( document.querySelector('.right-side .chat-wrapper.wjs-scroll'),
+                  { right:true, overflowXHidden:true });
     }
   }
 
@@ -1511,6 +1530,17 @@ showContactsList();
       }
     } else {
       showMenuItem('aside', 'startL');
+    }
+  }
+
+  async function showSubheader(id, meta) {
+    let showSubheaderRequest = await loadContactSubheader(id, meta);
+    if (showSubheaderRequest.status == 200) {
+      document.querySelector('.left-side .subheader__wrapper').innerHTML = showSubheaderRequest.html;
+      document.querySelector('.right-side .subheader__wrapper').innerHTML = showSubheaderRequest.html;
+      // document.querySelector('.left-side .subheader').style.display = 'flex';
+    } else {
+      //
     }
   }
 /* ↑↑↑ functions declaration ↑↑↑ */
@@ -1781,6 +1811,53 @@ showContactsList();
         'Accept': 'text/html'
       }
     });
+    if (response.status == 200) {
+      let html = await response.text();
+      return {status: 200, html: html}
+    } else {
+      return {status: response.status}
+    }
+  }
+
+  async function loadChat(id, meta, tzOffset) {
+    if (meta == 'mono') {
+
+      const contactID = id;
+      let response = await fetch('api/render/monoChat', {
+        method: 'POST',
+        headers: {
+          'Accept': 'text/html',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({id:contactID, tzOffset:tzOffset})
+      });
+      if (response.status == 200) {
+        let html = await response.text();
+        return {status: 200, html: html}
+      } else {
+        return {status: response.status}
+      }
+
+    } else if (meta == 'group') {
+      const gChatID = id;
+      //
+    }
+  }
+
+  async function loadContactSubheader(id, meta) {
+    let response;
+    if (meta == 'mono') { // id - ідентифікатор контакта
+      response = await fetch('api/render/contactSubheader', {
+        method: 'POST',
+        headers: {
+          'Accept': 'text/html',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({id:id})
+      });
+    } else if (meta == 'group') { // id - ідентифікатор групи
+      //
+    }
     if (response.status == 200) {
       let html = await response.text();
       return {status: 200, html: html}
