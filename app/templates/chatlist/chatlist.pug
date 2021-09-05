@@ -1,22 +1,86 @@
+//- {
+//-   _id: '6127f368d770f515a045835a',
+//-   meta: 'mono',
+//-   name: 'Aline Bosshart',
+//-   imgURL: 'img/users/6127f368d770f515a045835a.jpg',
+//-   datetime: 1630516755121,
+//-   message: 'hello bro)',
+//-   status: 'delivered',
+//-   badge: 0
+//- },
+//- {
+//-   _id: '6134bbdf7323d2cacdc628c5',
+//-   meta: 'group',
+//-   name: 'RedRoom',
+//-   datetime: 1630597020000,
+//-   message: 'jaileress radioanaphylaxis moundlet brattice cyanometer fratry reincrease bullyable drabbish quavery semioblivion catastrophe piepowder Macraucheniidae Aglossa jeofail misprovoke resinate beinked peritoneal Tupaia unconnived abnegate nervimotor',
+//-   status: 'delivered',
+//-   imgURL: 'img/users/6134bbdf7323d2cacdc628c5.jpg',
+//-   badge: 0
+//- }
+
 ul.chat-list
+  for chat in chats
+    -
+      let modData;
+      if (chat.meta == 'group') {
+        modData = "true";
+      } else {
+        modData = "false";
+      }
+    li.chat-item(data-group=modData data-id=chat._id)
+      .logo
+        p.logo__name #{chat.name.slice(0,2).toUpperCase()}
+        img.logo__img(src=chat.imgURL)
+      .chat-item__text-wrapper
+        h4.chat-item__name #{chat.name}
+        h4.chat-item__message #{chat.message}
+      -
+        let dateObj = new Date(+chat.datetime),
+            year    = dateObj.getUTCFullYear(),
+            mon     = dateObj.getUTCMonth() + 1,
+            day     = dateObj.getUTCDate();
+        if (mon < 10) mon = '0' + mon;
+        if (day < 10) day = '0' + day;
 
-  li.chat-item(data-group="true" data-id="5VU7eo75wjabFQ3608")
-    .logo
-      p.logo__name AB
-      img.logo__img(src="../img/users/user1.jpg")
-      .logo__status.logo__status_online
-      //-.logo__status.logo__status_offline
-    .chat-item__text-wrapper
-      h4.chat-item__name Jean Waverly
-      h4.chat-item__message Hello mazafaka
-    .chat-item__date 24.07.21
-    .chat-item__badge
-    //- .chat-item__badge.chat-item__badge_active 12
-    //- .message-status.message-status_delivered
-    .message-status.message-status_read
-      i.ico &#x4e;
-      i.ico &#x4e;
+        let dateStr = day + '.' + mon + '.' + String(year).slice(2);
 
+      .chat-item__date #{dateStr}
+
+      if chat.badge > 0
+        .chat-item__badge.chat-item__badge_active #{chat.badge}
+      else
+        .chat-item__badge
+
+      -
+        let modClass = '';
+        if (chat.status == 'read') {
+          modClass = 'message-status_read'
+        } else if (chat.status == 'delivered') {
+          modClass = 'message-status_delivered'
+        }
+      .message-status(class=modClass)
+        i.ico &#x4e;
+        i.ico &#x4e;
+
+//- ul.chat-list
+
+//-   li.chat-item(data-group="true" data-id="5VU7eo75wjabFQ3608")
+//-     .logo
+//-       p.logo__name AB
+//-       img.logo__img(src="../img/users/user1.jpg")
+//-       .logo__status.logo__status_online
+//-       //-.logo__status.logo__status_offline
+//-     .chat-item__text-wrapper
+//-       h4.chat-item__name Jean Waverly
+//-       h4.chat-item__message Hello mazafaka
+//-     .chat-item__date 24.07.21
+//-     .chat-item__badge
+//-     //- .chat-item__badge.chat-item__badge_active 12
+//-     //- .message-status.message-status_delivered
+//-     .message-status.message-status_read
+//-       i.ico &#x4e;
+//-       i.ico &#x4e;
 
 
 //- приклад для стилізації фронту:

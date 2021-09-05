@@ -309,8 +309,27 @@
         body: JSON.stringify({id:id})
       });
     } else if (meta == 'group') { // id - ідентифікатор групи
+    console.log("meta == 'group'");
       //
     }
+    if (response.status == 200) {
+      let html = await response.text();
+      return {status: 200, html: html}
+    } else {
+      return {status: response.status}
+    }
+  }
+
+  async function renderChatsList() {
+    let tzOffset = new Date().getTimezoneOffset();
+    let response = await fetch('api/render/chatsList', {
+      method: 'POST',
+      headers: {
+        'Accept': 'text/html',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({tzOffset : new Date().getTimezoneOffset()})
+    });
     if (response.status == 200) {
       let html = await response.text();
       return {status: 200, html: html}

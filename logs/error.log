@@ -299,3 +299,45 @@ err.stack:
     at B:\files\work_area\my_chat\app\controllers\renderController.js:122:30
     at processTicksAndRejections (node:internal/process/task_queues:96:5)
     at async exports.renderUserCard (B:\files\work_area\my_chat\app\controllers\renderController.js:120:3)
+2021-09-05T18:28:39.069Z [controllers/renderController.js] error: 
+err.name:
+    ReferenceError
+err.message:
+    delivered is not defined
+err.stack:
+    ReferenceError: delivered is not defined
+    at B:\files\work_area\my_chat\app\controllers\renderController.js:148:72
+    at processTicksAndRejections (node:internal/process/task_queues:96:5)
+    at async exports.renderChatsList (B:\files\work_area\my_chat\app\controllers\renderController.js:138:20)
+2021-09-05T20:34:54.816Z [controllers/renderController.js] error: 
+err.name:
+    TypeError
+err.message:
+    Cannot read property 'username' of null
+err.stack:
+    TypeError: Cannot read property 'username' of null
+    at B:\files\work_area\my_chat\app\controllers\renderController.js:269:30
+    at processTicksAndRejections (node:internal/process/task_queues:96:5)
+    at async exports.renderUserCard (B:\files\work_area\my_chat\app\controllers\renderController.js:267:3)
+2021-09-05T21:34:48.772Z [controllers/renderController.js] error: 
+err.name:
+    TypeError
+err.message:
+    Cannot read property 'username' of null
+err.stack:
+    TypeError: Cannot read property 'username' of null
+    at B:\files\work_area\my_chat\app\controllers\renderController.js:269:30
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (node:internal/process/task_queues:96:5)
+    at async exports.renderUserCard (B:\files\work_area\my_chat\app\controllers\renderController.js:267:3)
+2021-09-05T22:39:01.912Z [controllers/renderController.js] error: 
+err.name:
+    TypeError
+err.message:
+    Cannot read property 'username' of null
+err.stack:
+    TypeError: Cannot read property 'username' of null
+    at B:\files\work_area\my_chat\app\controllers\renderController.js:267:30
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (node:internal/process/task_queues:96:5)
+    at async exports.renderUserCard (B:\files\work_area\my_chat\app\controllers\renderController.js:265:3)

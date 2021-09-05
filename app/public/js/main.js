@@ -1442,6 +1442,8 @@ showContactsList();
 
     if (group == 'aside' && target == 'contactlist') showContactsList();
 
+    if (group == 'aside' && target == 'chatlist') showChatsList();
+
     wSetScroll(document.querySelector('.lists-wrapper'), {right:true, overflowXHidden:true})
   }
 
@@ -1489,6 +1491,10 @@ showContactsList();
 
     let tzOffset = new Date().getTimezoneOffset();
 
+    document.querySelector('.right-side .chat-wrapper .wjs-scroll__content').innerHTML = '';
+    document.querySelector('.chat-wrapper_small-view').innerHTML = '';
+
+
     let openChatRequest = await loadChat(id, meta, tzOffset);
     if (openChatRequest.status == 200) {
       document.querySelector('.right-side .chat-wrapper .wjs-scroll__content').innerHTML = openChatRequest.html;
@@ -1515,6 +1521,17 @@ showContactsList();
     }
   }
 
+  async function showSubheader(id, meta) {
+    let showSubheaderRequest = await loadContactSubheader(id, meta);
+    if (showSubheaderRequest.status == 200) {
+      document.querySelector('.left-side .subheader__wrapper').innerHTML = showSubheaderRequest.html;
+      document.querySelector('.right-side .subheader__wrapper').innerHTML = showSubheaderRequest.html;
+      // document.querySelector('.left-side .subheader').style.display = 'flex';
+    } else {
+      //
+    }
+  }
+
   async function showContactsList() {
     let contactsListRequest = await renderContactsList();
     if (contactsListRequest.status == 200) {
@@ -1533,14 +1550,21 @@ showContactsList();
     }
   }
 
-  async function showSubheader(id, meta) {
-    let showSubheaderRequest = await loadContactSubheader(id, meta);
-    if (showSubheaderRequest.status == 200) {
-      document.querySelector('.left-side .subheader__wrapper').innerHTML = showSubheaderRequest.html;
-      document.querySelector('.right-side .subheader__wrapper').innerHTML = showSubheaderRequest.html;
-      // document.querySelector('.left-side .subheader').style.display = 'flex';
+  async function showChatsList() {
+    let chatsListRequest = await renderChatsList();
+    if (chatsListRequest.status == 200) {
+      if (chatsListRequest.html.length > 0) {
+        // показ списку
+        document.querySelector('.left-side .list_active').innerHTML = chatsListRequest.html;
+        wSetScroll( document.querySelector('.lists-wrapper.wjs-scroll'),
+                    { right:true,
+                      overflowXHidden:true
+                  });
+      } else {
+        showMenuItem('aside', 'startL');
+      }
     } else {
-      //
+      showMenuItem('aside', 'startL');
     }
   }
 /* ↑↑↑ functions declaration ↑↑↑ */
@@ -1856,8 +1880,27 @@ showContactsList();
         body: JSON.stringify({id:id})
       });
     } else if (meta == 'group') { // id - ідентифікатор групи
+    console.log("meta == 'group'");
       //
     }
+    if (response.status == 200) {
+      let html = await response.text();
+      return {status: 200, html: html}
+    } else {
+      return {status: response.status}
+    }
+  }
+
+  async function renderChatsList() {
+    let tzOffset = new Date().getTimezoneOffset();
+    let response = await fetch('api/render/chatsList', {
+      method: 'POST',
+      headers: {
+        'Accept': 'text/html',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({tzOffset : new Date().getTimezoneOffset()})
+    });
     if (response.status == 200) {
       let html = await response.text();
       return {status: 200, html: html}

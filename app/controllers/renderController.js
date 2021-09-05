@@ -4,6 +4,7 @@ const config    = require('../config'),
       log       = require('../libs/log')(module),
       objectId  = require('mongodb').ObjectId,
 
+      GroupChat  = require('../models/groupchat.js').GroupChat,
       MonoChat  = require('../models/monochat.js').MonoChat,
       User      = require('../models/user.js').User,
 
@@ -59,6 +60,150 @@ exports.renderContactsList = function(req, res) {
       });
     }
   });
+}
+
+// гпупові та моно-чати
+// +1. знайти клієнта, взяти поля monochats (id клієнтів) та groupchats (id розмов)
+// 2. для всіх mono-id:
+//    - піти в monochats і взяти там id контакта з interlocutors
+//    - в monochats.chat взяти останнє повідомлення: дату, текст і статус
+// +   - з колекції users по id контакта взяти його ім'я
+// +   - перевірити наявність лого
+// 3. створити масив чатів, додати мітки mono/group
+// 4. відсортувати масив по часу
+exports.renderChatsList = async function(req, res) {
+  const userID   = req.session.user._id,
+        tzOffset = req.body.tzOffset;
+
+  let chatsArr = [];
+
+  let chats = await User.findById(new objectId(userID), {monochats:1,groupchats:1})
+    .then(result => {
+      return result
+    })
+    .catch(err => {
+      res.sendStatus(500);
+      log.error('\nerr.name:\n    ' + err.name + '\nerr.message:\n    ' + err.message + '\nerr.stack:\n    ' +err.stack);
+      throw err;
+    });
+
+  for (let i = 0; i < chats.monochats.length; i++) {
+    let chatObj = {
+      _id : chats.monochats[i],
+      meta: 'mono'
+    };
+
+    chatObj.name = await User.findById( new objectId(chats.monochats[i]), {username:1} )
+      .then(user => {
+        return user.username;
+      })
+      .catch(err => {
+        res.sendStatus(500);
+        log.error('\nerr.name:\n    ' + err.name + '\nerr.message:\n    ' + err.message + '\nerr.stack:\n    ' +err.stack);
+        throw err;
+      });
+
+    chatObj.imgURL = await getAvaFileClientURL(chats.monochats[i])
+      .catch(err => {
+        res.sendStatus(500);
+        log.error('\nerr.name:\n    ' + err.name + '\nerr.message:\n    ' + err.message + '\nerr.stack:\n    ' +err.stack);
+        throw err;
+      });
+
+    let chat = await MonoChat.find({interlocutors: {$all: [userID, chats.monochats[i]]} })
+      .then(result => {
+        return result[0].chat;
+      })
+      .catch(err => {
+        res.sendStatus(500);
+        log.error('\nerr.name:\n    ' + err.name + '\nerr.message:\n    ' + err.message + '\nerr.stack:\n    ' +err.stack);
+        throw err;
+      });
+
+    let monochatLastMessage = chat[chat.length - 1];
+    chatObj.datetime = +monochatLastMessage.datatime + tzOffset*60000;
+    chatObj.message = monochatLastMessage.message;
+    chatObj.status = monochatLastMessage.status;
+
+    let badge = 0;
+    if (monochatLastMessage.who != userID && monochatLastMessage.status == 'delivered') {
+      for (let i = chat.length-1; i > -1; i--) {
+        if (chat[i].who != userID && chat[i].status == 'delivered') {
+          badge = badge + 1
+        } else {
+          break
+        }
+      }
+    }
+    chatObj.badge = badge;
+
+    chatsArr.push(chatObj);
+  }
+
+  for (let i = 0; i < chats.groupchats.length; i++) {
+    let chat = {
+      _id : chats.groupchats[i],
+      meta: 'group'
+    };
+
+    let chatItem = await GroupChat.findById( new objectId(chats.groupchats[i]), {meta:1, chat:1} )
+      .then(group => {
+        let name     = group.meta.name,
+            message  = group.chat[group.chat.length-1],
+            datetime = +message.datatime + tzOffset*60000,
+            text     = message.message,
+            status   = message.status[userID],
+            badge    = 0 ;
+
+        let lastMessage = group.chat[group.chat.length-1];
+
+        if (lastMessage.who != userID && lastMessage.status[userID] == 'delivered') {
+          for (let i = group.chat.length-1; i > -1; i--) {
+            if (group.chat[i].who != userID && group.chat[i].status[userID] == 'delivered') {
+              badge = badge + 1
+            } else {
+              break
+            }
+          }
+        }
+
+        return {
+          name,
+          datetime,
+          message: text,
+          status,
+          badge
+        }
+      })
+      .catch(err => {
+        res.sendStatus(500);
+        log.error('\nerr.name:\n    ' + err.name + '\nerr.message:\n    ' + err.message + '\nerr.stack:\n    ' +err.stack);
+        throw err;
+      });
+
+    chat.name = chatItem.name;
+    chat.datetime = chatItem.datetime;
+    chat.message = chatItem.message;
+    chat.status = chatItem.status;
+    chat.badge = chatItem.badge;
+
+    chat.imgURL = await getAvaFileClientURL(chats.groupchats[i])
+      .catch(err => {
+        res.sendStatus(500);
+        log.error('\nerr.name:\n    ' + err.name + '\nerr.message:\n    ' + err.message + '\nerr.stack:\n    ' +err.stack);
+        throw err;
+      });
+
+    chatsArr.push(chat);
+  }
+
+  chatsArr.sort(function(a,b){
+    if (a.datatime > b.datatime) return 1;
+    if (a.datatime < b.datatime) return -1;
+    if (a.datatime == b.datatime) return 0;
+  });
+
+  res.status(200).render('chatlist/chatlist.pug', {chats:chatsArr});
 }
 
 exports.renderBlackList = function(req, res) {
@@ -224,7 +369,7 @@ exports.renderMonoChat = async function(req,res) {
 
     // підготовка чату до рендерингу
     chat.forEach(message => {
-      // message.datatime = +message.datatime + tzOffset*60000;
+      message.datatime = +message.datatime + tzOffset*60000;
       if (message.who == userID) {
         message.whoName = userName;
         message.whomName = contactName;
@@ -251,15 +396,6 @@ exports.renderMonoChat = async function(req,res) {
     console.log('такого чату в колекції нема');
   }
 }
-
-
-
-
-
-
-
-
-
 
 async function getAvaFileClientURL(id) {
   if ( await isAvaFileAviable(id) ) {

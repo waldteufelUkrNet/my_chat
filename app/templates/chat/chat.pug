@@ -1,12 +1,13 @@
 //- {
-//-   datatime: '1630527321391',
-//-   who: '6127f368d770f515a045835a',
-//-   whom: '6127f48dd770f515a0458394',
-//-   message: 'hello!',
-//-   whoName: 'Aline Bosshart',
-//-   whomName: 'test',
-//-   messageType: 'chat-list__item_received',
-//-   whoImg: 'app/public/img/users/6127f368d770f515a045835a.jpg'
+//-   datatime: 1615578883000,
+//-   who: '6127f48dd770f515a0458394',
+//-   whom: '6127f376d770f515a045835d',
+//-   message: 'outwill microconidial sciarid',
+//-   status: 'read',
+//-   whoName: 'test',
+//-   whomName: 'Aliza Obermoeller',
+//-   whoImg: 'img/users/6127f48dd770f515a0458394.jpg',
+//-   messageType: 'chat-list__item_sent'
 //- }
 
 -
@@ -85,7 +86,15 @@ ul.chat-list(class=modClass)
           let dateSrting = hh + ':' + mm;
 
         .chat-list__message-date #{dateSrting}
-        .message-status.message-status_delivered
+
+        -
+          let modClass = '';
+          if (message.status == 'read') {
+            modClass = 'message-status_read'
+          } else if (message.status == 'delivered') {
+            modClass = 'message-status_delivered'
+          }
+        .message-status(class=modClass)
           i.ico &#x4e;
           i.ico &#x4e;
 

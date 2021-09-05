@@ -3,6 +3,7 @@ const express    = require('express'),
       router     = express.Router();
 
 router.get('/contactsList', controller.renderContactsList);
+router.post('/chatsList', controller.renderChatsList);
 router.get('/blackList', controller.renderBlackList);
 router.post('/userCard', controller.renderUserCard);
 router.post('/monoChat', controller.renderMonoChat);

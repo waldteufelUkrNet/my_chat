@@ -1470,3 +1470,192 @@ err.stack:
 2021-09-03T21:49:14.491Z [app/app.js] debug: server start listen on port 3002
 2021-09-03T21:53:58.465Z [app/app.js] debug: server start listen on port 3002
 2021-09-03T22:08:18.218Z [app/app.js] debug: server start listen on port 3002
+2021-09-04T13:22:12.708Z [app/app.js] debug: server start listen on port 3002
+2021-09-04T14:06:20.456Z [app/app.js] debug: server start listen on port 3002
+2021-09-04T14:06:34.073Z [app/app.js] debug: server start listen on port 3002
+2021-09-04T14:08:32.160Z [app/app.js] debug: server start listen on port 3002
+2021-09-04T14:31:25.396Z [app/app.js] debug: server start listen on port 3002
+2021-09-04T14:32:34.797Z [app/app.js] debug: server start listen on port 3002
+2021-09-04T14:33:49.802Z [app/app.js] debug: server start listen on port 3002
+2021-09-04T14:56:15.780Z [app/app.js] debug: server start listen on port 3002
+2021-09-04T14:58:39.533Z [app/app.js] debug: server start listen on port 3002
+2021-09-04T14:59:18.130Z [app/app.js] debug: server start listen on port 3002
+2021-09-04T15:07:19.610Z [app/app.js] debug: server start listen on port 3002
+2021-09-04T15:08:12.076Z [app/app.js] debug: server start listen on port 3002
+2021-09-04T15:08:54.774Z [app/app.js] debug: server start listen on port 3002
+2021-09-04T15:09:54.207Z [app/app.js] debug: server start listen on port 3002
+2021-09-04T15:12:25.823Z [app/app.js] debug: server start listen on port 3002
+2021-09-04T15:14:24.351Z [app/app.js] debug: server start listen on port 3002
+2021-09-04T19:02:15.982Z [app/app.js] debug: server start listen on port 3002
+2021-09-04T19:05:20.385Z [app/app.js] debug: server start listen on port 3002
+2021-09-04T19:05:29.176Z [app/app.js] debug: server start listen on port 3002
+2021-09-04T19:27:05.674Z [app/app.js] debug: server start listen on port 3002
+2021-09-04T21:27:02.340Z [app/app.js] debug: server start listen on port 3002
+2021-09-04T21:28:44.464Z [app/app.js] debug: server start listen on port 3002
+2021-09-04T21:30:17.034Z [app/app.js] debug: server start listen on port 3002
+2021-09-04T21:36:00.433Z [app/app.js] debug: server start listen on port 3002
+2021-09-04T21:54:41.016Z [app/app.js] debug: server start listen on port 3002
+2021-09-04T21:56:58.549Z [app/app.js] debug: server start listen on port 3002
+2021-09-04T21:57:44.933Z [app/app.js] debug: server start listen on port 3002
+2021-09-04T21:58:03.938Z [app/app.js] debug: server start listen on port 3002
+2021-09-04T21:58:44.420Z [app/app.js] debug: server start listen on port 3002
+2021-09-04T21:59:11.216Z [app/app.js] debug: server start listen on port 3002
+2021-09-04T21:59:29.593Z [app/app.js] debug: server start listen on port 3002
+2021-09-04T22:06:34.510Z [app/app.js] debug: server start listen on port 3002
+2021-09-04T22:11:24.971Z [app/app.js] debug: server start listen on port 3002
+2021-09-04T22:12:15.241Z [app/app.js] debug: server start listen on port 3002
+2021-09-04T22:16:56.851Z [app/app.js] debug: server start listen on port 3002
+2021-09-04T22:18:35.918Z [app/app.js] debug: server start listen on port 3002
+2021-09-04T22:20:36.386Z [app/app.js] debug: server start listen on port 3002
+2021-09-04T22:20:54.584Z [app/app.js] debug: server start listen on port 3002
+2021-09-04T22:21:59.561Z [app/app.js] debug: server start listen on port 3002
+2021-09-04T22:27:00.639Z [app/app.js] debug: server start listen on port 3002
+2021-09-04T22:29:41.085Z [app/app.js] debug: server start listen on port 3002
+2021-09-04T22:30:04.162Z [app/app.js] debug: server start listen on port 3002
+2021-09-04T22:30:31.679Z [app/app.js] debug: server start listen on port 3002
+2021-09-04T22:30:37.380Z [app/app.js] debug: server start listen on port 3002
+2021-09-04T22:32:39.022Z [app/app.js] debug: server start listen on port 3002
+2021-09-04T22:32:45.608Z [app/app.js] debug: server start listen on port 3002
+2021-09-04T22:33:37.691Z [app/app.js] debug: server start listen on port 3002
+2021-09-04T22:35:05.254Z [app/app.js] debug: server start listen on port 3002
+2021-09-04T22:36:35.377Z [app/app.js] debug: server start listen on port 3002
+2021-09-04T22:37:26.496Z [app/app.js] debug: server start listen on port 3002
+2021-09-04T22:39:51.569Z [app/app.js] debug: server start listen on port 3002
+2021-09-04T22:41:21.277Z [app/app.js] debug: server start listen on port 3002
+2021-09-04T22:43:34.086Z [app/app.js] debug: server start listen on port 3002
+2021-09-04T22:50:03.970Z [app/app.js] debug: server start listen on port 3002
+2021-09-04T22:51:15.518Z [app/app.js] debug: server start listen on port 3002
+2021-09-04T22:52:11.541Z [app/app.js] debug: server start listen on port 3002
+2021-09-04T22:53:26.920Z [app/app.js] debug: server start listen on port 3002
+2021-09-04T22:54:16.773Z [app/app.js] debug: server start listen on port 3002
+2021-09-04T22:54:57.756Z [app/app.js] debug: server start listen on port 3002
+2021-09-04T22:56:19.696Z [app/app.js] debug: server start listen on port 3002
+2021-09-04T22:57:29.419Z [app/app.js] debug: server start listen on port 3002
+2021-09-04T22:57:40.282Z [app/app.js] debug: server start listen on port 3002
+2021-09-04T22:59:23.733Z [app/app.js] debug: server start listen on port 3002
+2021-09-04T23:00:06.388Z [app/app.js] debug: server start listen on port 3002
+2021-09-04T23:02:18.873Z [app/app.js] debug: server start listen on port 3002
+2021-09-04T23:03:24.071Z [app/app.js] debug: server start listen on port 3002
+2021-09-04T23:04:35.878Z [app/app.js] debug: server start listen on port 3002
+2021-09-04T23:08:27.608Z [app/app.js] debug: server start listen on port 3002
+2021-09-04T23:08:35.404Z [app/app.js] debug: server start listen on port 3002
+2021-09-04T23:09:07.724Z [app/app.js] debug: server start listen on port 3002
+2021-09-04T23:09:37.771Z [app/app.js] debug: server start listen on port 3002
+2021-09-05T11:37:27.931Z [app/app.js] debug: server start listen on port 3002
+2021-09-05T12:50:08.883Z [app/app.js] debug: server start listen on port 3002
+2021-09-05T12:50:22.371Z [app/app.js] debug: server start listen on port 3002
+2021-09-05T12:51:39.517Z [app/app.js] debug: server start listen on port 3002
+2021-09-05T13:03:24.388Z [app/app.js] debug: server start listen on port 3002
+2021-09-05T14:16:47.433Z [app/app.js] debug: server start listen on port 3002
+2021-09-05T14:31:49.222Z [app/app.js] debug: server start listen on port 3002
+2021-09-05T14:32:23.120Z [app/app.js] debug: server start listen on port 3002
+2021-09-05T14:33:20.960Z [app/app.js] debug: server start listen on port 3002
+2021-09-05T14:36:24.871Z [app/app.js] debug: server start listen on port 3002
+2021-09-05T14:39:16.112Z [app/app.js] debug: server start listen on port 3002
+2021-09-05T14:44:17.256Z [app/app.js] debug: server start listen on port 3002
+2021-09-05T14:45:02.244Z [app/app.js] debug: server start listen on port 3002
+2021-09-05T14:45:47.148Z [app/app.js] debug: server start listen on port 3002
+2021-09-05T14:45:55.474Z [app/app.js] debug: server start listen on port 3002
+2021-09-05T14:47:20.549Z [app/app.js] debug: server start listen on port 3002
+2021-09-05T14:57:54.154Z [app/app.js] debug: server start listen on port 3002
+2021-09-05T15:12:15.065Z [app/app.js] debug: server start listen on port 3002
+2021-09-05T15:12:44.382Z [app/app.js] debug: server start listen on port 3002
+2021-09-05T15:14:36.591Z [app/app.js] debug: server start listen on port 3002
+2021-09-05T15:16:01.570Z [app/app.js] debug: server start listen on port 3002
+2021-09-05T15:16:08.134Z [app/app.js] debug: server start listen on port 3002
+2021-09-05T15:17:35.584Z [app/app.js] debug: server start listen on port 3002
+2021-09-05T15:18:47.500Z [app/app.js] debug: server start listen on port 3002
+2021-09-05T15:19:15.583Z [app/app.js] debug: server start listen on port 3002
+2021-09-05T15:20:41.815Z [app/app.js] debug: server start listen on port 3002
+2021-09-05T15:21:12.122Z [app/app.js] debug: server start listen on port 3002
+2021-09-05T15:21:56.590Z [app/app.js] debug: server start listen on port 3002
+2021-09-05T15:22:39.593Z [app/app.js] debug: server start listen on port 3002
+2021-09-05T15:24:13.578Z [app/app.js] debug: server start listen on port 3002
+2021-09-05T15:25:10.916Z [app/app.js] debug: server start listen on port 3002
+2021-09-05T15:27:53.927Z [app/app.js] debug: server start listen on port 3002
+2021-09-05T15:38:05.626Z [app/app.js] debug: server start listen on port 3002
+2021-09-05T16:30:48.561Z [app/app.js] debug: server start listen on port 3002
+2021-09-05T16:43:01.631Z [app/app.js] debug: server start listen on port 3002
+2021-09-05T16:56:30.764Z [app/app.js] debug: server start listen on port 3002
+2021-09-05T18:07:08.496Z [app/app.js] debug: server start listen on port 3002
+2021-09-05T18:14:25.835Z [app/app.js] debug: server start listen on port 3002
+2021-09-05T18:19:35.337Z [app/app.js] debug: server start listen on port 3002
+2021-09-05T18:21:49.260Z [app/app.js] debug: server start listen on port 3002
+2021-09-05T18:27:47.736Z [app/app.js] debug: server start listen on port 3002
+2021-09-05T18:28:39.068Z [controllers/renderController.js] error: 
+err.name:
+    ReferenceError
+err.message:
+    delivered is not defined
+err.stack:
+    ReferenceError: delivered is not defined
+    at B:\files\work_area\my_chat\app\controllers\renderController.js:148:72
+    at processTicksAndRejections (node:internal/process/task_queues:96:5)
+    at async exports.renderChatsList (B:\files\work_area\my_chat\app\controllers\renderController.js:138:20)
+2021-09-05T18:28:41.119Z [app/app.js] debug: server start listen on port 3002
+2021-09-05T18:29:01.460Z [app/app.js] debug: server start listen on port 3002
+2021-09-05T18:29:35.445Z [app/app.js] debug: server start listen on port 3002
+2021-09-05T18:29:55.326Z [app/app.js] debug: server start listen on port 3002
+2021-09-05T18:35:12.008Z [app/app.js] debug: server start listen on port 3002
+2021-09-05T18:36:00.426Z [app/app.js] debug: server start listen on port 3002
+2021-09-05T18:37:42.527Z [app/app.js] debug: server start listen on port 3002
+2021-09-05T18:37:51.857Z [app/app.js] debug: server start listen on port 3002
+2021-09-05T18:38:02.576Z [app/app.js] debug: server start listen on port 3002
+2021-09-05T18:38:50.850Z [app/app.js] debug: server start listen on port 3002
+2021-09-05T18:44:58.737Z [app/app.js] debug: server start listen on port 3002
+2021-09-05T18:46:37.247Z [app/app.js] debug: server start listen on port 3002
+2021-09-05T18:49:33.939Z [app/app.js] debug: server start listen on port 3002
+2021-09-05T18:51:17.891Z [app/app.js] debug: server start listen on port 3002
+2021-09-05T18:52:38.770Z [app/app.js] debug: server start listen on port 3002
+2021-09-05T18:53:32.288Z [app/app.js] debug: server start listen on port 3002
+2021-09-05T18:54:05.973Z [app/app.js] debug: server start listen on port 3002
+2021-09-05T18:54:58.706Z [app/app.js] debug: server start listen on port 3002
+2021-09-05T19:00:22.357Z [app/app.js] debug: server start listen on port 3002
+2021-09-05T19:02:22.716Z [app/app.js] debug: server start listen on port 3002
+2021-09-05T19:28:55.673Z [app/app.js] debug: server start listen on port 3002
+2021-09-05T19:30:00.104Z [app/app.js] debug: server start listen on port 3002
+2021-09-05T19:52:17.758Z [app/app.js] debug: server start listen on port 3002
+2021-09-05T20:34:54.814Z [controllers/renderController.js] error: 
+err.name:
+    TypeError
+err.message:
+    Cannot read property 'username' of null
+err.stack:
+    TypeError: Cannot read property 'username' of null
+    at B:\files\work_area\my_chat\app\controllers\renderController.js:269:30
+    at processTicksAndRejections (node:internal/process/task_queues:96:5)
+    at async exports.renderUserCard (B:\files\work_area\my_chat\app\controllers\renderController.js:267:3)
+2021-09-05T20:36:23.740Z [app/app.js] debug: server start listen on port 3002
+2021-09-05T20:36:39.012Z [app/app.js] debug: server start listen on port 3002
+2021-09-05T21:34:48.770Z [controllers/renderController.js] error: 
+err.name:
+    TypeError
+err.message:
+    Cannot read property 'username' of null
+err.stack:
+    TypeError: Cannot read property 'username' of null
+    at B:\files\work_area\my_chat\app\controllers\renderController.js:269:30
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (node:internal/process/task_queues:96:5)
+    at async exports.renderUserCard (B:\files\work_area\my_chat\app\controllers\renderController.js:267:3)
+2021-09-05T21:35:23.077Z [app/app.js] debug: server start listen on port 3002
+2021-09-05T21:35:30.101Z [app/app.js] debug: server start listen on port 3002
+2021-09-05T22:11:44.128Z [app/app.js] debug: server start listen on port 3002
+2021-09-05T22:12:24.692Z [app/app.js] debug: server start listen on port 3002
+2021-09-05T22:13:36.903Z [app/app.js] debug: server start listen on port 3002
+2021-09-05T22:14:55.966Z [app/app.js] debug: server start listen on port 3002
+2021-09-05T22:15:53.059Z [app/app.js] debug: server start listen on port 3002
+2021-09-05T22:39:01.911Z [controllers/renderController.js] error: 
+err.name:
+    TypeError
+err.message:
+    Cannot read property 'username' of null
+err.stack:
+    TypeError: Cannot read property 'username' of null
+    at B:\files\work_area\my_chat\app\controllers\renderController.js:267:30
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (node:internal/process/task_queues:96:5)
+    at async exports.renderUserCard (B:\files\work_area\my_chat\app\controllers\renderController.js:265:3)
+2021-09-05T22:43:48.602Z [app/app.js] debug: server start listen on port 3002
+2021-09-05T22:44:39.242Z [app/app.js] debug: server start listen on port 3002
+2021-09-05T22:46:49.513Z [app/app.js] debug: server start listen on port 3002
