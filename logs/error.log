@@ -341,3 +341,13 @@ err.stack:
     at runMicrotasks (<anonymous>)
     at processTicksAndRejections (node:internal/process/task_queues:96:5)
     at async exports.renderUserCard (B:\files\work_area\my_chat\app\controllers\renderController.js:265:3)
+2021-09-06T16:51:20.402Z [controllers/renderController.js] error: 
+err.name:
+    ReferenceError
+err.message:
+    groupmeta is not defined
+err.stack:
+    ReferenceError: groupmeta is not defined
+    at B:\files\work_area\my_chat\app\controllers\renderController.js:319:5
+    at processTicksAndRejections (node:internal/process/task_queues:96:5)
+    at async exports.renderGroupSubheader (B:\files\work_area\my_chat\app\controllers\renderController.js:317:19)

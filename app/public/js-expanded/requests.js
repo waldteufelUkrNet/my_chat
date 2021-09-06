@@ -273,10 +273,11 @@
   }
 
   async function loadChat(id, meta, tzOffset) {
+    let response;
     if (meta == 'mono') {
 
       const contactID = id;
-      let response = await fetch('api/render/monoChat', {
+      response = await fetch('api/render/monoChat', {
         method: 'POST',
         headers: {
           'Accept': 'text/html',
@@ -284,16 +285,23 @@
         },
         body: JSON.stringify({id:contactID, tzOffset:tzOffset})
       });
-      if (response.status == 200) {
-        let html = await response.text();
-        return {status: 200, html: html}
-      } else {
-        return {status: response.status}
-      }
 
     } else if (meta == 'group') {
       const gChatID = id;
-      //
+      response = await fetch('api/render/groupChat', {
+        method: 'POST',
+        headers: {
+          'Accept': 'text/html',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({id:gChatID, tzOffset:tzOffset})
+      });
+    }
+    if (response.status == 200) {
+      let html = await response.text();
+      return {status: 200, html: html}
+    } else {
+      return {status: response.status}
     }
   }
 
@@ -309,8 +317,14 @@
         body: JSON.stringify({id:id})
       });
     } else if (meta == 'group') { // id - ідентифікатор групи
-    console.log("meta == 'group'");
-      //
+      response = await fetch('api/render/groupSubheader', {
+        method: 'POST',
+        headers: {
+          'Accept': 'text/html',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({id:id})
+      });
     }
     if (response.status == 200) {
       let html = await response.text();

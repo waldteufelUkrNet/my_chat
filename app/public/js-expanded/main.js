@@ -31,7 +31,7 @@ showContactsList();
          && event.target.closest('.chat-item') ) {
       let chatId  = event.target.closest('.chat-item').dataset.id,
           isGroup = event.target.closest('.chat-item').dataset.group;
-      if (isGroup) {
+      if (isGroup == 'true') {
         openChat(chatId, 'group');
       } else {
         openChat(chatId, 'mono');
@@ -43,7 +43,7 @@ showContactsList();
          && event.target.closest('.chat-item') ) {
       let id      = event.target.closest('.chat-item').dataset.id,
           isGroup = event.target.closest('.chat-item').dataset.group;
-      if (isGroup == true) {
+      if (isGroup == 'true') {
         openGroupCard(id);
       } else {
         openUserCard(id);
@@ -61,7 +61,7 @@ showContactsList();
     if ( event.target.closest('.subheader') ) {
       let id      = event.target.closest('.subheader').dataset.id,
           isGroup = event.target.closest('.subheader').dataset.group;
-      if (isGroup == true) {
+      if (isGroup == 'true') {
         openGroupCard(id);
       } else {
         openUserCard(id);

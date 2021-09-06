@@ -1370,7 +1370,7 @@ showContactsList();
          && event.target.closest('.chat-item') ) {
       let chatId  = event.target.closest('.chat-item').dataset.id,
           isGroup = event.target.closest('.chat-item').dataset.group;
-      if (isGroup) {
+      if (isGroup == 'true') {
         openChat(chatId, 'group');
       } else {
         openChat(chatId, 'mono');
@@ -1382,7 +1382,7 @@ showContactsList();
          && event.target.closest('.chat-item') ) {
       let id      = event.target.closest('.chat-item').dataset.id,
           isGroup = event.target.closest('.chat-item').dataset.group;
-      if (isGroup == true) {
+      if (isGroup == 'true') {
         openGroupCard(id);
       } else {
         openUserCard(id);
@@ -1400,7 +1400,7 @@ showContactsList();
     if ( event.target.closest('.subheader') ) {
       let id      = event.target.closest('.subheader').dataset.id,
           isGroup = event.target.closest('.subheader').dataset.group;
-      if (isGroup == true) {
+      if (isGroup == 'true') {
         openGroupCard(id);
       } else {
         openUserCard(id);
@@ -1844,10 +1844,11 @@ showContactsList();
   }
 
   async function loadChat(id, meta, tzOffset) {
+    let response;
     if (meta == 'mono') {
 
       const contactID = id;
-      let response = await fetch('api/render/monoChat', {
+      response = await fetch('api/render/monoChat', {
         method: 'POST',
         headers: {
           'Accept': 'text/html',
@@ -1855,16 +1856,23 @@ showContactsList();
         },
         body: JSON.stringify({id:contactID, tzOffset:tzOffset})
       });
-      if (response.status == 200) {
-        let html = await response.text();
-        return {status: 200, html: html}
-      } else {
-        return {status: response.status}
-      }
 
     } else if (meta == 'group') {
       const gChatID = id;
-      //
+      response = await fetch('api/render/groupChat', {
+        method: 'POST',
+        headers: {
+          'Accept': 'text/html',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({id:gChatID, tzOffset:tzOffset})
+      });
+    }
+    if (response.status == 200) {
+      let html = await response.text();
+      return {status: 200, html: html}
+    } else {
+      return {status: response.status}
     }
   }
 
@@ -1880,8 +1888,14 @@ showContactsList();
         body: JSON.stringify({id:id})
       });
     } else if (meta == 'group') { // id - ідентифікатор групи
-    console.log("meta == 'group'");
-      //
+      response = await fetch('api/render/groupSubheader', {
+        method: 'POST',
+        headers: {
+          'Accept': 'text/html',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({id:id})
+      });
     }
     if (response.status == 200) {
       let html = await response.text();

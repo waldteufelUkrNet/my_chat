@@ -62,15 +62,6 @@ exports.renderContactsList = function(req, res) {
   });
 }
 
-// гпупові та моно-чати
-// +1. знайти клієнта, взяти поля monochats (id клієнтів) та groupchats (id розмов)
-// 2. для всіх mono-id:
-//    - піти в monochats і взяти там id контакта з interlocutors
-//    - в monochats.chat взяти останнє повідомлення: дату, текст і статус
-// +   - з колекції users по id контакта взяти його ім'я
-// +   - перевірити наявність лого
-// 3. створити масив чатів, додати мітки mono/group
-// 4. відсортувати масив по часу
 exports.renderChatsList = async function(req, res) {
   const userID   = req.session.user._id,
         tzOffset = req.body.tzOffset;
@@ -308,7 +299,7 @@ exports.renderContactSubheader = async function(req,res) {
   });
 
   let clone = {};
-  clone.username = user.username;
+  clone.name = user.username;
   clone._id = user._id;
   if ( await isAvaFileAviable(contactID) ) {
     clone.imgURL = config.get('avatarPathFromClient') + contactID + '.jpg';
@@ -317,6 +308,25 @@ exports.renderContactSubheader = async function(req,res) {
   }
   user = clone;
   res.status(200).render('subheader/subheader.pug', user);
+}
+
+exports.renderGroupSubheader = async function(req,res) {
+  const groupID = req.body.id;
+
+  let name = await GroupChat.findById( new objectId(groupID), {meta:1} )
+  .then(group => {
+    return group.meta.name;
+  })
+  .catch(err => {
+    res.sendStatus(500);
+    log.error('\nerr.name:\n    ' + err.name + '\nerr.message:\n    ' + err.message + '\nerr.stack:\n    ' +err.stack);
+    throw err;
+  });
+
+  let imgURL = await getAvaFileClientURL(groupID);
+
+  let params = {_id: groupID, group: true, name, imgURL};
+  res.status(200).render('subheader/subheader.pug', params);
 }
 
 exports.renderMonoChat = async function(req,res) {
@@ -395,6 +405,84 @@ exports.renderMonoChat = async function(req,res) {
     // чату нема
     console.log('такого чату в колекції нема');
   }
+}
+
+exports.renderGroupChat = async function(req,res) {
+  const contactID = req.body.id,
+        userID    = req.session.user._id,
+        tzOffset  = req.body.tzOffset;
+
+  // let isChatExist = await User.findById( new objectId(userID), {monochats: 1} )
+  // .then(function(user){
+  //   if ( user.monochats.indexOf(contactID) < 0 ) {
+  //     return false
+  //   } else {
+  //     return true
+  //   }
+  // })
+  // .catch(function(err){
+  //   res.sendStatus(500);
+  //   log.error('\nerr.name:\n    ' + err.name + '\nerr.message:\n    ' + err.message + '\nerr.stack:\n    ' +err.stack);
+  //   throw err;
+  // });
+
+  // if (isChatExist) {
+
+  //   // імена співрозмовників
+  //   const userName    = req.session.user.username;
+  //   const contactName = await User.findById( new objectId(contactID), {username: 1} )
+  //   .then(function(user){
+  //     return user.username
+  //   })
+  //   .catch(function(err){
+  //     res.sendStatus(500);
+  //     log.error('\nerr.name:\n    ' + err.name + '\nerr.message:\n    ' + err.message + '\nerr.stack:\n    ' +err.stack);
+  //     throw err;
+  //   });
+
+  //   // аватарки співрозмовників
+  //   let userAvaImg    = await getAvaFileClientURL(userID),
+  //       contactAvaImg = await getAvaFileClientURL(contactID);
+
+  //   // тіло чату
+  //   let chat = await MonoChat.find({interlocutors: {$all: [userID, contactID]} })
+  //   .then(function(chatObj){
+  //     return chatObj[0].chat
+  //   })
+  //   .catch(function(err){
+  //     res.sendStatus(500);
+  //     log.error('\nerr.name:\n    ' + err.name + '\nerr.message:\n    ' + err.message + '\nerr.stack:\n    ' +err.stack);
+  //     throw err;
+  //   });
+
+  //   // підготовка чату до рендерингу
+  //   chat.forEach(message => {
+  //     message.datatime = +message.datatime + tzOffset*60000;
+  //     if (message.who == userID) {
+  //       message.whoName = userName;
+  //       message.whomName = contactName;
+  //       message.whoImg = userAvaImg;
+  //       message.messageType = 'chat-list__item_sent';
+  //     } else {
+  //       message.whoName = contactName;
+  //       message.whomName = userName;
+  //       message.whoImg = contactAvaImg;
+  //       message.messageType = 'chat-list__item_received'
+  //     }
+  //   });
+
+  //   let params =  {
+  //                   meta: 'mono',
+  //                   interlocutors: {user: userID, contact: contactID},
+  //                   chat:chat
+  //                 };
+
+  //   res.status(200).render('chat/chat.pug', params);
+
+  // } else {
+  //   // чату нема
+  //   console.log('такого чату в колекції нема');
+  // }
 }
 
 async function getAvaFileClientURL(id) {
