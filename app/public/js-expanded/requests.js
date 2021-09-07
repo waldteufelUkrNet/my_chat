@@ -189,6 +189,23 @@
     }
   }
 
+  async function renderGroupCard(id) {
+    let response = await fetch('api/render/groupCard', {
+      method: 'POST',
+      headers: {
+        'Accept': 'text/html',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({id:id})
+    });
+    if (response.status == 200) {
+      let html = await response.text();
+      return {status: 200, html: html}
+    } else {
+      return {status: response.status}
+    }
+  }
+
   async function addContactToBlackList(id) {
     let response = await fetch('api/uCard/addToBlockList', {
       method: 'POST',

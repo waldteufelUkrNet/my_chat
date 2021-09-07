@@ -1475,10 +1475,21 @@ showContactsList();
     }
   }
 
-  function openGroupCard(id) {
-    console.log(`Відкрити groupcard id: ${id}`);
+  async function openGroupCard(id) {
+    let groupCardRequest = await renderGroupCard(id);
+    if (groupCardRequest.status == 200) {
+      document.querySelector('[data-list-group="aside"][data-list="groupcard"]').innerHTML = groupCardRequest.html;
+      document.querySelector('[data-list-group="page"][data-list="groupcardP"]').innerHTML = groupCardRequest.html;
+    } else {
+      // помилка
+    }
+
     if ( isSmallView() ) {
       showMenuItem('aside', 'groupcard')
+      wSetScroll( document.querySelector('.lists-wrapper.wjs-scroll'),
+                  { right:true,
+                    overflowXHidden:true
+                });
     } else {
       showMenuItem('page', 'groupcardP')
     }
@@ -1745,6 +1756,23 @@ showContactsList();
 
   async function renderUserCard(id) {
     let response = await fetch('api/render/userCard', {
+      method: 'POST',
+      headers: {
+        'Accept': 'text/html',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({id:id})
+    });
+    if (response.status == 200) {
+      let html = await response.text();
+      return {status: 200, html: html}
+    } else {
+      return {status: response.status}
+    }
+  }
+
+  async function renderGroupCard(id) {
+    let response = await fetch('api/render/groupCard', {
       method: 'POST',
       headers: {
         'Accept': 'text/html',

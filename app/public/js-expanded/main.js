@@ -136,10 +136,21 @@ showContactsList();
     }
   }
 
-  function openGroupCard(id) {
-    console.log(`Відкрити groupcard id: ${id}`);
+  async function openGroupCard(id) {
+    let groupCardRequest = await renderGroupCard(id);
+    if (groupCardRequest.status == 200) {
+      document.querySelector('[data-list-group="aside"][data-list="groupcard"]').innerHTML = groupCardRequest.html;
+      document.querySelector('[data-list-group="page"][data-list="groupcardP"]').innerHTML = groupCardRequest.html;
+    } else {
+      // помилка
+    }
+
     if ( isSmallView() ) {
       showMenuItem('aside', 'groupcard')
+      wSetScroll( document.querySelector('.lists-wrapper.wjs-scroll'),
+                  { right:true,
+                    overflowXHidden:true
+                });
     } else {
       showMenuItem('page', 'groupcardP')
     }

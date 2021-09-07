@@ -1,23 +1,35 @@
+//- {
+//-   groupID: '6134bbdf7323d2cacdc628c5',
+//-   imgURL: 'img/users/6134bbdf7323d2cacdc628c5.jpg',
+//-   groupName: 'RedRoom',
+//-   isUserAdmin: true
+//- }
+-
+  console.log('from pug: ', isUserAdmin);
+
 .logo.logo_user-card
-  p.logo__name WC
-  //- img.logo__img(src="../img/users/user1.jpg")
+  p.logo__name #{groupName.slice(0,2).toUpperCase()}
+  img.logo__img(src=imgURL)
 .user-info
-  .user-info__name work chat
-  .user-info__id @3497ysdvjkaJh
+  .user-info__name #{groupName}
+  .user-info__id @#{groupID}
 ul.card-menu
+  //- li
+  //-   p сповіщення увімкнені
+  //-   button(type="button") вимкнути сповіщення
   li
-    p сповіщення увімкнені
-    button(type="button") вимкнути сповіщення
+    button(type="button" data-role="showLeaveGroup" data-id=groupID) покинути групу
   li
-    button(type="button" data-role="showLeaveGroup") покинути групу
-  li
-    button(type="button" data-role="showGroupList") подивитися учасників
+    button(type="button" data-role="showGroupList" data-id=groupID) подивитися учасників
   li
     p з адмін. правами:
-    button(type="button" data-role="showGroupChat") редагувати групу
   li
-    button(type="button" data-role="showDeleteGroup") видалити групу
+    button(type="button" data-role="showChangeAva" data-id=groupID) змінити аватарку
   li
-    button(type="button" data-role="showClearHistory") очистити історію
+    button(type="button" data-role="showGroupChat" data-id=groupID) редагувати групу
+  li
+    button(type="button" data-role="showDeleteGroup" data-id=groupID) видалити групу
+  li
+    button(type="button" data-role="showClearHistory" data-id=groupID) очистити історію
 
-button(type="button" data-group="true" data-id="3tVc").round-btn: i.ico &#x6a;
+button(type="button" data-group="true" data-id=groupID).round-btn: i.ico &#x6a;
