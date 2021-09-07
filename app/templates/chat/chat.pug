@@ -1,3 +1,4 @@
+//- mono:
 //- {
 //-   datatime: 1615578883000,
 //-   who: '6127f48dd770f515a0458394',
@@ -8,6 +9,17 @@
 //-   whomName: 'Aliza Obermoeller',
 //-   whoImg: 'img/users/6127f48dd770f515a0458394.jpg',
 //-   messageType: 'chat-list__item_sent'
+//- }
+
+//- group:
+//- {
+//-   datatime: 1628757600000,
+//-   who: '6127f3a9d770f515a0458366',
+//-   message: 'subtegulaneous endearance blithering unimpassionedness drona farmstead arsenate wickedish patient epoptes thereanent juvia basten sopition Foist overfear perivitelline ludicroserious swamp coset archilowe Fabroniaceae deglutitious magniloquence',
+//-   status: 'read',
+//-   whoName: 'Justa Marinucci',
+//-   whoImg: '',
+//-   messageType: 'chat-list__item_received'
 //- }
 
 -
@@ -56,10 +68,14 @@ ul.chat-list(class=modClass)
       }
 
       let interlocutorID;
-      if (message.messageType == 'chat-list__item_received') {
-        interlocutorID = interlocutors.contact
-      } else if (message.messageType == 'chat-list__item_sent') {
-        interlocutorID = interlocutors.user
+      if (meta == 'mono') {
+        if (message.messageType == 'chat-list__item_received') {
+          interlocutorID = interlocutors.contact
+        } else if (message.messageType == 'chat-list__item_sent') {
+          interlocutorID = interlocutors.user
+        }
+      } else {
+        interlocutorID = message.who
       }
 
     if datetimeFlag
@@ -67,7 +83,6 @@ ul.chat-list(class=modClass)
 
     -
       datetimeFlag = false;
-
 
     li.chat-list__item(class=message.messageType data-id=interlocutorID)
       .logo
