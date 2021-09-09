@@ -527,6 +527,40 @@ exports.renderGroupChat = async function(req, res) {
     }
 }
 
+exports.renderGList = async function(req, res) {
+  const groupID = req.body.id;
+  let users = [];
+  const groupMembersID = await GroupChat.findById( new objectId(groupID), {interlocutors:1} )
+    .then(group => {
+      return group.interlocutors
+    })
+    .catch(err => {
+      res.sendStatus(500);
+      log.error('\nerr.name:\n    ' + err.name + '\nerr.message:\n    ' + err.message + '\nerr.stack:\n    ' +err.stack);
+      throw err;
+    });
+
+  for (let i = 0; i < groupMembersID.length; i++) {
+    let member = {
+      _id: groupMembersID[i]
+    };
+
+    member.username = await User.findById(  new objectId(member._id), {username:1} )
+      .then(user => {
+        return user.username
+      })
+      .catch(err => {
+        res.sendStatus(500);
+        log.error('\nerr.name:\n    ' + err.name + '\nerr.message:\n    ' + err.message + '\nerr.stack:\n    ' +err.stack);
+        throw err;
+      });
+
+    member.imgURL = await getAvaFileClientURL(member._id);
+    users.push(member);
+  }
+  res.status(200).render('memberslist/memberslist.pug', {users:users});
+}
+
 async function getAvaFileClientURL(id) {
     if (await isAvaFileAviable(id)) {
         return config.get('avatarPathFromClient') + id + '.jpg';

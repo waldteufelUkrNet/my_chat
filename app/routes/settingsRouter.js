@@ -13,11 +13,22 @@ const storageConfig = multer.diskStorage({
         }
       });
 
+const storageGroupConfig = multer.diskStorage({
+        destination : (req, res, cb) => {
+          cb(null, config.get('avatarPathFromServer'));
+        },
+        filename    : (req, res, cb) => {
+          cb(null, req.header('group') + '.jpg');
+        }
+      });
+
 const upload = multer({storage:storageConfig});
+const uploadGroup = multer({storage:storageGroupConfig});
 
 router.post('/checkOldPassword', controller.checkOldPassword);
 router.post('/changePassword', controller.changePassword);
 router.post('/changeUserName', controller.changeUserName);
 router.post('/changeAva', upload.single('ava'), controller.changeAva);
+router.post('/changeGroupAva', uploadGroup.single('ava'), controller.changeGroupAva);
 
 module.exports = router;

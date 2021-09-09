@@ -125,14 +125,28 @@
         return
       }
 
-      let changeAvaRequest = await changeAva();
+      // така милиця, що просто жах. Причому, якщо активна карточка групи і зліва список налаштувань, буде конфлікт
+      let groupID;
+      if ( document.querySelector('[data-list="groupcardP"]').classList.contains('list_active') ) {
+        groupID = document.querySelector('[data-list="groupcardP"] .user-info__id').innerHTML.slice(1);
+      } else if (document.querySelector('[data-list="groupcard"]').classList.contains('list_active') ) {
+        groupID = document.querySelector('[data-list="groupcard"] .user-info__id').innerHTML.slice(1);
+      }
+
+      let changeAvaRequest = await changeAva(groupID);
       if (changeAvaRequest.status == 500) {
         // error DB?
         showPopupError('popupChangeAva', 2);
       } else if (changeAvaRequest.status == 200) {
         closePopup('popupChangeAva');
         showPopupInfo('Аватарку успішно змінено');
-        document.querySelector('.header .logo__img').setAttribute('src', userConfig.pathToUserLogo + changeAvaRequest.filename + '?v=' + Date.now());
+        if (groupID) {
+          document.querySelector('[data-list="groupcardP"] .logo__img').setAttribute('src', userConfig.pathToUserLogo + changeAvaRequest.filename + '?v=' + Date.now());
+          document.querySelector('[data-list="groupcard"] .logo__img').setAttribute('src', userConfig.pathToUserLogo + changeAvaRequest.filename + '?v=' + Date.now());
+          document.querySelector('[data-list="chatlist"] [data-id="' + groupID + '"] .logo__img').setAttribute('src', userConfig.pathToUserLogo + changeAvaRequest.filename + '?v=' + Date.now());
+        } else {
+          document.querySelector('.header .logo__img').setAttribute('src', userConfig.pathToUserLogo + changeAvaRequest.filename + '?v=' + Date.now());
+        }
       }
     }
   });

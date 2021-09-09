@@ -1,3 +1,55 @@
+db.groupchats.insertOne({
+  "meta": {
+    "name": "RedRoom2",
+    "admins": ["6127f48dd770f515a0458394"]
+  },
+  "interlocutors": ["6127f48dd770f515a0458394", "6127f368d770f515a045835a", "6127f3a9d770f515a0458366", "6127f39bd770f515a0458363", "6127f38cd770f515a0458360", "6127f376d770f515a045835d", "6127f357d770f515a0458357"],
+  "chat": [
+    {
+      "datatime": "1628768272000",
+      "who": "6127f48dd770f515a0458394",
+      "message": "robotize underqueen teloblastic forebitt unseeking Reticulosa perseverant blastopore relume Cladophora budge inhomogeneous timberyard aeronaut jerez misease yardland paste droop unarmored lentor becroak preteriteness fluidal",
+      "status": {
+        "6127f368d770f515a045835a": "read",
+        "6127f48dd770f515a0458394": "read",
+        "6127f3a9d770f515a0458366": "read",
+        "6127f39bd770f515a0458363": "read",
+        "6127f38cd770f515a0458360": "read",
+        "6127f376d770f515a045835d": "read",
+        "6127f357d770f515a0458357": "read"
+      }
+    },
+    {
+      "datatime": "1628768280000",
+      "who": "6127f368d770f515a045835a",
+      "message": "prefacer monandrian rhetoricals cassidid oraler equitant unscarified Garibaldian Donatism Polybranchiata polypharmacist coaffirmation vasodilation wickup griseous Caripuna hepatography unbutcherlike fountain Megalesian borborygmus Queres soullessly Nabby",
+      "status": {
+        "6127f368d770f515a045835a": "read",
+        "6127f48dd770f515a0458394": "read",
+        "6127f3a9d770f515a0458366": "read",
+        "6127f39bd770f515a0458363": "read",
+        "6127f38cd770f515a0458360": "read",
+        "6127f376d770f515a045835d": "read",
+        "6127f357d770f515a0458357": "read"
+      }
+    },
+    {
+      "datatime": "1628768400000",
+      "who": "6127f3a9d770f515a0458366",
+      "message": "subtegulaneous endearance blithering unimpassionedness drona farmstead arsenate wickedish patient epoptes thereanent juvia basten sopition Foist overfear perivitelline ludicroserious swamp coset archilowe Fabroniaceae deglutitious magniloquence",
+      "status": {
+        "6127f368d770f515a045835a": "read",
+        "6127f48dd770f515a0458394": "read",
+        "6127f3a9d770f515a0458366": "read",
+        "6127f39bd770f515a0458363": "read",
+        "6127f38cd770f515a0458360": "read",
+        "6127f376d770f515a045835d": "read",
+        "6127f357d770f515a0458357": "read"
+      }
+    }
+  ]
+});
+
 db.monochats.insertOne({
     "interlocutors": ["6127f368d770f515a045835a", "6127f48dd770f515a0458394"],
     "chat": [{

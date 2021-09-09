@@ -12,6 +12,7 @@ const chalk             = require('chalk'),
       session           = require('express-session'),          // cookies generator: request.session
 
       authRouter        = require('./routes/authRouter'),
+      gCardRouter       = require('./routes/gCardRouter'),
       indexRouter       = require('./routes/indexRouter'),
       renderRouter      = require('./routes/renderRouter'),
       searchRouter      = require('./routes/searchRouter'),
@@ -57,6 +58,7 @@ app.use('/api/settings', settingsRouter);
 app.use('/api/search', searchRouter);
 app.use('/api/render', renderRouter);
 app.use('/api/uCard', uCardRouter);
+app.use('/api/gCard', gCardRouter);
 app.use('/', indexRouter);
 
 app.use( express.static(path.join(__dirname, 'public')) );

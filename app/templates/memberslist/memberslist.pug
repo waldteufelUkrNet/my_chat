@@ -1,0 +1,20 @@
+//- {
+//-   username: 'Lida Fotheringham',
+//-   _id: 6127f45ed770f515a045838a,
+//-   imgURL: ''
+//- }
+
+//- li.popup__item
+//-   .logo
+//-     p.logo__name AB
+//-     img.logo__img(src="../img/users/user1.jpg")
+//-   .popup__user-name Estrella Wildauer
+//-   button.popup__user-restore
+//-     i.ico &#x4d;
+
+for user in users
+  li.popup__item(data-id="" + user._id + "")
+    .logo
+      p.logo__name #{user.username.slice(0,2).toUpperCase()}
+      img.logo__img(src="" + user.imgURL + "")
+    .popup__user-name #{user.username}

@@ -125,13 +125,25 @@
     }
   }
 
-  async function changeAva() {
+  async function changeAva(groupID) {
     let formData = new FormData( document.querySelector('#changeUserAvaForm') );
+    let response;
 
-    let response = await fetch('api/settings/changeAva', {
+    if (groupID) {
+    response = await fetch('api/settings/changeGroupAva', {
+      method: 'POST',
+      headers: {
+        'group': groupID
+      },
+      body: formData
+    });
+    } else {
+    response = await fetch('api/settings/changeAva', {
       method: 'POST',
       body: formData
     });
+    }
+
     if (response.status == 200) {
       let filename = await response.text();
       return {status: 200, filename: filename}
@@ -364,6 +376,53 @@
     if (response.status == 200) {
       let html = await response.text();
       return {status: 200, html: html}
+    } else {
+      return {status: response.status}
+    }
+  }
+
+  async function leaveGroup(id) {
+    let response = await fetch('api/gCard/leaveGroup', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({id:id})
+    });
+    if (response.status == 200) {
+      return {status: 200}
+    } else {
+      return {status: response.status}
+    }
+  }
+
+  async function loadGroupList(id) {
+    let response = await fetch('api/render/loadGList', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'text/html'
+      },
+      body: JSON.stringify({id:id})
+    });
+    if (response.status == 200) {
+      let html = await response.text();
+      return {status: 200, html: html}
+    } else {
+      return {status: response.status}
+    }
+  }
+
+  async function deleteGroup(groupID) {
+    let response = await fetch('api/gCard/deleteGroup', {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({id:groupID})
+    });
+    if (response.status == 200) {
+      return {status: 200}
     } else {
       return {status: response.status}
     }

@@ -9,6 +9,14 @@ exports.changeAva = function(req,res){
   }
 }
 
+exports.changeGroupAva = function(req,res){
+  if(req.file) {
+    res.status(200).send(req.file.filename);
+  } else {
+    res.sendStatus(500);
+  }
+}
+
 exports.checkOldPassword = function(req, res) {
   const userID = req.session.user._id,
         pass   = req.body.pass;

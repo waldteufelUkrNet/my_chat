@@ -28,7 +28,6 @@
   document.addEventListener('click', async function(event){
     if ( event.target.closest('[data-role]') ) {
 
-
       let foo = event.target.closest('[data-role]').dataset.role;
       if (roles[foo]) {
         roles[foo](event)
@@ -47,6 +46,7 @@
       removeFromBL(userID);
       showBList();
     }
+
     // show usercard
     if ( event.target.closest('#popupBlackList li.popup__item')
          && !event.target.closest('#popupBlackList li.popup__item button.popup__user-restore') ) {
@@ -54,6 +54,50 @@
       openUserCard(userID);
       closePopup('popupBlackList');
     }
+
+    // leave group
+    if ( event.target.closest('#popupLeaveGroup button[type="submit"]') ) {
+      closePopup('popupLeaveGroup');
+      let id = document.querySelector('button[data-role="showLeaveGroup"]').dataset.id;
+      let leaveGroupRequest = await leaveGroup(id);
+      if (leaveGroupRequest.status != 200) {
+        showPopupInfo('something went wrong with leaving group');
+      } else {
+        if ( document.querySelector('.left-side [data-list="chatlist"]') ) {
+          showChatsList();
+        }
+      }
+    }
+
+    // see group members
+    if ( event.target.closest('[data-role="showGroupList"]') ) {
+      let id = event.target.closest('[data-role="showGroupList"]').dataset.id;
+      let gListRequest = await loadGroupList(id);
+      if (gListRequest.status = 200) {
+
+      document.querySelector('#popupGroupList ul.popup__list').innerHTML = gListRequest.html;
+      wSetScroll(document.querySelector('#popupGroupList .popup__list-wrapper.wjs-scroll'), {right:true, overflowXHidden:true});
+      wSetScroll(document.querySelector('#popupGroupList .popup__list-wrapper.wjs-scroll'), {right:true, overflowXHidden:true});
+
+      } else {
+        showPopupInfo('something went wrong with downloading members list');
+      }
+    }
+
+    // delete group
+    if ( event.target.closest('#popupDeleteGroup button[type="submit"]') ) {
+      let groupID = document.querySelector('[data-role="showDeleteGroup"]').dataset.id;
+      let deleteGroupRequest = await deleteGroup(groupID);
+      if (deleteGroupRequest.status == 200) {
+        if ( document.querySelector('.left-side [data-list="chatlist"]') ) {
+          showChatsList();
+        }
+        closePopup('popupDeleteGroup');
+      } else {
+        showPopupInfo('something went wrong with groupe deleting');
+      }
+    }
+
   });
 /* ↑↑↑ event listeners ↑↑↑ */
 ////////////////////////////////////////////////////////////////////////////////

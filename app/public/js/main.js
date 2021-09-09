@@ -588,7 +588,6 @@ var dictionary = {
   document.addEventListener('click', async function(event){
     if ( event.target.closest('[data-role]') ) {
 
-
       let foo = event.target.closest('[data-role]').dataset.role;
       if (roles[foo]) {
         roles[foo](event)
@@ -607,6 +606,7 @@ var dictionary = {
       removeFromBL(userID);
       showBList();
     }
+
     // show usercard
     if ( event.target.closest('#popupBlackList li.popup__item')
          && !event.target.closest('#popupBlackList li.popup__item button.popup__user-restore') ) {
@@ -614,6 +614,50 @@ var dictionary = {
       openUserCard(userID);
       closePopup('popupBlackList');
     }
+
+    // leave group
+    if ( event.target.closest('#popupLeaveGroup button[type="submit"]') ) {
+      closePopup('popupLeaveGroup');
+      let id = document.querySelector('button[data-role="showLeaveGroup"]').dataset.id;
+      let leaveGroupRequest = await leaveGroup(id);
+      if (leaveGroupRequest.status != 200) {
+        showPopupInfo('something went wrong with leaving group');
+      } else {
+        if ( document.querySelector('.left-side [data-list="chatlist"]') ) {
+          showChatsList();
+        }
+      }
+    }
+
+    // see group members
+    if ( event.target.closest('[data-role="showGroupList"]') ) {
+      let id = event.target.closest('[data-role="showGroupList"]').dataset.id;
+      let gListRequest = await loadGroupList(id);
+      if (gListRequest.status = 200) {
+
+      document.querySelector('#popupGroupList ul.popup__list').innerHTML = gListRequest.html;
+      wSetScroll(document.querySelector('#popupGroupList .popup__list-wrapper.wjs-scroll'), {right:true, overflowXHidden:true});
+      wSetScroll(document.querySelector('#popupGroupList .popup__list-wrapper.wjs-scroll'), {right:true, overflowXHidden:true});
+
+      } else {
+        showPopupInfo('something went wrong with downloading members list');
+      }
+    }
+
+    // delete group
+    if ( event.target.closest('#popupDeleteGroup button[type="submit"]') ) {
+      let groupID = document.querySelector('[data-role="showDeleteGroup"]').dataset.id;
+      let deleteGroupRequest = await deleteGroup(groupID);
+      if (deleteGroupRequest.status == 200) {
+        if ( document.querySelector('.left-side [data-list="chatlist"]') ) {
+          showChatsList();
+        }
+        closePopup('popupDeleteGroup');
+      } else {
+        showPopupInfo('something went wrong with groupe deleting');
+      }
+    }
+
   });
 /* ↑↑↑ event listeners ↑↑↑ */
 ////////////////////////////////////////////////////////////////////////////////
@@ -888,14 +932,28 @@ var dictionary = {
         return
       }
 
-      let changeAvaRequest = await changeAva();
+      // така милиця, що просто жах. Причому, якщо активна карточка групи і зліва список налаштувань, буде конфлікт
+      let groupID;
+      if ( document.querySelector('[data-list="groupcardP"]').classList.contains('list_active') ) {
+        groupID = document.querySelector('[data-list="groupcardP"] .user-info__id').innerHTML.slice(1);
+      } else if (document.querySelector('[data-list="groupcard"]').classList.contains('list_active') ) {
+        groupID = document.querySelector('[data-list="groupcard"] .user-info__id').innerHTML.slice(1);
+      }
+
+      let changeAvaRequest = await changeAva(groupID);
       if (changeAvaRequest.status == 500) {
         // error DB?
         showPopupError('popupChangeAva', 2);
       } else if (changeAvaRequest.status == 200) {
         closePopup('popupChangeAva');
         showPopupInfo('Аватарку успішно змінено');
-        document.querySelector('.header .logo__img').setAttribute('src', userConfig.pathToUserLogo + changeAvaRequest.filename + '?v=' + Date.now());
+        if (groupID) {
+          document.querySelector('[data-list="groupcardP"] .logo__img').setAttribute('src', userConfig.pathToUserLogo + changeAvaRequest.filename + '?v=' + Date.now());
+          document.querySelector('[data-list="groupcard"] .logo__img').setAttribute('src', userConfig.pathToUserLogo + changeAvaRequest.filename + '?v=' + Date.now());
+          document.querySelector('[data-list="chatlist"] [data-id="' + groupID + '"] .logo__img').setAttribute('src', userConfig.pathToUserLogo + changeAvaRequest.filename + '?v=' + Date.now());
+        } else {
+          document.querySelector('.header .logo__img').setAttribute('src', userConfig.pathToUserLogo + changeAvaRequest.filename + '?v=' + Date.now());
+        }
       }
     }
   });
@@ -1707,13 +1765,25 @@ showContactsList();
     }
   }
 
-  async function changeAva() {
+  async function changeAva(groupID) {
     let formData = new FormData( document.querySelector('#changeUserAvaForm') );
+    let response;
 
-    let response = await fetch('api/settings/changeAva', {
+    if (groupID) {
+    response = await fetch('api/settings/changeGroupAva', {
+      method: 'POST',
+      headers: {
+        'group': groupID
+      },
+      body: formData
+    });
+    } else {
+    response = await fetch('api/settings/changeAva', {
       method: 'POST',
       body: formData
     });
+    }
+
     if (response.status == 200) {
       let filename = await response.text();
       return {status: 200, filename: filename}
@@ -1946,6 +2016,53 @@ showContactsList();
     if (response.status == 200) {
       let html = await response.text();
       return {status: 200, html: html}
+    } else {
+      return {status: response.status}
+    }
+  }
+
+  async function leaveGroup(id) {
+    let response = await fetch('api/gCard/leaveGroup', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({id:id})
+    });
+    if (response.status == 200) {
+      return {status: 200}
+    } else {
+      return {status: response.status}
+    }
+  }
+
+  async function loadGroupList(id) {
+    let response = await fetch('api/render/loadGList', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'text/html'
+      },
+      body: JSON.stringify({id:id})
+    });
+    if (response.status == 200) {
+      let html = await response.text();
+      return {status: 200, html: html}
+    } else {
+      return {status: response.status}
+    }
+  }
+
+  async function deleteGroup(groupID) {
+    let response = await fetch('api/gCard/deleteGroup', {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({id:groupID})
+    });
+    if (response.status == 200) {
+      return {status: 200}
     } else {
       return {status: response.status}
     }
