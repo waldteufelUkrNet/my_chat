@@ -75,6 +75,7 @@ exports.renderChatsList = async function(req, res) {
       log.error('\nerr.name:\n    ' + err.name + '\nerr.message:\n    ' + err.message + '\nerr.stack:\n    ' + err.stack);
       throw err;
     });
+
   for (let i = 0; i < chats.monochats.length; i++) {
     let chatObj = {
       _id: chats.monochats[i],
@@ -95,6 +96,7 @@ exports.renderChatsList = async function(req, res) {
         log.error('\nerr.name:\n    ' + err.name + '\nerr.message:\n    ' + err.message + '\nerr.stack:\n    ' + err.stack);
         throw err;
       });
+
     let chat = await MonoChat.find({ interlocutors: { $all: [userID, chats.monochats[i]] } })
       .then(result => {
         return result[0].chat;
@@ -104,20 +106,30 @@ exports.renderChatsList = async function(req, res) {
         log.error('\nerr.name:\n    ' + err.name + '\nerr.message:\n    ' + err.message + '\nerr.stack:\n    ' + err.stack);
         throw err;
       });
-    let monochatLastMessage = chat[chat.length - 1];
-    chatObj.datetime = +monochatLastMessage.datatime + tzOffset * 60000;
-    chatObj.message = monochatLastMessage.message;
-    chatObj.status = monochatLastMessage.status;
+
+    let monochatLastMessage;
     let badge = 0;
-    if (monochatLastMessage.who != userID && monochatLastMessage.status == 'delivered') {
-      for (let i = chat.length - 1; i > -1; i--) {
-        if (chat[i].who != userID && chat[i].status == 'delivered') {
-          badge = badge + 1
-        } else {
-          break
+    if (chat.length) {
+      monochatLastMessage = chat[chat.length - 1];
+      chatObj.datetime = +monochatLastMessage.datatime + tzOffset * 60000;
+      chatObj.message = monochatLastMessage.message;
+      chatObj.status = monochatLastMessage.status;
+
+      if (monochatLastMessage.who != userID && monochatLastMessage.status == 'delivered') {
+        for (let i = chat.length - 1; i > -1; i--) {
+          if (chat[i].who != userID && chat[i].status == 'delivered') {
+            badge = badge + 1
+          } else {
+            break
+          }
         }
       }
+    } else {
+      chatObj.datetime = '';
+      chatObj.message = '...';
+      chatObj.status = 'read';
     }
+
     chatObj.badge = badge;
     chatsArr.push(chatObj);
   }

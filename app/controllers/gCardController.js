@@ -1,6 +1,8 @@
 const log       = require('../libs/log')(module),
       objectId  = require("mongodb").ObjectId,
       GroupChat = require("../models/groupchat.js").GroupChat,
+      MonoChat  = require("../models/monochat.js").MonoChat,
+
       User      = require('../models/user.js').User;
 
 exports.leaveGroup = async function(req, res) {
@@ -43,14 +45,27 @@ exports.deleteGroup = async function (req,res) {
 exports.removeHistory = async function(req, res) {
   const userID = req.session.user._id,
         gOrCID = req.body.id;
-  console.log("userID", userID);
-  console.log("gOrCID", gOrCID);
 
   // спочатку шукаємо груповий чат
   let arr = new Array();
-  await GroupChat.findByIdAndUpdate(new objectId(gOrCID), {chat: arr})
+  let groupSearchResult = await GroupChat.findByIdAndUpdate(new objectId(gOrCID), {chat: arr})
   .then(group => {
-    console.log("group", group);
+    return group
+  })
+  .catch(err => {
+    res.sendStatus(500);
+    log.error('\nerr.name:\n    ' + err.name + '\nerr.message:\n    ' + err.message + '\nerr.stack:\n    ' +err.stack);
+    throw err;
+  });
+
+  if (groupSearchResult) {
+    res.sendStatus(200);
+    return
+  }
+
+  // якщо не знайдено груповий чат - пошук моночату
+  await MonoChat.findOneAndUpdate({ interlocutors: { $all: [userID, gOrCID] } }, {chat: arr})
+  .then(chat => {
     res.sendStatus(200);
   })
   .catch(err => {
