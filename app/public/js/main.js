@@ -1566,6 +1566,7 @@ showContactsList();
   }
 
   async function openChat(id, meta) {
+    console.log("openChat: " + id + ' / ' + meta);
 
     await showSubheader(id, meta);
 
@@ -1977,6 +1978,7 @@ showContactsList();
         body: JSON.stringify({id:gChatID, tzOffset:tzOffset})
       });
     }
+    console.log("response.status", response.status);
     if (response.status == 200) {
       let html = await response.text();
       return {status: 200, html: html}

@@ -362,8 +362,8 @@ exports.renderGroupSubheader = async function(req, res) {
 
 exports.renderMonoChat = async function(req, res) {
     const contactID = req.body.id,
-        userID = req.session.user._id,
-        tzOffset = req.body.tzOffset;
+          userID    = req.session.user._id,
+          tzOffset  = req.body.tzOffset;
 
     let isChatExist = await User.findById(new objectId(userID), { monochats: 1 })
         .then(function(user) {
@@ -394,7 +394,7 @@ exports.renderMonoChat = async function(req, res) {
             });
 
         // аватарки співрозмовників
-        let userAvaImg = await getAvaFileClientURL(userID),
+        let userAvaImg    = await getAvaFileClientURL(userID),
             contactAvaImg = await getAvaFileClientURL(contactID);
 
         // тіло чату
@@ -433,7 +433,14 @@ exports.renderMonoChat = async function(req, res) {
         res.status(200).render('chat/chat.pug', params);
 
     } else {
-        // такого чату в колекції нема
+      // такого чату в колекції нема
+      let params = {
+          meta: 'mono',
+          interlocutors: { user: userID, contact: contactID },
+          chat: []
+      };
+
+      res.status(200).render('chat/chat.pug', params);
     }
 }
 

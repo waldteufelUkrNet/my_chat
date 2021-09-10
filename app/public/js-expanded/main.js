@@ -157,6 +157,7 @@ showContactsList();
   }
 
   async function openChat(id, meta) {
+    console.log("openChat: " + id + ' / ' + meta);
 
     await showSubheader(id, meta);
 

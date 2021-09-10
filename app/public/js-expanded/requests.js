@@ -326,6 +326,7 @@
         body: JSON.stringify({id:gChatID, tzOffset:tzOffset})
       });
     }
+    console.log("response.status", response.status);
     if (response.status == 200) {
       let html = await response.text();
       return {status: 200, html: html}
