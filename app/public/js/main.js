@@ -658,6 +658,18 @@ var dictionary = {
       }
     }
 
+    // remove history
+    if ( event.target.closest('#popupClearHistory button[type="submit"]') ) {
+      let id = document.querySelector('[data-role="showClearHistory"]').dataset.id;
+      let removeHistoryRequest = await removeHistory(id);
+      if (removeHistoryRequest.status == 200) {
+        closePopup('popupClearHistory');
+        showPopupInfo('history is successfully delete');
+      } else {
+        showPopupInfo('something went wrong with history deleting');
+      }
+    }
+
   });
 /* ↑↑↑ event listeners ↑↑↑ */
 ////////////////////////////////////////////////////////////////////////////////
@@ -1554,7 +1566,6 @@ showContactsList();
   }
 
   async function openChat(id, meta) {
-    console.log(`Відкрити ${meta}-чат з id ${id}`);
 
     await showSubheader(id, meta);
 
@@ -2060,6 +2071,22 @@ showContactsList();
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({id:groupID})
+    });
+    if (response.status == 200) {
+      return {status: 200}
+    } else {
+      return {status: response.status}
+    }
+  }
+
+  async function removeHistory (id) {
+    console.log("removeHistory", id);
+    let response = await fetch('api/gCard/removeHistory', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({id:id})
     });
     if (response.status == 200) {
       return {status: 200}

@@ -98,6 +98,18 @@
       }
     }
 
+    // remove history
+    if ( event.target.closest('#popupClearHistory button[type="submit"]') ) {
+      let id = document.querySelector('[data-role="showClearHistory"]').dataset.id;
+      let removeHistoryRequest = await removeHistory(id);
+      if (removeHistoryRequest.status == 200) {
+        closePopup('popupClearHistory');
+        showPopupInfo('history is successfully delete');
+      } else {
+        showPopupInfo('something went wrong with history deleting');
+      }
+    }
+
   });
 /* ↑↑↑ event listeners ↑↑↑ */
 ////////////////////////////////////////////////////////////////////////////////

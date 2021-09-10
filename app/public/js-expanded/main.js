@@ -157,7 +157,6 @@ showContactsList();
   }
 
   async function openChat(id, meta) {
-    console.log(`Відкрити ${meta}-чат з id ${id}`);
 
     await showSubheader(id, meta);
 

@@ -45,7 +45,10 @@ ul.chat-list
 
         let dateStr = day + '.' + mon + '.' + String(year).slice(2);
 
-      .chat-item__date #{dateStr}
+      if chat.datetime
+        .chat-item__date #{dateStr}
+      else
+        .chat-item__date
 
       if chat.badge > 0
         .chat-item__badge.chat-item__badge_active #{chat.badge}
@@ -59,9 +62,15 @@ ul.chat-list
         } else if (chat.status == 'delivered') {
           modClass = 'message-status_delivered'
         }
-      .message-status(class=modClass)
-        i.ico &#x4e;
-        i.ico &#x4e;
+
+      if chat.datetime
+        .message-status(class=modClass)
+          i.ico &#x4e;
+          i.ico &#x4e;
+      else
+        .message-status
+
+
 
 //- ul.chat-list
 

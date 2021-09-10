@@ -23,6 +23,7 @@
 //- }
 
 -
+  // console.log('from pug');
   // console.log('from pug: ', meta);
   // console.log('from pug: ', chat);
   // console.log('from pug: ', interlocutors);
@@ -51,67 +52,69 @@
 
 ul.chat-list(class=modClass)
 
-  li.chat-list__item.chat-list__item_date #{getDateString(chat[0].datatime)}
+  if chat.length
 
-  for message in chat
+    li.chat-list__item.chat-list__item_date #{getDateString(chat[0].datatime)}
 
-    -
-      mCount = mCount + 1;
-      let datetimeFlag = false;
+    for message in chat
 
-      if (mCount > 0) {
-        let d1 = +chat[mCount].datatime,
-            d2 = +chat[mCount-1].datatime;
-        if ( (d1 - d2) > 86400000 || new Date(d1).getUTCDate() != new Date(d2).getUTCDate() ) {
-          datetimeFlag = true;
-        }
-      }
+      -
+        mCount = mCount + 1;
+        let datetimeFlag = false;
 
-      let interlocutorID;
-      if (meta == 'mono') {
-        if (message.messageType == 'chat-list__item_received') {
-          interlocutorID = interlocutors.contact
-        } else if (message.messageType == 'chat-list__item_sent') {
-          interlocutorID = interlocutors.user
-        }
-      } else {
-        interlocutorID = message.who
-      }
-
-    if datetimeFlag
-      li.chat-list__item.chat-list__item_date #{getDateString(message.datatime)}
-
-    -
-      datetimeFlag = false;
-
-    li.chat-list__item(class=message.messageType data-id=interlocutorID)
-      .logo
-        p.logo__name #{message.whoName.slice(0,2).toUpperCase()}
-        img.logo__img(src="" + message.whoImg + "")
-      .chat-list__message
-        .chat-list__message-text #{message.message}
-
-        -
-          let dateObj = new Date(+message.datatime),
-              hh      = dateObj.getUTCHours(),
-              mm      = dateObj.getUTCMinutes();
-          if (hh < 10) hh = '0' + hh;
-          if (mm < 10) mm = '0' + mm;
-
-          let dateSrting = hh + ':' + mm;
-
-        .chat-list__message-date #{dateSrting}
-
-        -
-          let modClass = '';
-          if (message.status == 'read') {
-            modClass = 'message-status_read'
-          } else if (message.status == 'delivered') {
-            modClass = 'message-status_delivered'
+        if (mCount > 0) {
+          let d1 = +chat[mCount].datatime,
+              d2 = +chat[mCount-1].datatime;
+          if ( (d1 - d2) > 86400000 || new Date(d1).getUTCDate() != new Date(d2).getUTCDate() ) {
+            datetimeFlag = true;
           }
-        .message-status(class=modClass)
-          i.ico &#x4e;
-          i.ico &#x4e;
+        }
+
+        let interlocutorID;
+        if (meta == 'mono') {
+          if (message.messageType == 'chat-list__item_received') {
+            interlocutorID = interlocutors.contact
+          } else if (message.messageType == 'chat-list__item_sent') {
+            interlocutorID = interlocutors.user
+          }
+        } else {
+          interlocutorID = message.who
+        }
+
+      if datetimeFlag
+        li.chat-list__item.chat-list__item_date #{getDateString(message.datatime)}
+
+      -
+        datetimeFlag = false;
+
+      li.chat-list__item(class=message.messageType data-id=interlocutorID)
+        .logo
+          p.logo__name #{message.whoName.slice(0,2).toUpperCase()}
+          img.logo__img(src="" + message.whoImg + "")
+        .chat-list__message
+          .chat-list__message-text #{message.message}
+
+          -
+            let dateObj = new Date(+message.datatime),
+                hh      = dateObj.getUTCHours(),
+                mm      = dateObj.getUTCMinutes();
+            if (hh < 10) hh = '0' + hh;
+            if (mm < 10) mm = '0' + mm;
+
+            let dateSrting = hh + ':' + mm;
+
+          .chat-list__message-date #{dateSrting}
+
+          -
+            let modClass = '';
+            if (message.status == 'read') {
+              modClass = 'message-status_read'
+            } else if (message.status == 'delivered') {
+              modClass = 'message-status_delivered'
+            }
+          .message-status(class=modClass)
+            i.ico &#x4e;
+            i.ico &#x4e;
 
 //- ul.chat-list.chat-list_mono
 //-   li.chat-list__item.chat-list__item_date 12.12.2021, пт

@@ -4,5 +4,6 @@ const express    = require('express'),
 
 router.post('/leaveGroup', controller.leaveGroup);
 router.delete('/deleteGroup', controller.deleteGroup);
+router.post('/removeHistory', controller.removeHistory);
 
 module.exports = router;

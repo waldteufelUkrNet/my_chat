@@ -1,14 +1,14 @@
-const config = require('../config'),
-    fs = require('fs'),
+const config  = require('../config'),
+    fs        = require('fs'),
     fs_promis = require('fs/promises'),
-    log = require('../libs/log')(module),
-    objectId = require('mongodb').ObjectId,
+    log       = require('../libs/log')(module),
+    objectId  = require('mongodb').ObjectId,
 
     GroupChat = require('../models/groupchat.js').GroupChat,
-    MonoChat = require('../models/monochat.js').MonoChat,
-    User = require('../models/user.js').User,
+    MonoChat  = require('../models/monochat.js').MonoChat,
+    User      = require('../models/user.js').User,
 
-    access = fs_promis.access,
+    access    = fs_promis.access,
     constants = fs.constants;
 
 exports.renderContactsList = function(req, res) {
@@ -63,138 +63,127 @@ exports.renderContactsList = function(req, res) {
 }
 
 exports.renderChatsList = async function(req, res) {
-    const userID = req.session.user._id,
+  const userID   = req.session.user._id,
         tzOffset = req.body.tzOffset;
-
-    let chatsArr = [];
-
-    let chats = await User.findById(new objectId(userID), { monochats: 1, groupchats: 1 })
-        .then(result => {
-            return result
-        })
-        .catch(err => {
-            res.sendStatus(500);
-            log.error('\nerr.name:\n    ' + err.name + '\nerr.message:\n    ' + err.message + '\nerr.stack:\n    ' + err.stack);
-            throw err;
-        });
-
-    for (let i = 0; i < chats.monochats.length; i++) {
-        let chatObj = {
-            _id: chats.monochats[i],
-            meta: 'mono'
-        };
-
-        chatObj.name = await User.findById(new objectId(chats.monochats[i]), { username: 1 })
-            .then(user => {
-                return user.username;
-            })
-            .catch(err => {
-                res.sendStatus(500);
-                log.error('\nerr.name:\n    ' + err.name + '\nerr.message:\n    ' + err.message + '\nerr.stack:\n    ' + err.stack);
-                throw err;
-            });
-
-        chatObj.imgURL = await getAvaFileClientURL(chats.monochats[i])
-            .catch(err => {
-                res.sendStatus(500);
-                log.error('\nerr.name:\n    ' + err.name + '\nerr.message:\n    ' + err.message + '\nerr.stack:\n    ' + err.stack);
-                throw err;
-            });
-
-        let chat = await MonoChat.find({ interlocutors: { $all: [userID, chats.monochats[i]] } })
-            .then(result => {
-                return result[0].chat;
-            })
-            .catch(err => {
-                res.sendStatus(500);
-                log.error('\nerr.name:\n    ' + err.name + '\nerr.message:\n    ' + err.message + '\nerr.stack:\n    ' + err.stack);
-                throw err;
-            });
-
-        let monochatLastMessage = chat[chat.length - 1];
-        chatObj.datetime = +monochatLastMessage.datatime + tzOffset * 60000;
-        chatObj.message = monochatLastMessage.message;
-        chatObj.status = monochatLastMessage.status;
-
-        let badge = 0;
-        if (monochatLastMessage.who != userID && monochatLastMessage.status == 'delivered') {
-            for (let i = chat.length - 1; i > -1; i--) {
-                if (chat[i].who != userID && chat[i].status == 'delivered') {
-                    badge = badge + 1
-                } else {
-                    break
-                }
-            }
-        }
-        chatObj.badge = badge;
-
-        chatsArr.push(chatObj);
-    }
-
-    for (let i = 0; i < chats.groupchats.length; i++) {
-        let chat = {
-            _id: chats.groupchats[i],
-            meta: 'group'
-        };
-
-        let chatItem = await GroupChat.findById(new objectId(chats.groupchats[i]), { meta: 1, chat: 1 })
-            .then(group => {
-                let name = group.meta.name,
-                    message = group.chat[group.chat.length - 1],
-                    datetime = +message.datatime + tzOffset * 60000,
-                    text = message.message,
-                    status = message.status[userID],
-                    badge = 0;
-
-                let lastMessage = group.chat[group.chat.length - 1];
-
-                if (lastMessage.who != userID && lastMessage.status[userID] == 'delivered') {
-                    for (let i = group.chat.length - 1; i > -1; i--) {
-                        if (group.chat[i].who != userID && group.chat[i].status[userID] == 'delivered') {
-                            badge = badge + 1
-                        } else {
-                            break
-                        }
-                    }
-                }
-
-                return {
-                    name,
-                    datetime,
-                    message: text,
-                    status,
-                    badge
-                }
-            })
-            .catch(err => {
-                res.sendStatus(500);
-                log.error('\nerr.name:\n    ' + err.name + '\nerr.message:\n    ' + err.message + '\nerr.stack:\n    ' + err.stack);
-                throw err;
-            });
-
-        chat.name = chatItem.name;
-        chat.datetime = chatItem.datetime;
-        chat.message = chatItem.message;
-        chat.status = chatItem.status;
-        chat.badge = chatItem.badge;
-
-        chat.imgURL = await getAvaFileClientURL(chats.groupchats[i])
-            .catch(err => {
-                res.sendStatus(500);
-                log.error('\nerr.name:\n    ' + err.name + '\nerr.message:\n    ' + err.message + '\nerr.stack:\n    ' + err.stack);
-                throw err;
-            });
-
-        chatsArr.push(chat);
-    }
-
-    chatsArr.sort(function(a, b) {
-        if (a.datatime > b.datatime) return 1;
-        if (a.datatime < b.datatime) return -1;
-        if (a.datatime == b.datatime) return 0;
+  let chatsArr = [];
+  let chats = await User.findById(new objectId(userID), { monochats: 1, groupchats: 1 })
+    .then(result => {
+      return result
+    })
+    .catch(err => {
+      res.sendStatus(500);
+      log.error('\nerr.name:\n    ' + err.name + '\nerr.message:\n    ' + err.message + '\nerr.stack:\n    ' + err.stack);
+      throw err;
     });
-
-    res.status(200).render('chatlist/chatlist.pug', { chats: chatsArr });
+  for (let i = 0; i < chats.monochats.length; i++) {
+    let chatObj = {
+      _id: chats.monochats[i],
+      meta: 'mono'
+    };
+    chatObj.name = await User.findById(new objectId(chats.monochats[i]), { username: 1 })
+      .then(user => {
+        return user.username;
+      })
+      .catch(err => {
+        res.sendStatus(500);
+        log.error('\nerr.name:\n    ' + err.name + '\nerr.message:\n    ' + err.message + '\nerr.stack:\n    ' + err.stack);
+        throw err;
+      });
+    chatObj.imgURL = await getAvaFileClientURL(chats.monochats[i])
+      .catch(err => {
+        res.sendStatus(500);
+        log.error('\nerr.name:\n    ' + err.name + '\nerr.message:\n    ' + err.message + '\nerr.stack:\n    ' + err.stack);
+        throw err;
+      });
+    let chat = await MonoChat.find({ interlocutors: { $all: [userID, chats.monochats[i]] } })
+      .then(result => {
+        return result[0].chat;
+      })
+      .catch(err => {
+        res.sendStatus(500);
+        log.error('\nerr.name:\n    ' + err.name + '\nerr.message:\n    ' + err.message + '\nerr.stack:\n    ' + err.stack);
+        throw err;
+      });
+    let monochatLastMessage = chat[chat.length - 1];
+    chatObj.datetime = +monochatLastMessage.datatime + tzOffset * 60000;
+    chatObj.message = monochatLastMessage.message;
+    chatObj.status = monochatLastMessage.status;
+    let badge = 0;
+    if (monochatLastMessage.who != userID && monochatLastMessage.status == 'delivered') {
+      for (let i = chat.length - 1; i > -1; i--) {
+        if (chat[i].who != userID && chat[i].status == 'delivered') {
+          badge = badge + 1
+        } else {
+          break
+        }
+      }
+    }
+    chatObj.badge = badge;
+    chatsArr.push(chatObj);
+  }
+  for (let i = 0; i < chats.groupchats.length; i++) {
+    let chat = {
+      _id: chats.groupchats[i],
+      meta: 'group'
+    };
+    let chatItem = await GroupChat.findById(new objectId(chats.groupchats[i]), { meta: 1, chat: 1 })
+      .then(group => {
+        let message, datetime, text, status;
+        let name  = group.meta.name,
+            badge = 0;
+        if (group.chat.length) {
+          message  = group.chat[group.chat.length - 1],
+          datetime = +message.datatime + tzOffset * 60000,
+          text     = message.message,
+          status   = message.status[userID];
+        } else {
+          message  = '';
+          datetime = '';
+          text     = '...';
+          status   = 'read';
+        }
+        let lastMessage = group.chat[group.chat.length - 1];
+        if (lastMessage && lastMessage.who != userID && lastMessage.status[userID] == 'delivered') {
+          for (let i = group.chat.length - 1; i > -1; i--) {
+            if (group.chat[i].who != userID && group.chat[i].status[userID] == 'delivered') {
+              badge = badge + 1
+            } else {
+              break
+            }
+          }
+        }
+        return {
+          name,
+          datetime,
+          message: text,
+          status,
+          badge
+        }
+      })
+      .catch(err => {
+        res.sendStatus(500);
+        log.error('\nerr.name:\n    ' + err.name + '\nerr.message:\n    ' + err.message + '\nerr.stack:\n    ' + err.stack);
+        throw err;
+      });
+    chat.name = chatItem.name;
+    chat.datetime = chatItem.datetime;
+    chat.message = chatItem.message;
+    chat.status = chatItem.status;
+    chat.badge = chatItem.badge;
+    chat.imgURL = await getAvaFileClientURL(chats.groupchats[i])
+      .catch(err => {
+        res.sendStatus(500);
+        log.error('\nerr.name:\n    ' + err.name + '\nerr.message:\n    ' + err.message + '\nerr.stack:\n    ' + err.stack);
+        throw err;
+      });
+    chatsArr.push(chat);
+  }
+  chatsArr.sort(function(a, b) {
+    if (a.datatime > b.datatime) return 1;
+    if (a.datatime < b.datatime) return -1;
+    if (a.datatime == b.datatime) return 0;
+  });
+  res.status(200).render('chatlist/chatlist.pug', { chats: chatsArr });
 }
 
 exports.renderBlackList = function(req, res) {
@@ -437,94 +426,92 @@ exports.renderMonoChat = async function(req, res) {
 }
 
 exports.renderGroupChat = async function(req, res) {
-    const groupID = req.body.id,
-        userID = req.session.user._id,
+  const groupID  = req.body.id,
+        userID   = req.session.user._id,
         tzOffset = req.body.tzOffset;
 
-    let isChatExist = await GroupChat.findById(new objectId(groupID))
-        .then(function(chat) {
-            if (chat) {
-                return true
-            } else {
-                return false
-            }
+  let isChatExist = await GroupChat.findById(new objectId(groupID))
+    .then(function(chat) {
+      if (chat) {
+        return true
+      } else {
+        return false
+      }
+    })
+    .catch(function(err) {
+      res.sendStatus(500);
+      log.error('\nerr.name:\n    ' + err.name + '\nerr.message:\n    ' + err.message + '\nerr.stack:\n    ' + err.stack);
+      throw err;
+    });
+
+  if (isChatExist) {
+
+    // interlocutors data
+    let iLocObj = {};
+
+    let interlocutors = await GroupChat.findById(new objectId(groupID), { interlocutors: 1 })
+      .then(chat => {
+        return chat.interlocutors
+      })
+      .catch(err => {
+        res.sendStatus(500);
+        log.error('\nerr.name:\n    ' + err.name + '\nerr.message:\n    ' + err.message + '\nerr.stack:\n    ' + err.stack);
+        throw err;
+      });
+
+    for (let i = 0; i < interlocutors.length; i++) {
+      let iID = interlocutors[i];
+
+      let iName = await User.findById(new objectId(iID), { username: 1 })
+        .then(user => {
+          return user.username;
         })
-        .catch(function(err) {
-            res.sendStatus(500);
-            log.error('\nerr.name:\n    ' + err.name + '\nerr.message:\n    ' + err.message + '\nerr.stack:\n    ' + err.stack);
-            throw err;
+        .catch(err => {
+          res.sendStatus(500);
+          log.error('\nerr.name:\n    ' + err.name + '\nerr.message:\n    ' + err.message + '\nerr.stack:\n    ' + err.stack);
+          throw err;
         });
 
-    if (isChatExist) {
-
-        // interlocutors data
-        let iLocObj = {};
-
-        let interlocutors = await GroupChat.findById(new objectId(groupID), { interlocutors: 1 })
-            .then(chat => {
-                return chat.interlocutors
-            })
-            .catch(err => {
-                res.sendStatus(500);
-                log.error('\nerr.name:\n    ' + err.name + '\nerr.message:\n    ' + err.message + '\nerr.stack:\n    ' + err.stack);
-                throw err;
-            });
-
-        for (let i = 0; i < interlocutors.length; i++) {
-            let iID = interlocutors[i];
-
-            let iName = await User.findById(new objectId(iID), { username: 1 })
-                .then(user => {
-                    return user.username;
-                })
-                .catch(err => {
-                    res.sendStatus(500);
-                    log.error('\nerr.name:\n    ' + err.name + '\nerr.message:\n    ' + err.message + '\nerr.stack:\n    ' + err.stack);
-                    throw err;
-                });
-
-            let iImgURL = await getAvaFileClientURL(iID);
-            iLocObj[iID] = { username: iName, imgURL: iImgURL };
-        }
-
-        // console.log("iLocObj", iLocObj);
-
-        // тіло чату
-        let chat = await GroupChat.findById(new objectId(groupID))
-            .then(function(chatObj) {
-                return chatObj.chat
-            })
-            .catch(function(err) {
-                res.sendStatus(500);
-                log.error('\nerr.name:\n    ' + err.name + '\nerr.message:\n    ' + err.message + '\nerr.stack:\n    ' + err.stack);
-                throw err;
-            });
-
-        // підготовка чату до рендерингу
-        chat.forEach(message => {
-            message.datatime = +message.datatime + tzOffset * 60000;
-            message.whoName = iLocObj[message.who].username;
-            message.whoImg = iLocObj[message.who].imgURL;
-            message.status = message.status[userID];
-            if (message.who == userID) {
-                message.messageType = 'chat-list__item_sent';
-            } else {
-                message.messageType = 'chat-list__item_received'
-            }
-        });
-
-        let params = {
-            meta: 'group',
-            interlocutors: {},
-            chat: chat
-        };
-
-        res.status(200).render('chat/chat.pug', params);
-
-    } else {
-        // чату нема
-        console.log('такого чату в колекції нема');
+      let iImgURL = await getAvaFileClientURL(iID);
+      iLocObj[iID] = { username: iName, imgURL: iImgURL };
     }
+
+    // тіло чату
+    let chat = await GroupChat.findById(new objectId(groupID))
+      .then(function(chatObj) {
+        return chatObj.chat
+      })
+      .catch(function(err) {
+        res.sendStatus(500);
+        log.error('\nerr.name:\n    ' + err.name + '\nerr.message:\n    ' + err.message + '\nerr.stack:\n    ' + err.stack);
+        throw err;
+      });
+
+    // підготовка чату до рендерингу
+    chat.forEach(message => {
+      message.datatime = +message.datatime + tzOffset * 60000;
+      message.whoName = iLocObj[message.who].username;
+      message.whoImg = iLocObj[message.who].imgURL;
+      message.status = message.status[userID];
+      if (message.who == userID) {
+        message.messageType = 'chat-list__item_sent';
+      } else {
+        message.messageType = 'chat-list__item_received'
+      }
+    });
+
+    let params = {
+      meta: 'group',
+      interlocutors: {},
+      chat: chat
+    };
+
+    res.status(200).render('chat/chat.pug', params);
+
+  } else {
+    // чату нема
+    console.log('такого чату в колекції нема');
+  }
 }
 
 exports.renderGList = async function(req, res) {

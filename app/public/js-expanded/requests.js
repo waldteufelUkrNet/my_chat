@@ -427,5 +427,21 @@
       return {status: response.status}
     }
   }
+
+  async function removeHistory (id) {
+    console.log("removeHistory", id);
+    let response = await fetch('api/gCard/removeHistory', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({id:id})
+    });
+    if (response.status == 200) {
+      return {status: 200}
+    } else {
+      return {status: response.status}
+    }
+  }
 /* ↑↑↑ functions declaration ↑↑↑ */
 ////////////////////////////////////////////////////////////////////////////////
