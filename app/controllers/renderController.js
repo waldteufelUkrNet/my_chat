@@ -11,55 +11,56 @@ const config  = require('../config'),
     access    = fs_promis.access,
     constants = fs.constants;
 
-exports.renderContactsList = function(req, res) {
-    let userID = req.session.user._id;
+exports.renderContactsList = async function(req, res) {
+  let userID = req.session.user._id;
 
-    User.findById(new objectId(userID), { contacts: 1 }, function(err, users) {
-        if (err) {
-            res.sendStatus(500);
-            log.error('\nerr.name:\n    ' + err.name + '\nerr.message:\n    ' + err.message + '\nerr.stack:\n    ' + err.stack);
-            throw err;
-        }
-        let usersIDArr = users.contacts;
+  let usersIDArr = await User.findById(new objectId(userID), {contacts:1})
+  .then(user => {
+    return user.contacts
+  })
+  .catch(err => {
+    res.sendStatus(500);
+    log.error('\nerr.name:\n    ' + err.name + '\nerr.message:\n    ' + err.message + '\nerr.stack:\n    ' + err.stack);
+    throw err;
+  });
 
-        if (!usersIDArr.length) {
-            res.status(200).send('');
-        } else {
-            let userArr = [];
+  if (!usersIDArr.length) {
+    res.status(200).send('');
+  } else {
+    let userArr = [];
+    for (let i = 0; i < usersIDArr.length; i++) {
+      let userfromDB = await User.findById(new objectId(usersIDArr[i]),{username:1, status: 1})
+        .then(user => {
+          return user
+        })
+        .catch(err => {
+          res.sendStatus(500);
+          log.error('\nerr.name:\n    ' + err.name + '\nerr.message:\n    ' + err.message + '\nerr.stack:\n    ' + err.stack);
+          throw err;
+        });
 
-            usersIDArr.forEach(async (id, i) => {
+      let user = {
+        _id: usersIDArr[i]
+      };
 
-                await User.findById(new objectId(id), { username: 1, status: 1 })
-                    .then(async function(user) {
-                        let clone = {};
-                        clone.status = user.status;
-                        clone.username = user.username;
-                        clone._id = user._id;
+      user.imgURL = await getAvaFileClientURL(usersIDArr[i])
+        .catch(err => {
+          res.sendStatus(500);
+          log.error('\nerr.name:\n    ' + err.name + '\nerr.message:\n    ' + err.message + '\nerr.stack:\n    ' + err.stack);
+          throw err;
+        });
 
-                        if (await isAvaFileAviable(id)) {
-                            clone.imgURL = config.get('avatarPathFromClient') + id + '.jpg';
-                        } else {
-                            clone.imgURL = '';
-                        }
-                        userArr.push(clone);
-                    })
-                    .catch(function(err) {
-                        res.sendStatus(500);
-                        log.error('\nerr.name:\n    ' + err.name + '\nerr.message:\n    ' + err.message + '\nerr.stack:\n    ' + err.stack);
-                        throw err;
-                    });
-                if (i == usersIDArr.length - 1) {
-                    userArr.sort(function(a, b) {
-                        if (a.username > b.username) return 1;
-                        if (a.username < b.username) return -1;
-                        if (a.username == b.username) return 0;
-                    });
-
-                    res.status(200).render('contactlist/contactlist.pug', { users: userArr });
-                }
-            });
-        }
+      user.username = userfromDB.username;
+      user.status = userfromDB.status;
+      userArr.push(user);
+    }
+    userArr.sort(function(a, b) {
+      if (a.username > b.username) return 1;
+      if (a.username < b.username) return -1;
+      if (a.username == b.username) return 0;
     });
+    res.status(200).render('contactlist/contactlist.pug', { users: userArr });
+  }
 }
 
 exports.renderChatsList = async function(req, res) {
@@ -568,24 +569,24 @@ exports.renderGList = async function(req, res) {
 }
 
 async function getAvaFileClientURL(id) {
-    if (await isAvaFileAviable(id)) {
-        return config.get('avatarPathFromClient') + id + '.jpg';
-    }
-    return ''
+  if (await isAvaFileAviable(id)) {
+    return config.get('avatarPathFromClient') + id + '.jpg';
+  }
+  return ''
 }
 
 async function isAvaFileAviable(id) {
-    const avatarPath = config.get('avatarPathFromServer') + id + '.jpg';
-    let result;
+  const avatarPath = config.get('avatarPathFromServer') + id + '.jpg';
+  let result;
 
-    try {
-        await access(avatarPath, constants.F_OK);
-        result = true;
-    } catch {
-        result = false;
-    }
+  try {
+    await access(avatarPath, constants.F_OK);
+    result = true;
+  } catch {
+    result = false;
+  }
 
-    return result;
+  return result;
 }
 
 async function isAdmin(userID, groupID, res) {
@@ -609,37 +610,37 @@ async function isAdmin(userID, groupID, res) {
 }
 
 async function isInContactList(userID, contactID, res) {
-    let result;
-    await User.findById(new objectId(userID), { contacts: 1 })
-        .then(user => {
-            if (user.contacts.indexOf(contactID) < 0) {
-                result = false
-            } else {
-                result = true
-            }
-        })
-        .catch(err => {
-            res.sendStatus(500);
-            log.error('\nerr.name:\n    ' + err.name + '\nerr.message:\n    ' + err.message + '\nerr.stack:\n    ' + err.stack);
-            throw err;
-        });
-    return result;
+  let result;
+  await User.findById(new objectId(userID), { contacts: 1 })
+    .then(user => {
+      if (user.contacts.indexOf(contactID) < 0) {
+        result = false
+      } else {
+        result = true
+      }
+    })
+    .catch(err => {
+      res.sendStatus(500);
+      log.error('\nerr.name:\n    ' + err.name + '\nerr.message:\n    ' + err.message + '\nerr.stack:\n    ' + err.stack);
+      throw err;
+    });
+  return result;
 }
 
 async function isInBlockList(userID, contactID, res) {
-    let result;
-    await User.findById(new objectId(userID), { blocklist: 1 })
-        .then(user => {
-            if (user.blocklist.indexOf(contactID) < 0) {
-                result = false
-            } else {
-                result = true
-            }
-        })
-        .catch(err => {
-            res.sendStatus(500);
-            log.error('\nerr.name:\n    ' + err.name + '\nerr.message:\n    ' + err.message + '\nerr.stack:\n    ' + err.stack);
-            throw err;
-        });
-    return result;
+  let result;
+  await User.findById(new objectId(userID), { blocklist: 1 })
+    .then(user => {
+      if (user.blocklist.indexOf(contactID) < 0) {
+        result = false
+      } else {
+        result = true
+      }
+    })
+    .catch(err => {
+      res.sendStatus(500);
+      log.error('\nerr.name:\n    ' + err.name + '\nerr.message:\n    ' + err.message + '\nerr.stack:\n    ' + err.stack);
+      throw err;
+    });
+  return result;
 }
