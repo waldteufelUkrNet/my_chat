@@ -2371,7 +2371,6 @@ if( document.querySelector('.left-side')) {
   }
 
   async function manageGroup(properties) {
-    console.log("properties", properties);
     let response = await fetch('/api/settings/manageGroup',{
       method: 'POST',
       headers: {

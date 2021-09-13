@@ -83,12 +83,67 @@ exports.manageGroup = async function(req,res) {
     members.push(userID);
   }
 
-console.log("groupID : ", groupID);
-console.log("name    : ", name);
-console.log("members : ", members);
+// console.log("groupID : ", groupID);
+// console.log("name    : ", name);
+// console.log("members : ", members);
 
   if (groupID) {
-    console.log('update');
+    // update group chat
+    let group = await GroupChat.findById( new objectId(groupID), {interlocutors:1,meta:1} )
+      .then(group => {
+        return group
+      })
+      .catch(err => {
+        res.sendStatus(500);
+        log.error('\nerr.name:\n    ' + err.name + '\nerr.message:\n    ' + err.message + '\nerr.stack:\n    ' +err.stack);
+        throw err;
+      });
+    let oldGroupName   = group.meta.name,
+        oldMembers     = group.interlocutors;
+
+    // пошук видалених користувачів та їх правка
+    for (let i = 0; i < oldMembers.length; i++) {
+      if (members.indexOf(oldMembers[i]) < 0 ) {
+        await User.findByIdAndUpdate( new objectId(oldMembers[i]), {$pull: {groupchats: groupID}} )
+          .catch(err => {
+            res.sendStatus(500);
+            log.error('\nerr.name:\n    ' + err.name + '\nerr.message:\n    ' + err.message + '\nerr.stack:\n    ' +err.stack);
+            throw err;
+          });
+      }
+    }
+
+    // пошук свіжих користувачів та їх правка
+    for (let i = 0; i < members.length; i++) {
+      if (oldMembers.indexOf(members[i]) < 0 ) {
+        await User.findByIdAndUpdate( new objectId(members[i]), {$push: {groupchats: groupID}} )
+          .catch(err => {
+            res.sendStatus(500);
+            log.error('\nerr.name:\n    ' + err.name + '\nerr.message:\n    ' + err.message + '\nerr.stack:\n    ' +err.stack);
+            throw err;
+          });
+      }
+    }
+
+    // правка групового чату - список учасників
+    await GroupChat.findByIdAndUpdate( new objectId(groupID), {interlocutors:members} )
+    .catch(err => {
+      res.sendStatus(500);
+      log.error('\nerr.name:\n    ' + err.name + '\nerr.message:\n    ' + err.message + '\nerr.stack:\n    ' +err.stack);
+      throw err;
+    });
+
+    // правка групового чату - назва
+    if (oldGroupName != name) {
+      await GroupChat.findByIdAndUpdate( new objectId(groupID), {'meta.name':name} )
+      .catch(err => {
+        res.sendStatus(500);
+        log.error('\nerr.name:\n    ' + err.name + '\nerr.message:\n    ' + err.message + '\nerr.stack:\n    ' +err.stack);
+        throw err;
+      });
+    }
+
+    res.sendStatus(200);
   } else {
     // create new group chat
 
@@ -110,8 +165,6 @@ console.log("members : ", members);
         log.error('\nerr.name:\n    ' + err.name + '\nerr.message:\n    ' + err.message + '\nerr.stack:\n    ' +err.stack);
         throw err;
       });
-
-    console.log("created groupID: ", typeof groupID);
 
     for (let i = 0; i < members.length; i++) {
       await User.findByIdAndUpdate( new objectId(members[i]), {$push: {groupchats: groupID}} )
