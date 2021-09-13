@@ -443,5 +443,84 @@
       return {status: response.status}
     }
   }
+
+  async function loadContactsInGroupPopup(groupID) {
+    let response;
+    if (groupID) {
+      response = await fetch('api/render/contactsListGroupPopup', {
+        method: 'POST',
+        headers: {
+          'Accept': 'text/html',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({id:groupID})
+      });
+    } else {
+      response = await fetch('api/render/contactsListGroupPopup', {
+        method: 'GET',
+        headers: {
+          'Accept': 'text/html'
+        }
+      });
+    }
+
+    if (response.status == 200) {
+      let html = await response.text();
+      return {status: 200, html: html}
+    } else {
+      return {status: response.status}
+    }
+  }
+
+  async function loadMembersInGroupPopup(groupID) {
+    let response = await fetch('api/render/membersListGroupPopup', {
+      method: 'POST',
+      headers: {
+        'Accept': 'text/html',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({id:groupID})
+    });
+    if (response.status == 200) {
+      let html = await response.text();
+      return {status: 200, html: html}
+    } else {
+      return {status: response.status}
+    }
+  }
+
+  async function searchIDforGP(id) {
+    let response = await fetch('/api/render/matchedIDList', {
+      method: 'POST',
+      headers: {
+        'Accept': 'text/html',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({id:id})
+    });
+    if (response.status == 200) {
+      let html = await response.text();
+      return {status: 200, html: html}
+    } else {
+      return {status: response.status}
+    }
+  }
+
+  async function manageGroup(properties) {
+    console.log("properties", properties);
+    let response = await fetch('/api/settings/manageGroup',{
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'text/html'
+      },
+      body: JSON.stringify(properties)
+    });
+    if (response.status == 200) {
+      return {status: 200}
+    } else {
+      return {status: response.status}
+    }
+  }
 /* ↑↑↑ functions declaration ↑↑↑ */
 ////////////////////////////////////////////////////////////////////////////////

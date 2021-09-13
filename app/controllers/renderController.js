@@ -568,6 +568,161 @@ exports.renderGList = async function(req, res) {
   res.status(200).render('memberslist/memberslist.pug', {users:users});
 }
 
+exports.contactsListGroupPopup = async function(req, res) {
+  let userID = req.session.user._id;
+
+  let usersIDArr = await User.findById(new objectId(userID), {contacts:1})
+  .then(user => {
+    return user.contacts
+  })
+  .catch(err => {
+    res.sendStatus(500);
+    log.error('\nerr.name:\n    ' + err.name + '\nerr.message:\n    ' + err.message + '\nerr.stack:\n    ' + err.stack);
+    throw err;
+  });
+
+  let userArr = [];
+  for (let i = 0; i < usersIDArr.length; i++) {
+    let user = {
+      _id: usersIDArr[i]
+    };
+
+    user.username = await User.findById(new objectId(usersIDArr[i]),{username:1})
+      .then(user => {
+        return user.username
+      })
+      .catch(err => {
+        res.sendStatus(500);
+        log.error('\nerr.name:\n    ' + err.name + '\nerr.message:\n    ' + err.message + '\nerr.stack:\n    ' + err.stack);
+        throw err;
+      });
+
+    userArr.push(user);
+  }
+  userArr.sort(function(a, b) {
+    if (a.username > b.username) return 1;
+    if (a.username < b.username) return -1;
+    if (a.username == b.username) return 0;
+  });
+
+  res.status(200).render('lists/contactsInGroupPopup.pug', { users: userArr });
+}
+
+exports.contactsListGroupPopupPost = async function(req, res) {
+  let userID  = req.session.user._id,
+      groupID = req.body.id;
+
+  let membersIDArr = await GroupChat.findById(new objectId(groupID), {interlocutors:1})
+    .then(group => {
+      return group.interlocutors
+    })
+    .catch(err => {
+      res.sendStatus(500);
+      log.error('\nerr.name:\n    ' + err.name + '\nerr.message:\n    ' + err.message + '\nerr.stack:\n    ' + err.stack);
+      throw err;
+    });
+
+  let usersIDArr = await User.findById(new objectId(userID), {contacts:1})
+    .then(user => {
+      return user.contacts
+    })
+    .catch(err => {
+      res.sendStatus(500);
+      log.error('\nerr.name:\n    ' + err.name + '\nerr.message:\n    ' + err.message + '\nerr.stack:\n    ' + err.stack);
+      throw err;
+    });
+
+  let userArr = [];
+  for (let i = 0; i < usersIDArr.length; i++) {
+    let user = {
+      _id: usersIDArr[i]
+    };
+
+    user.username = await User.findById(new objectId(usersIDArr[i]),{username:1})
+      .then(user => {
+        return user.username
+      })
+      .catch(err => {
+        res.sendStatus(500);
+        log.error('\nerr.name:\n    ' + err.name + '\nerr.message:\n    ' + err.message + '\nerr.stack:\n    ' + err.stack);
+        throw err;
+      });
+
+    if ( membersIDArr.indexOf(usersIDArr[i]) >= 0  ) {
+      user.isMember = true
+    } else {
+      user.isMember = false
+    }
+
+    userArr.push(user);
+  }
+  userArr.sort(function(a, b) {
+    if (a.username > b.username) return 1;
+    if (a.username < b.username) return -1;
+    if (a.username == b.username) return 0;
+  });
+
+  res.status(200).render('lists/contactsInGroupPopup.pug', { users: userArr });
+}
+
+exports.membersListGroupPopup = async function(req, res) {
+  let groupID = req.body.id;
+
+  let usersIDArr = await GroupChat.findById(new objectId(groupID), {interlocutors:1})
+  .then(group => {
+    return group.interlocutors
+  })
+  .catch(err => {
+    res.sendStatus(500);
+    log.error('\nerr.name:\n    ' + err.name + '\nerr.message:\n    ' + err.message + '\nerr.stack:\n    ' + err.stack);
+    throw err;
+  });
+
+  let userArr = [];
+  for (let i = 0; i < usersIDArr.length; i++) {
+    let user = {
+      _id: usersIDArr[i]
+    };
+
+    user.username = await User.findById(new objectId(usersIDArr[i]),{username:1})
+      .then(user => {
+        return user.username
+      })
+      .catch(err => {
+        res.sendStatus(500);
+        log.error('\nerr.name:\n    ' + err.name + '\nerr.message:\n    ' + err.message + '\nerr.stack:\n    ' + err.stack);
+        throw err;
+      });
+
+    userArr.push(user);
+  }
+  userArr.sort(function(a, b) {
+    if (a.username > b.username) return 1;
+    if (a.username < b.username) return -1;
+    if (a.username == b.username) return 0;
+  });
+
+  res.status(200).render('lists/membersInGroupPopup.pug', { users: userArr });
+}
+
+exports.matchedIDList = async function(req, res) {
+  const searchedID = req.body.id;
+  console.log("searchedID", searchedID);
+  let regexp = new RegExp(`^${searchedID}`, 'ui');
+
+  let user = await User.findById(new objectId(searchedID), {_id:1, username:1})
+  .then(user => {
+    return user;
+  })
+  .catch(err => {
+    res.sendStatus(500);
+    log.error('\nerr.name:\n    ' + err.name + '\nerr.message:\n    ' + err.message + '\nerr.stack:\n    ' + err.stack);
+    throw err;
+  });
+
+  res.status(200).render('lists/searchResultInGroupPopup.pug', user);
+}
+
 async function getAvaFileClientURL(id) {
   if (await isAvaFileAviable(id)) {
     return config.get('avatarPathFromClient') + id + '.jpg';

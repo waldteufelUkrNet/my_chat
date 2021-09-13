@@ -28,6 +28,7 @@ const uploadGroup = multer({storage:storageGroupConfig});
 router.post('/checkOldPassword', controller.checkOldPassword);
 router.post('/changePassword', controller.changePassword);
 router.post('/changeUserName', controller.changeUserName);
+router.post('/manageGroup', controller.manageGroup);
 router.post('/changeAva', upload.single('ava'), controller.changeAva);
 router.post('/changeGroupAva', uploadGroup.single('ava'), controller.changeGroupAva);
 

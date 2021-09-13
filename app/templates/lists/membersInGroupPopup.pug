@@ -1,0 +1,20 @@
+//- li.popup__item
+//-   label
+//-     input(type="checkbox" checked)
+//-     i.ico.check &#x5a;
+//-     i.ico.uncheck &#x56;
+//-     span Вася Пупкін
+//-     span (@WEORI75MoBvQOhNq)
+
+//- _id: '6127f3ddd770f515a0458372',
+//-   username: 'Curtis Tandy'
+//- }
+
+for user in users
+  li.popup__item(data-id=user._id)
+    label
+      input(type="checkbox" checked)
+      i.ico.check &#x5a;
+      i.ico.uncheck &#x56;
+      span #{user.username}
+      span (@#{user._id})

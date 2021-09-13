@@ -1064,6 +1064,7 @@ html.wjs-MobileHeightFix body {
   overflow: hidden;
   margin-top: 1px;
   text-shadow: 1px 1px 6px black;
+  cursor: pointer;
 }
 .popup_search .popup__search-result label input {
   position: absolute;
