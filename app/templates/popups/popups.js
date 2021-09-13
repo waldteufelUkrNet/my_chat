@@ -85,6 +85,13 @@
       }
     }
 
+    // see group members card
+    if ( event.target.closest('#popupGroupList li.popup__item') ) {
+      let id = event.target.closest('#popupGroupList li.popup__item').dataset.id;
+      openUserCard(id);
+      closePopup('popupGroupList');
+    }
+
     // delete group
     if ( event.target.closest('#popupDeleteGroup button[type="submit"]') ) {
       let groupID = document.querySelector('[data-role="showDeleteGroup"]').dataset.id;
@@ -374,6 +381,16 @@
       members : idArr
     });
     if (manageGroupRequest.status == 200) {
+      document.querySelector('[data-list="groupcardP"] .user-info__name')
+              .innerHTML = groupName;
+      document.querySelector('[data-list="groupcardP"] .logo__name')
+              .innerHTML = groupName.slice(0,2).toUpperCase();
+
+      document.querySelector('.chat-item[data-id="' + groupID + '"] .chat-item__name')
+              .innerHTML = groupName;
+      document.querySelector('.chat-item[data-id="' + groupID + '"] .logo__name')
+              .innerHTML = groupName.slice(0,2).toUpperCase();
+
       showPopupInfo('changes saved successfully');
     } else {
       showPopupInfo('something went wrong with the group settings');
