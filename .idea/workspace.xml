@@ -2,19 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="445bcd54-8ba5-4407-954a-6928cba57bfb" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/controllers/renderController.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/controllers/renderController.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/models/user.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/user.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/public/html/app.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/public/html/app.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/public/js-expanded/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/public/js-expanded/main.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/public/js-expanded/requests.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/public/js-expanded/requests.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/public/js/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/public/js/main.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/routes/renderRouter.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/routes/renderRouter.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/templates/header/header.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/header/header.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/templates/signedPageBody/signedPageBody.pug" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/signedPageBody/signedPageBody.pug" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/templates/usercard/usercard.pug" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/usercard/usercard.pug" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/debug.log" beforeDir="false" afterPath="$PROJECT_DIR$/logs/debug.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/error.log" beforeDir="false" afterPath="$PROJECT_DIR$/logs/error.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/todo.txt" beforeDir="false" afterPath="$PROJECT_DIR$/todo.txt" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -111,6 +99,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -140,7 +129,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -179,11 +167,12 @@
       <workItem from="1630085360691" duration="126000" />
       <workItem from="1630182390491" duration="102000" />
       <workItem from="1630183327811" duration="13000" />
+      <workItem from="1631818199196" duration="14000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="1159000" />
+    <option name="totallyTimeSpent" value="1173000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
@@ -200,12 +189,12 @@
       <window_info anchor="bottom" id="Terminal" order="7" weight="0.32990867" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
-      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="bottom" id="Find" order="1" />
     </layout>
   </component>
@@ -216,6 +205,30 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/app/app.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1045">
+          <caret line="55" column="21" selection-start-line="55" selection-start-column="21" selection-end-line="55" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/routes/indexRouter.js">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/controllers/indexController.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="589">
+          <caret line="31" column="1" selection-start-line="31" selection-start-column="1" selection-end-line="31" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/templates/usercard/usercard.pug">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="551">
+          <caret line="29" column="19" selection-start-line="29" selection-start-column="19" selection-end-line="29" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/app.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1045">

@@ -10,6 +10,7 @@ const chalk             = require('chalk'),
       mongoSessionStore = require('connect-mongo'),            // save cookies in db
       path              = require('path'),
       session           = require('express-session'),          // cookies generator: request.session
+      socket            = require('./socket'),
 
       authRouter        = require('./routes/authRouter'),
       gCardRouter       = require('./routes/gCardRouter'),
@@ -23,7 +24,9 @@ const chalk             = require('chalk'),
 
       app               = express();
 
-app.listen(3002, function(err,result){
+let httpServer = socket(app);
+
+httpServer.listen(3002, function(err,result) {
   if (err) {
     log.error('\nerr.name:\n    ' + err.name + '\nerr.message:\n    ' + err.message + '\nerr.stack:\n    ' +err.stack);
   } else {
