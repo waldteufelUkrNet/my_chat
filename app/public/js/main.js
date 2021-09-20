@@ -110,7 +110,7 @@ var h,f,l,d=String.fromCharCode;t.exports={version:"2.1.2",encode:a,decode:u}},f
 ////////////////////////////////////////////////////////////////////////////////
 /* ↓↓↓ custom scroll ↓↓↓ */
   // ініціалізація
-  document.addEventListener('DOMContentLoaded', function(){
+  window.addEventListener('load', function(){
     if ( !document.querySelector('.wjs-scroll') ) return;
 
     let arrOfScrollableElements = document.querySelectorAll('.wjs-scroll');

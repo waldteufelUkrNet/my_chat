@@ -2,7 +2,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 /* ↓↓↓ custom scroll ↓↓↓ */
   // ініціалізація
-  document.addEventListener('DOMContentLoaded', function(){
+  window.addEventListener('load', function(){
     if ( !document.querySelector('.wjs-scroll') ) return;
 
     let arrOfScrollableElements = document.querySelectorAll('.wjs-scroll');
