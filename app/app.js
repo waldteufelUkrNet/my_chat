@@ -7,9 +7,9 @@ const chalk             = require('chalk'),
       helmet            = require('helmet'),                   // security
       log               = require('./libs/log')(module),       // HTTP logger
       logger            = require('morgan'),                   // logger
-      mongoSessionStore = require('connect-mongo'),            // save cookies in db
       path              = require('path'),
       session           = require('express-session'),          // cookies generator: request.session
+      sessionStore      = require('./libs/sessionStore'),
       socket            = require('./socket'),
 
       authRouter        = require('./routes/authRouter'),
@@ -24,9 +24,9 @@ const chalk             = require('chalk'),
 
       app               = express();
 
-let httpServer = socket(app);
+let httpServer = socket.init(app);
 
-httpServer.listen(3002, function(err,result) {
+httpServer.listen(3002, function(err, result) {
   if (err) {
     log.error('\nerr.name:\n    ' + err.name + '\nerr.message:\n    ' + err.message + '\nerr.stack:\n    ' +err.stack);
   } else {
@@ -42,18 +42,18 @@ app.set('views', path.join(__dirname, 'templates'));
 app.set('view engine', 'pug');
 
 // app.use(logger('dev',{immediate:true}));
-if (app.get('env') == 'development') {
-  app.use( logger('dev') );
-} else {
-  app.use( logger('combined') );
-}
+// if (app.get('env') == 'development') {
+//   app.use( logger('dev') );
+// } else {
+//   app.use( logger('combined') );
+// }
 
 app.use( express.json() );
 app.use( express.urlencoded({ extended: false }) );
 
 
 let sessionConfig = config.get('session');
-sessionConfig.store = mongoSessionStore.create({ mongoUrl: config.get('mongoose:uri') });
+sessionConfig.store = sessionStore;
 app.use(session( sessionConfig ));
 
 app.use('/api/authorization', authRouter);
