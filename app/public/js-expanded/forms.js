@@ -22,6 +22,10 @@
         document.querySelector('body').innerHTML = logoutRequest.html;
         document.querySelector('head title').innerHTML = 'Login';
         wSetScroll(document.querySelector('.login-main__inner'), {right:true, overflowXHidden:true});
+
+        // перезавантаження сторінки потрібно для оновлення сесії, інакше при
+        // повторному логіні не авторизується сокет (видає помилку, що нема сесії)
+        window.location.href = location.href;
       } else {
         window.location.href = 'about:blank';
       }

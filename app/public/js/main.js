@@ -1079,6 +1079,10 @@ var h,f,l,d=String.fromCharCode;t.exports={version:"2.1.2",encode:a,decode:u}},f
         document.querySelector('body').innerHTML = logoutRequest.html;
         document.querySelector('head title').innerHTML = 'Login';
         wSetScroll(document.querySelector('.login-main__inner'), {right:true, overflowXHidden:true});
+
+        // перезавантаження сторінки потрібно для оновлення сесії, інакше при
+        // повторному логіні не авторизується сокет (видає помилку, що нема сесії)
+        window.location.href = location.href;
       } else {
         window.location.href = 'about:blank';
       }
@@ -2422,4 +2426,8 @@ var socket = io();
 
 socket.on('hello', msg => {
   console.log(msg)
+});
+
+socket.on('contactLogin', contactID => {
+  console.log("contactID, this user is online", contactID);
 });

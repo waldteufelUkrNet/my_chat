@@ -1,7 +1,6 @@
 const config     = require('../config'),
       fs         = require('fs'),
       log        = require('../libs/log')(module),
-      socketInit = require('../socket').socketInit,
       User       = require('../models/user.js').User;
 
 exports.loginUser = function(req, res) {
