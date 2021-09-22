@@ -1,8 +1,8 @@
-const config = require('../config'),
-      fs     = require('fs'),
-      log    = require('../libs/log')(module),
-      socket = require('../socket').auth,
-      User   = require('../models/user.js').User;
+const config     = require('../config'),
+      fs         = require('fs'),
+      log        = require('../libs/log')(module),
+      socketInit = require('../socket').socketInit,
+      User       = require('../models/user.js').User;
 
 exports.loginUser = function(req, res) {
   const userName = req.body.name,
@@ -83,9 +83,7 @@ exports.existUser = function(req, res) {
 
 function renderBody(req, res, user) {
   req.session.user = res.locals.user = user;
-  req.session.save( () => {
-    socket();
-  });
+  req.session.save();
 
   let params = {
     username: user.username,

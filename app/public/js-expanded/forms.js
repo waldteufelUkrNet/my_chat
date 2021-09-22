@@ -18,6 +18,7 @@
     if ( event.target.closest('#popupLogout button[type="submit"]') ) {
       let logoutRequest = await logoutUser();
       if (logoutRequest.status == 200) {
+        socket.emit('logout');
         document.querySelector('body').innerHTML = logoutRequest.html;
         document.querySelector('head title').innerHTML = 'Login';
         wSetScroll(document.querySelector('.login-main__inner'), {right:true, overflowXHidden:true});
@@ -462,6 +463,7 @@
         document.querySelector('head title').innerHTML = 'My-cha-cha :-)';
         showContactsList();
         wSetScroll(document.querySelector('.left-side .lists-wrapper'), {right:true, overflowXHidden:true});
+        socket.emit('login');
       } else if (registerResult.status == 500) {
         // error DB?
         showError(errors[2], dictionary.serverError[lang]);
@@ -482,6 +484,7 @@
         document.querySelector('head title').innerHTML = 'My-cha-cha :-)';
         showContactsList();
         wSetScroll(document.querySelector('.left-side .lists-wrapper'), {right:true, overflowXHidden:true});
+        socket.emit('login');
       } else if (loginResult.status == 500) {
         // error DB?
         showError(errors[2], dictionary.serverError[lang]);

@@ -10,7 +10,7 @@ const chalk             = require('chalk'),
       path              = require('path'),
       session           = require('express-session'),          // cookies generator: request.session
       sessionStore      = require('./libs/sessionStore'),
-      socket            = require('./socket'),
+      io                = require('./socket'),
 
       authRouter        = require('./routes/authRouter'),
       gCardRouter       = require('./routes/gCardRouter'),
@@ -24,7 +24,7 @@ const chalk             = require('chalk'),
 
       app               = express();
 
-let httpServer = socket.init(app);
+let httpServer = io.init(app);
 
 httpServer.listen(3002, function(err, result) {
   if (err) {

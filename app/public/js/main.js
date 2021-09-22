@@ -1075,6 +1075,7 @@ var h,f,l,d=String.fromCharCode;t.exports={version:"2.1.2",encode:a,decode:u}},f
     if ( event.target.closest('#popupLogout button[type="submit"]') ) {
       let logoutRequest = await logoutUser();
       if (logoutRequest.status == 200) {
+        socket.emit('logout');
         document.querySelector('body').innerHTML = logoutRequest.html;
         document.querySelector('head title').innerHTML = 'Login';
         wSetScroll(document.querySelector('.login-main__inner'), {right:true, overflowXHidden:true});
@@ -1519,6 +1520,7 @@ var h,f,l,d=String.fromCharCode;t.exports={version:"2.1.2",encode:a,decode:u}},f
         document.querySelector('head title').innerHTML = 'My-cha-cha :-)';
         showContactsList();
         wSetScroll(document.querySelector('.left-side .lists-wrapper'), {right:true, overflowXHidden:true});
+        socket.emit('login');
       } else if (registerResult.status == 500) {
         // error DB?
         showError(errors[2], dictionary.serverError[lang]);
@@ -1539,6 +1541,7 @@ var h,f,l,d=String.fromCharCode;t.exports={version:"2.1.2",encode:a,decode:u}},f
         document.querySelector('head title').innerHTML = 'My-cha-cha :-)';
         showContactsList();
         wSetScroll(document.querySelector('.left-side .lists-wrapper'), {right:true, overflowXHidden:true});
+        socket.emit('login');
       } else if (loginResult.status == 500) {
         // error DB?
         showError(errors[2], dictionary.serverError[lang]);
@@ -2414,7 +2417,8 @@ if( document.querySelector('.left-side')) {
   }
 /* ↑↑↑ functions declaration ↑↑↑ */
 ////////////////////////////////////////////////////////////////////////////////
-let socket = io();
+// var, а не let, бо socket використовується в багатьох місцях коду.
+var socket = io();
 
 socket.on('hello', msg => {
   console.log(msg)
