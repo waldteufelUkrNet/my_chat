@@ -2443,7 +2443,6 @@ socket.on('contactLogout', contactID => {
 function toggleContactStatus(contactID, status) {
   if ( !document.querySelector('.contact-list .contact-item[data-id="' + contactID + '"]') ) return;
   let statusMarker = document.querySelector('.contact-list .contact-item[data-id="' + contactID + '"]  .logo__status');
-  console.log("statusMarker", statusMarker);
 
   if (status == 'on') {
     statusMarker.classList.remove('logo__status_offline');

@@ -15,11 +15,7 @@ exports.init = function(app) {
 
   io.on("connection", async socket => {
 
-    // спроба одразу залогінити новий сокет (напр. після ctrl+f5)
-    let isAuthorized = await authSocket(socket);
-    if (isAuthorized) {
-      joinRooms(socket);
-    }
+    loginSocket(socket);
     // socket.emit('hello', 'hello, your socket.id is: ' + socket.id);
 
     socket.on('login', () => {
@@ -36,7 +32,7 @@ exports.init = function(app) {
 
     // спрацьовує при обриві сокета, напр. при ctrl+f5
     socket.on('disconnect', () => {
-      socket.disconnect(true);
+      logoutSocket(socket);
     });
   });
 
@@ -108,7 +104,6 @@ function joinRooms(socket) {
 }
 
 async function loginSocket(socket){
-  console.log("login-event : ", socket.id);
   // спочатку залогінитися
   let isAuthorized = await authSocket(socket);
   // користувач ввів пароль і залогінився
