@@ -16,64 +16,22 @@ exports.init = function(app) {
   io.on("connection", async socket => {
 
     // спроба одразу залогінити новий сокет (напр. після ctrl+f5)
-    await loginSocket(socket);
-
+    let isAuthorized = await authSocket(socket);
+    if (isAuthorized) {
+      joinRooms(socket);
+    }
     // socket.emit('hello', 'hello, your socket.id is: ' + socket.id);
 
-    socket.on('login', async () => {
-      console.log("login-event", socket.id);
-      // спочатку залогінитися
-      let isLogged = await loginSocket(socket);
-      // користувач ввів пароль і залогінився
-      if (isLogged) {
-        let user = socket.handshake.session.user;
-        console.log("user", user);
-
-        // 1. створити кімнату з id користувача
-        socket.join(user._id);
-
-        // 2. змінити статус в базі даних на true
-        await User.findByIdAndUpdate( new objectId(user._id), {status:true})
-        .catch(err => {
-          log.error('\nerr.name:\n    ' + err.name + '\nerr.message:\n    ' + err.message + '\nerr.stack:\n    ' + err.stack);
-          throw err;
-        });
-
-        // 3. зайти в усі кімнати моно- і групових чатів
-        user.contacts.forEach(chat => {
-          socket.join(chat);
-        });
-        user.monochats.forEach(chat => {
-          socket.join(chat);
-        });
-        user.groupchats.forEach(chat => {
-          socket.join(chat);
-        });
-
-        // 4. розіслати усім контактам повідомлення про онлайн статус
-        user.contacts.forEach(contactRoom => {
-          socket.to(contactRoom).emit('contactLogin', user._id);
-        });
-
-      }
-
-      // усі події починаються з перевірки на залогінення
-      // let a = checkAuth(socket);
-      // console.log("auth, login", a);
+    socket.on('login', () => {
+      loginSocket(socket);
     });
 
-    socket.on('logout', async () => {
-      console.log("logout-event", socket.id);
+    // усі події починаються з перевірки на залогінення
+    // let a = checkAuth(socket);
+    // console.log("auth, login", a);
 
-      // змінити статус в базі даних на false
-      let user = socket.handshake.session.user;
-      await User.findByIdAndUpdate( new objectId(user._id), {status:false})
-      .catch(err => {
-        log.error('\nerr.name:\n    ' + err.name + '\nerr.message:\n    ' + err.message + '\nerr.stack:\n    ' + err.stack);
-        throw err;
-      });
-
-      socket.disconnect(true);
+    socket.on('logout', () => {
+      logoutSocket(socket);
     });
 
     // спрацьовує при обриві сокета, напр. при ctrl+f5
@@ -85,7 +43,7 @@ exports.init = function(app) {
   return httpServer;
 }
 
-async function loginSocket(socket) {
+async function authSocket(socket) {
   let handshake = socket.handshake,
       cookies   = cookie.parse(handshake.headers.cookie) || '',
       sidCookie = cookies[ config.get('session:name') ],
@@ -127,4 +85,64 @@ function checkAuth(socket) {
   } else {
     return false
   }
+}
+
+function joinRooms(socket) {
+  let user = socket.handshake.session.user;
+  // console.log('userId/socketId: ', user._id + '/' + socket.id);
+  // console.log("user rooms length: ", user.contacts.length + user.monochats.length + user.groupchats.length);
+
+  socket.join(user._id);
+
+  user.contacts.forEach(chat => {
+    socket.join(chat);
+  });
+
+  user.monochats.forEach(chat => {
+    socket.join(chat);
+  });
+
+  user.groupchats.forEach(chat => {
+    socket.join(chat);
+  });
+}
+
+async function loginSocket(socket){
+  console.log("login-event : ", socket.id);
+  // спочатку залогінитися
+  let isAuthorized = await authSocket(socket);
+  // користувач ввів пароль і залогінився
+  if (isAuthorized) {
+    joinRooms(socket);
+    let user = socket.handshake.session.user;
+
+    // 1. змінити статус в базі даних на true
+    await User.findByIdAndUpdate( new objectId(user._id), {status:true})
+    .catch(err => {
+      log.error('\nerr.name:\n    ' + err.name + '\nerr.message:\n    ' + err.message + '\nerr.stack:\n    ' + err.stack);
+      throw err;
+    });
+
+    // 2. розіслати усім контактам повідомлення про онлайн статус
+    socket.to(user._id).emit('contactLogin', user._id);
+  }
+}
+
+async function logoutSocket(socket){
+  console.log("logout-event: ", socket.id);
+  joinRooms(socket);
+  let user = socket.handshake.session.user;
+
+  // 1. змінити статус в базі даних на false
+  await User.findByIdAndUpdate( new objectId(user._id), {status:false})
+  .catch(err => {
+    log.error('\nerr.name:\n    ' + err.name + '\nerr.message:\n    ' + err.message + '\nerr.stack:\n    ' + err.stack);
+    throw err;
+  });
+
+  // 2. розіслати усім контактам повідомлення про онлайн статус
+  socket.to(user._id).emit('contactLogout', user._id);
+
+  socket.removeAllListeners();
+  socket.disconnect(true);
 }

@@ -2429,5 +2429,27 @@ socket.on('hello', msg => {
 });
 
 socket.on('contactLogin', contactID => {
-  console.log("contactID, this user is online", contactID);
+  toggleContactStatus(contactID, 'on');
 });
+
+socket.on('contactLogout', contactID => {
+  toggleContactStatus(contactID, 'off');
+});
+
+// .contact-list .contact-item[data-id=""]
+// .logo__status .logo__status_online
+// .logo__status .logo__status_offline
+
+function toggleContactStatus(contactID, status) {
+  if ( !document.querySelector('.contact-list .contact-item[data-id="' + contactID + '"]') ) return;
+  let statusMarker = document.querySelector('.contact-list .contact-item[data-id="' + contactID + '"]  .logo__status');
+  console.log("statusMarker", statusMarker);
+
+  if (status == 'on') {
+    statusMarker.classList.remove('logo__status_offline');
+    statusMarker.classList.add('logo__status_online');
+  } else if (status == 'off') {
+    statusMarker.classList.remove('logo__status_online');
+    statusMarker.classList.add('logo__status_offline');
+  }
+}
