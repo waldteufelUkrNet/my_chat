@@ -110,14 +110,6 @@ if( document.querySelector('.left-side')) {
     wSetScroll(document.querySelector('.lists-wrapper'), {right:true, overflowXHidden:true})
   }
 
-  function isSmallView() {
-    let indicator = document.getElementById('widthIndicator');
-    if (getComputedStyle(indicator).display == 'none') {
-      return true
-    }
-    return false
-  }
-
   async function openUserCard(id) {
     let userCardRequest = await renderUserCard(id);
     if (userCardRequest.status == 200) {

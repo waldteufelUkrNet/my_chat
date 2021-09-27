@@ -4,6 +4,7 @@ const config       = require('../config'),
       log          = require('../libs/log')(module),
       objectId     = require("mongodb").ObjectId,
       sessionStore = require('../libs/sessionStore'),
+      MonoChat     = require('../models/monochat.js').MonoChat,
       User         = require('../models/user.js').User;
 
 let httpServer, io;
@@ -38,6 +39,10 @@ exports.init = function(app) {
 
   return httpServer;
 }
+
+exports.getIO = function() {
+  return io;
+};
 
 async function authSocket(socket) {
   let handshake = socket.handshake,
@@ -83,24 +88,58 @@ function checkAuth(socket) {
   }
 }
 
-function joinRooms(socket) {
+async function joinRooms(socket) {
   let user = socket.handshake.session.user;
-  // console.log('userId/socketId: ', user._id + '/' + socket.id);
-  // console.log("user rooms length: ", user.contacts.length + user.monochats.length + user.groupchats.length);
 
-  socket.join(user._id);
+  let rooms = [user._id];
 
-  user.contacts.forEach(chat => {
-    socket.join(chat);
+  // Для того, щоб сформувати кімнати для сокета, логічно було б використовувати
+  // user.contacts, user.groupchats та user.monochats. Але тут є проблема: ці
+  // дані беруться з сесії, яка не зміниться, поки не закінчиться. Тому при
+  // створенні нових чатів вони у socket.handshake.session.user присутні не
+  // будуть. Тому потрібно завантажувати дані з б.д.
+
+  user.contacts.forEach(room => {
+    rooms.push(room);
   });
 
-  user.monochats.forEach(chat => {
-    socket.join(chat);
+  user.groupchats.forEach(room => {
+    rooms.push(room);
   });
 
-  user.groupchats.forEach(chat => {
-    socket.join(chat);
+  for (let i = 0; i < user.monochats.length; i++) {
+    await MonoChat.find({ interlocutors: { $all: [user._id, user.monochats[i]] } })
+    .then(chat => {
+      if (chat.length > 0) {
+        rooms.push(chat[0]._id + '');
+      }
+    })
+    .catch(err => {
+      log.error('\nerr.name:\n    ' + err.name + '\nerr.message:\n    ' + err.message + '\nerr.stack:\n    ' + err.stack);
+      throw err;
+    });
+  }
+
+  rooms.forEach(room => {
+    socket.join(room);
   });
+
+  // в документації написано, що join є синхронним, але по факту ні.
+  let counter;
+  let tempRooms = socket.rooms;
+  do {
+    counter = 0;
+    for (let room in tempRooms) {
+      counter = counter + 1;
+    }
+
+    if ( counter < rooms.length) {
+      counter = 0;
+      tempRooms = socket.rooms;
+      await sleep(100);
+    }
+  } while (counter < rooms.length)
+  // console.log("socket.rooms", socket.rooms);
 }
 
 async function loginSocket(socket){
@@ -108,7 +147,7 @@ async function loginSocket(socket){
   let isAuthorized = await authSocket(socket);
   // користувач ввів пароль і залогінився
   if (isAuthorized) {
-    joinRooms(socket);
+    await joinRooms(socket);
     let user = socket.handshake.session.user;
 
     // 1. змінити статус в базі даних на true
@@ -124,8 +163,7 @@ async function loginSocket(socket){
 }
 
 async function logoutSocket(socket){
-  console.log("logout-event: ", socket.id);
-  joinRooms(socket);
+  await joinRooms(socket);
   let user = socket.handshake.session.user;
 
   // 1. змінити статус в базі даних на false
@@ -140,4 +178,8 @@ async function logoutSocket(socket){
 
   socket.removeAllListeners();
   socket.disconnect(true);
+}
+
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
 }

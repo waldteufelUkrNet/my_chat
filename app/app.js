@@ -13,6 +13,7 @@ const chalk             = require('chalk'),
       io                = require('./socket'),
 
       authRouter        = require('./routes/authRouter'),
+      chatRouter        = require('./routes/chatRouter'),
       gCardRouter       = require('./routes/gCardRouter'),
       indexRouter       = require('./routes/indexRouter'),
       renderRouter      = require('./routes/renderRouter'),
@@ -62,6 +63,7 @@ app.use('/api/search', searchRouter);
 app.use('/api/render', renderRouter);
 app.use('/api/uCard', uCardRouter);
 app.use('/api/gCard', gCardRouter);
+app.use('/api/chat', chatRouter);
 app.use('/', indexRouter);
 
 app.use( express.static(path.join(__dirname, 'public')) );

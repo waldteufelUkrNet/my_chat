@@ -86,6 +86,14 @@ var dictionary = {
   function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
+
+  function isSmallView() {
+    let indicator = document.getElementById('widthIndicator');
+    if (getComputedStyle(indicator).display == 'none') {
+      return true
+    }
+    return false
+  }
 /* ↑↑↑ functions declaration ↑↑↑ */
 ////////////////////////////////////////////////////////////////////////////////
 "use strict"; // user-config.js
@@ -452,25 +460,59 @@ var h,f,l,d=String.fromCharCode;t.exports={version:"2.1.2",encode:a,decode:u}},f
     // open form
     if ( event.target.closest('.chat-form__textarea')
          && ! document.querySelector('.chat-form__textarea_active') ) {
-      let ta  = document.querySelector('.chat-form__textarea'),
-          btn = document.querySelector('.chat-form__btn');
+
+      let ta  = event.target.closest('.chat-form__textarea'),
+          btn = ta.closest('.chat-form').querySelector('.chat-form__btn');
       ta.classList.add('chat-form__textarea_active');
       btn.classList.add('chat-form__btn_active');
       ta.focus();
       return
     }
-  // close
-  if( document.querySelector('.chat-form__textarea_active')
-      && !event.target.closest('.chat-form__textarea_active') ) {
-    let ta  = document.querySelector('.chat-form__textarea'),
-        btn = document.querySelector('.chat-form__btn');
-    ta.classList.remove('chat-form__textarea_active');
-    btn.classList.remove('chat-form__btn_active');
-    ta.blur();
-  }
+
+    // close form
+    if( document.querySelector('.chat-form__textarea_active')
+        && !event.target.closest('.chat-form__textarea_active') ) {
+
+      let ta  = document.querySelector('.chat-form__textarea_active'),
+          btn = ta.closest('.chat-form').querySelector('.chat-form__btn');
+      ta.classList.remove('chat-form__textarea_active');
+      btn.classList.remove('chat-form__btn_active');
+      ta.blur();
+    }
   });
+
+  document.addEventListener('submit', function(event){
+    event.preventDefault();
+    if ( event.target.closest('.chat-form') ) {
+      event.preventDefault();
+      sendMessage(event);
+    }
+  });
+
 /* ↑↑↑ event listeners ↑↑↑ */
 ////////////////////////////////////////////////////////////////////////////////
+/* ↓↓↓ functions declaration ↓↓↓ */
+  async function sendMessage(event) {
+    let message = event.target.querySelector('[name="chat-form-ta"]').value;
+
+    if (message.length <= 0 || message.length > 3000) return;
+
+    let contactID;
+    if ( isSmallView() ) {
+      contactID = document.querySelector('.left-side_with-subheader .subheader').dataset.id;
+    } else {
+      contactID = document.querySelector('[data-list="chatP"] .subheader').dataset.id;
+    }
+
+    let sendMessageRequest = await sendMessageToServer(contactID, message);
+    if (sendMessageRequest.status == 200) {
+      console.log("sendMessageRequest.status == 200");
+      // додати повідомлення на сторінку
+    } else {
+      // показати попап з помилкою
+    }
+  }
+/* ↑↑↑ functions declaration ↑↑↑ */
 "use strict"; // header module
 ////////////////////////////////////////////////////////////////////////////////
 /* ↓↓↓ event listeners ↓↓↓ */
@@ -1764,14 +1806,6 @@ if( document.querySelector('.left-side')) {
     wSetScroll(document.querySelector('.lists-wrapper'), {right:true, overflowXHidden:true})
   }
 
-  function isSmallView() {
-    let indicator = document.getElementById('widthIndicator');
-    if (getComputedStyle(indicator).display == 'none') {
-      return true
-    }
-    return false
-  }
-
   async function openUserCard(id) {
     let userCardRequest = await renderUserCard(id);
     if (userCardRequest.status == 200) {
@@ -2419,6 +2453,24 @@ if( document.querySelector('.left-side')) {
       return {status: response.status}
     }
   }
+
+  async function sendMessageToServer(contactID, message) {
+    let response = await fetch('api/chat',{
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        contactID : contactID,
+        message   : message
+      })
+    });
+    if (response.status == 200) {
+      return {status: 200}
+    } else {
+      return {status: response.status}
+    }
+  }
 /* ↑↑↑ functions declaration ↑↑↑ */
 ////////////////////////////////////////////////////////////////////////////////
 // var, а не let, бо socket використовується в багатьох місцях коду.
@@ -2434,6 +2486,10 @@ socket.on('contactLogin', contactID => {
 
 socket.on('contactLogout', contactID => {
   toggleContactStatus(contactID, 'off');
+});
+
+socket.on('message', msg => {
+  console.log('msg: ', msg);
 });
 
 // .contact-list .contact-item[data-id=""]

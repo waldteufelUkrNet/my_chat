@@ -100,7 +100,11 @@ exports.renderChatsList = async function(req, res) {
 
     let chat = await MonoChat.find({ interlocutors: { $all: [userID, chats.monochats[i]] } })
       .then(result => {
-        return result[0].chat;
+        if (result[0].chat) {
+          return result[0].chat;
+        } else {
+          return []
+        }
       })
       .catch(err => {
         res.sendStatus(500);

@@ -5,22 +5,56 @@
     // open form
     if ( event.target.closest('.chat-form__textarea')
          && ! document.querySelector('.chat-form__textarea_active') ) {
-      let ta  = document.querySelector('.chat-form__textarea'),
-          btn = document.querySelector('.chat-form__btn');
+
+      let ta  = event.target.closest('.chat-form__textarea'),
+          btn = ta.closest('.chat-form').querySelector('.chat-form__btn');
       ta.classList.add('chat-form__textarea_active');
       btn.classList.add('chat-form__btn_active');
       ta.focus();
       return
     }
-  // close
-  if( document.querySelector('.chat-form__textarea_active')
-      && !event.target.closest('.chat-form__textarea_active') ) {
-    let ta  = document.querySelector('.chat-form__textarea'),
-        btn = document.querySelector('.chat-form__btn');
-    ta.classList.remove('chat-form__textarea_active');
-    btn.classList.remove('chat-form__btn_active');
-    ta.blur();
-  }
+
+    // close form
+    if( document.querySelector('.chat-form__textarea_active')
+        && !event.target.closest('.chat-form__textarea_active') ) {
+
+      let ta  = document.querySelector('.chat-form__textarea_active'),
+          btn = ta.closest('.chat-form').querySelector('.chat-form__btn');
+      ta.classList.remove('chat-form__textarea_active');
+      btn.classList.remove('chat-form__btn_active');
+      ta.blur();
+    }
   });
+
+  document.addEventListener('submit', function(event){
+    event.preventDefault();
+    if ( event.target.closest('.chat-form') ) {
+      event.preventDefault();
+      sendMessage(event);
+    }
+  });
+
 /* ↑↑↑ event listeners ↑↑↑ */
 ////////////////////////////////////////////////////////////////////////////////
+/* ↓↓↓ functions declaration ↓↓↓ */
+  async function sendMessage(event) {
+    let message = event.target.querySelector('[name="chat-form-ta"]').value;
+
+    if (message.length <= 0 || message.length > 3000) return;
+
+    let contactID;
+    if ( isSmallView() ) {
+      contactID = document.querySelector('.left-side_with-subheader .subheader').dataset.id;
+    } else {
+      contactID = document.querySelector('[data-list="chatP"] .subheader').dataset.id;
+    }
+
+    let sendMessageRequest = await sendMessageToServer(contactID, message);
+    if (sendMessageRequest.status == 200) {
+      console.log("sendMessageRequest.status == 200");
+      // додати повідомлення на сторінку
+    } else {
+      // показати попап з помилкою
+    }
+  }
+/* ↑↑↑ functions declaration ↑↑↑ */

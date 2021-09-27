@@ -13,6 +13,10 @@ socket.on('contactLogout', contactID => {
   toggleContactStatus(contactID, 'off');
 });
 
+socket.on('message', msg => {
+  console.log('msg: ', msg);
+});
+
 // .contact-list .contact-item[data-id=""]
 // .logo__status .logo__status_online
 // .logo__status .logo__status_offline

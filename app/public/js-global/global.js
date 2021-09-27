@@ -86,5 +86,13 @@ var dictionary = {
   function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
+
+  function isSmallView() {
+    let indicator = document.getElementById('widthIndicator');
+    if (getComputedStyle(indicator).display == 'none') {
+      return true
+    }
+    return false
+  }
 /* ↑↑↑ functions declaration ↑↑↑ */
 ////////////////////////////////////////////////////////////////////////////////

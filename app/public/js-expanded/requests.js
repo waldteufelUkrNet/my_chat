@@ -521,5 +521,23 @@
       return {status: response.status}
     }
   }
+
+  async function sendMessageToServer(contactID, message) {
+    let response = await fetch('api/chat',{
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        contactID : contactID,
+        message   : message
+      })
+    });
+    if (response.status == 200) {
+      return {status: 200}
+    } else {
+      return {status: response.status}
+    }
+  }
 /* ↑↑↑ functions declaration ↑↑↑ */
 ////////////////////////////////////////////////////////////////////////////////
