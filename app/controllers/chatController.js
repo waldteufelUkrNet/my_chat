@@ -17,22 +17,56 @@ exports.getMessageFromClient = async function(req, res) {
         contactID = req.body.contactID,
         message   = req.body.message;
 
-  let chatID;
+  let chatID, messageObj;
 
   if ( await isGroupChat(contactID, res) ) {
     // це груповий чат
+    let date       = new Date(),
+        datatime   = date.getTime() + (date.getTimezoneOffset() * 60000);
+
+    messageObj = {
+      "datatime" : datatime,
+      "who"      : userID,
+      "message"  : message,
+      "status"   : {}
+    };
+
+    let members = await GroupChat.findById(new objectId(contactID), { interlocutors: 1})
+      .then(result => {
+        return result.interlocutors
+      })
+      .catch(err => {
+        res.sendStatus(500);
+        log.error('\nerr.name:\n    ' + err.name + '\nerr.message:\n    ' + err.message + '\nerr.stack:\n    ' + err.stack);
+        throw err;
+      });
+
+    members.forEach(memberID => {
+      messageObj.status[memberID] = "delivered"
+    });
+
+    GroupChat.findByIdAndUpdate(new objectId(contactID), {$push: {chat: messageObj}})
+    .catch(err => {
+      res.sendStatus(500);
+      log.error('\nerr.name:\n    ' + err.name + '\nerr.message:\n    ' + err.message + '\nerr.stack:\n    ' + err.stack);
+      throw err;
+    });
+
+    messageObj.group = contactID;
+    delete messageObj.status;
+    chatID = contactID;
   } else {
     // моно-чат
-
     let date       = new Date(),
-        datatime   = date.getTime() + (date.getTimezoneOffset() * 60000),
-        messageObj = {
-          "datatime" : datatime,
-          "who"      : userID,
-          "whom"     : contactID,
-          "message"  : message,
-          "status"   : "delivered"
-        };
+        datatime   = date.getTime() + (date.getTimezoneOffset() * 60000);
+
+    messageObj = {
+      "datatime" : datatime,
+      "who"      : userID,
+      "whom"     : contactID,
+      "message"  : message,
+      "status"   : "delivered"
+    };
 
     let chat = await MonoChat.find({ interlocutors: { $all: [userID, contactID] } })
       .then(result => {
@@ -48,7 +82,7 @@ exports.getMessageFromClient = async function(req, res) {
     if (chat.length) {
       chatID = await MonoChat.findOneAndUpdate({ interlocutors: { $all: [userID, contactID] } }, {$push: {chat: messageObj}})
       .then(chat => {
-        return chat._id
+        return String(chat._id);
       })
       .catch(err => {
         res.sendStatus(500);
@@ -61,7 +95,7 @@ exports.getMessageFromClient = async function(req, res) {
         "chat": [messageObj]
       })
       .then(chat => {
-        return chat._id
+        return String(chat._id)
       })
       .catch(err => {
         res.sendStatus(500);
@@ -85,10 +119,7 @@ exports.getMessageFromClient = async function(req, res) {
     }
   }
 
-  const sockets = await io.fetchSockets();
-  console.log("sockets", sockets);
-
-  // io().to(chatID).emit('message', message);
+  io().in(chatID).emit('message', messageObj);
   res.sendStatus(200);
 }
 

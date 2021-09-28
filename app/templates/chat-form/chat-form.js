@@ -33,7 +33,6 @@
       sendMessage(event);
     }
   });
-
 /* ↑↑↑ event listeners ↑↑↑ */
 ////////////////////////////////////////////////////////////////////////////////
 /* ↓↓↓ functions declaration ↓↓↓ */
@@ -51,10 +50,10 @@
 
     let sendMessageRequest = await sendMessageToServer(contactID, message);
     if (sendMessageRequest.status == 200) {
-      console.log("sendMessageRequest.status == 200");
       // додати повідомлення на сторінку
     } else {
       // показати попап з помилкою
+      showPopupInfo('Помилка при відправці повідомлення');
     }
   }
 /* ↑↑↑ functions declaration ↑↑↑ */

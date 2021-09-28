@@ -89,15 +89,24 @@ function checkAuth(socket) {
 }
 
 async function joinRooms(socket) {
-  let user = socket.handshake.session.user;
+  let userID = socket.handshake.session.user._id;
 
-  let rooms = [user._id];
+  let rooms = [userID];
 
   // Для того, щоб сформувати кімнати для сокета, логічно було б використовувати
   // user.contacts, user.groupchats та user.monochats. Але тут є проблема: ці
   // дані беруться з сесії, яка не зміниться, поки не закінчиться. Тому при
   // створенні нових чатів вони у socket.handshake.session.user присутні не
   // будуть. Тому потрібно завантажувати дані з б.д.
+  let user = await User.findById(new objectId(userID), {contacts:1, groupchats: 1, monochats: 1} )
+  .then(user => {
+    return user
+  })
+  .catch(err => {
+    log.error('\nerr.name:\n    ' + err.name + '\nerr.message:\n    ' + err.message + '\nerr.stack:\n    ' + err.stack);
+    throw err;
+  });
+
 
   user.contacts.forEach(room => {
     rooms.push(room);
@@ -108,7 +117,7 @@ async function joinRooms(socket) {
   });
 
   for (let i = 0; i < user.monochats.length; i++) {
-    await MonoChat.find({ interlocutors: { $all: [user._id, user.monochats[i]] } })
+    await MonoChat.find({ interlocutors: { $all: [userID, user.monochats[i]] } })
     .then(chat => {
       if (chat.length > 0) {
         rooms.push(chat[0]._id + '');
@@ -123,23 +132,6 @@ async function joinRooms(socket) {
   rooms.forEach(room => {
     socket.join(room);
   });
-
-  // в документації написано, що join є синхронним, але по факту ні.
-  let counter;
-  let tempRooms = socket.rooms;
-  do {
-    counter = 0;
-    for (let room in tempRooms) {
-      counter = counter + 1;
-    }
-
-    if ( counter < rooms.length) {
-      counter = 0;
-      tempRooms = socket.rooms;
-      await sleep(100);
-    }
-  } while (counter < rooms.length)
-  // console.log("socket.rooms", socket.rooms);
 }
 
 async function loginSocket(socket){

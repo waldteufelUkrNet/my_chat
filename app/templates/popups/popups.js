@@ -381,15 +381,15 @@
       members : idArr
     });
     if (manageGroupRequest.status == 200) {
-      document.querySelector('[data-list="groupcardP"] .user-info__name')
-              .innerHTML = groupName;
-      document.querySelector('[data-list="groupcardP"] .logo__name')
-              .innerHTML = groupName.slice(0,2).toUpperCase();
+      let el1 = document.querySelector('[data-list="groupcardP"] .user-info__name');
+      if(el1) el1.innerHTML = groupName;
+      let el2 = document.querySelector('[data-list="groupcardP"] .logo__name');
+      if(el2) el2.innerHTML = groupName.slice(0,2).toUpperCase();
 
-      document.querySelector('.chat-item[data-id="' + groupID + '"] .chat-item__name')
-              .innerHTML = groupName;
-      document.querySelector('.chat-item[data-id="' + groupID + '"] .logo__name')
-              .innerHTML = groupName.slice(0,2).toUpperCase();
+      let el3 = document.querySelector('.chat-item[data-id="' + groupID + '"] .chat-item__name');
+      if(el3) el3.innerHTML = groupName;
+      let el4 = document.querySelector('.chat-item[data-id="' + groupID + '"] .logo__name');
+      if(el4) el4.innerHTML = groupName.slice(0,2).toUpperCase();
 
       showPopupInfo('changes saved successfully');
     } else {

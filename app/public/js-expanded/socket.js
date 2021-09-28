@@ -1,10 +1,6 @@
 // var, а не let, бо socket використовується в багатьох місцях коду.
 var socket = io();
 
-socket.on('hello', msg => {
-  console.log(msg)
-});
-
 socket.on('contactLogin', contactID => {
   toggleContactStatus(contactID, 'on');
 });
@@ -14,12 +10,8 @@ socket.on('contactLogout', contactID => {
 });
 
 socket.on('message', msg => {
-  console.log('msg: ', msg);
+  handleIncommingMessage(msg)
 });
-
-// .contact-list .contact-item[data-id=""]
-// .logo__status .logo__status_online
-// .logo__status .logo__status_offline
 
 function toggleContactStatus(contactID, status) {
   if ( !document.querySelector('.contact-list .contact-item[data-id="' + contactID + '"]') ) return;
@@ -32,4 +24,11 @@ function toggleContactStatus(contactID, status) {
     statusMarker.classList.remove('logo__status_online');
     statusMarker.classList.add('logo__status_offline');
   }
+}
+
+function handleIncommingMessage(msg) {
+  console.log("handleIncommingMessage: ", msg);
+  const userID = document.querySelector('.header__info .header__subheader')
+                         .innerHtml.slice(1);
+  console.log("userID", userID);
 }
