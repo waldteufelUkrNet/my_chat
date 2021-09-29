@@ -63,7 +63,7 @@ ul.chat-list
           modClass = 'message-status_delivered'
         }
 
-      if chat.datetime
+      if chat.datetime && chat.meta != 'group'
         .message-status(class=modClass)
           i.ico &#x4e;
           i.ico &#x4e;

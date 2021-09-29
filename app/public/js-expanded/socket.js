@@ -88,7 +88,7 @@ function addOwnMessageToList(msg, user) {
 
 function addIncommingMessageToList(msg) {
   let contact = {
-    id: msg.who
+    id: msg.who || msg.group
   };
 
   if ( document.querySelector('.list_active[data-list="chatP"] .subheader') ) {
@@ -141,8 +141,9 @@ function addIncommingMessageToList(msg) {
 }
 
 function addMetaToList_incommingMessage(msg) {
-  let listItemMessage = document.querySelector('.chat-item[data-id="' + msg.who + '"] .chat-item__message'),
-      listItemData    = document.querySelector('.chat-item[data-id="' + msg.who + '"] .chat-item__date');
+  let id = msg.group || msg.who;
+  let listItemMessage = document.querySelector('.chat-item[data-id="' + id + '"] .chat-item__message'),
+      listItemData    = document.querySelector('.chat-item[data-id="' + id + '"] .chat-item__date');
 
   let date = new Date(msg.datatime),
       dd   = date.getUTCDate(),
@@ -158,21 +159,26 @@ function addMetaToList_incommingMessage(msg) {
   listItemMessage.innerHTML = msg.message;
 
   // badges - тільки якщо не відкрите поле даного чату
-  if ( !document.querySelector('.list_active[data-list="chatP"] .subheader[data-id="' + msg.who + '"]') ) {
-    let activeBadge = document.querySelector('.chat-item[data-id="' + msg.who + '"] .chat-item__badge_active');
+  if ( !document.querySelector('.list_active[data-list="chatP"] .subheader[data-id="' + id + '"]') ) {
+    let activeBadge = document.querySelector('.chat-item[data-id="' + id + '"] .chat-item__badge_active');
     if (activeBadge) {
       let count = +activeBadge.innerHTML + 1;
       activeBadge.innerHTML = count;
     } else {
-      document.querySelector('.chat-item[data-id="' + msg.who + '"] .chat-item__badge').innerHTML = '1';
-      document.querySelector('.chat-item[data-id="' + msg.who + '"] .chat-item__badge').classList.add('chat-item__badge_active');
+      document.querySelector('.chat-item[data-id="' + id + '"] .chat-item__badge').innerHTML = '1';
+      document.querySelector('.chat-item[data-id="' + id + '"] .chat-item__badge').classList.add('chat-item__badge_active');
     }
+  } else {
+    document.querySelector('.chat-item[data-id="' + id + '"] .chat-item__badge').innerHTML = '';
+    document.querySelector('.chat-item[data-id="' + id + '"] .chat-item__badge').classList.remove('chat-item__badge_active');
   }
 }
 
 function addMetaToList_ownMessage(msg) {
-  let listItemMessage = document.querySelector('.chat-item[data-id="' + msg.whom + '"] .chat-item__message'),
-      listItemData    = document.querySelector('.chat-item[data-id="' + msg.whom + '"] .chat-item__date');
+  let id = msg.whom || msg.group;
+
+  let listItemMessage = document.querySelector('.chat-item[data-id="' + id + '"] .chat-item__message'),
+      listItemData    = document.querySelector('.chat-item[data-id="' + id + '"] .chat-item__date');
 
   let date = new Date(msg.datatime),
       dd   = date.getUTCDate(),
