@@ -1,4 +1,7 @@
 .chat-list {
+  &__message {
+    overflow: hidden;
+  }
   .message-status {
     position: absolute;
     bottom: 5px;

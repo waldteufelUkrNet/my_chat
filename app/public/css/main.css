@@ -360,6 +360,7 @@ html.wjs-MobileHeightFix body {
   font: 0.8em light;
 }
 .round-btn {
+  display: none;
   width: 40px;
   height: 40px;
   border-radius: 50%;
@@ -381,6 +382,9 @@ html.wjs-MobileHeightFix body {
   -webkit-transform: translate(-50%, -50%);
       -ms-transform: translate(-50%, -50%);
           transform: translate(-50%, -50%);
+}
+.round-btn_active {
+  display: block;
 }
 
 .chat-form {
@@ -447,6 +451,9 @@ html.wjs-MobileHeightFix body {
   border-bottom: none;
 }
 
+.chat-list__message {
+  overflow: hidden;
+}
 .chat-list .message-status {
   position: absolute;
   bottom: 5px;

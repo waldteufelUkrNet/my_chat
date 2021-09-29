@@ -405,7 +405,11 @@ exports.renderMonoChat = async function(req, res) {
         // тіло чату
         let chat = await MonoChat.find({ interlocutors: { $all: [userID, contactID] } })
             .then(function(chatObj) {
+              if (chatObj[0]) {
                 return chatObj[0].chat
+              } else {
+                return []
+              }
             })
             .catch(function(err) {
                 res.sendStatus(500);
@@ -417,6 +421,7 @@ exports.renderMonoChat = async function(req, res) {
         chat.forEach(message => {
             message.datatime = +message.datatime + tzOffset * 60000;
             if (message.who == userID) {
+                message.whoID = userID;
                 message.whoName = userName;
                 message.whomName = contactName;
                 message.whoImg = userAvaImg;
@@ -436,7 +441,6 @@ exports.renderMonoChat = async function(req, res) {
         };
 
         res.status(200).render('chat/chat.pug', params);
-
     } else {
       // такого чату в колекції нема
       let params = {

@@ -39,6 +39,8 @@
   async function sendMessage(event) {
     let message = event.target.querySelector('[name="chat-form-ta"]').value;
 
+    event.target.querySelector('[name="chat-form-ta"]').value = '';
+
     if (message.length <= 0 || message.length > 3000) return;
 
     let contactID;
