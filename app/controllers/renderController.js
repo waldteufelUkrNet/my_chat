@@ -419,6 +419,7 @@ exports.renderMonoChat = async function(req, res) {
 
         // підготовка чату до рендерингу
         chat.forEach(message => {
+            message.id = message.datatime;
             message.datatime = +message.datatime + tzOffset * 60000;
             if (message.who == userID) {
                 message.whoID = userID;
@@ -517,6 +518,7 @@ exports.renderGroupChat = async function(req, res) {
 
     // підготовка чату до рендерингу
     chat.forEach(message => {
+      message.id = message.datatime;
       message.datatime = +message.datatime + tzOffset * 60000;
       message.whoName = iLocObj[message.who].username;
       message.whoImg = iLocObj[message.who].imgURL;

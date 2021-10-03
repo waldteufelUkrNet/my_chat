@@ -1878,6 +1878,21 @@ if( document.querySelector('.left-side')) {
       wSetScroll( document.querySelector('.right-side .chat-wrapper.wjs-scroll'),
                   { right:true, overflowXHidden:true });
     }
+
+    let unreadMessage;
+
+    if ( isSmallView() ) {
+      unreadMessage = document.querySelector('[data-list="chat"] .chat-list__item_received[data-status="delivered"]');
+    } else {
+      unreadMessage = document.querySelector('[data-list="chatP"] .chat-list__item_received[data-status="delivered"]');
+    }
+
+    if (unreadMessage) {
+      if ( isMessageHidden(unreadMessage) ) {
+        unreadMessage.scrollIntoView({behavior: 'smooth', block: 'end'});
+      }
+      handleUnreadMessage(unreadMessage);
+    }
   }
 
   async function showSubheader(id, meta) {
@@ -1924,6 +1939,35 @@ if( document.querySelector('.left-side')) {
       }
     } else {
       showMenuItem('aside', 'startL');
+    }
+  }
+
+  function isMessageHidden(elem) {
+
+    let w        = elem.closest('.wjs-scroll__content'),
+        ww       = elem.closest('.wjs-scroll__content-wrapper'),
+        wTop     = w.getBoundingClientRect().top,
+        wHeight  = ww.scrollHeight,
+        elTop    = elem.getBoundingClientRect().top,
+        elHeight = elem.scrollHeight;
+
+    return (elTop > wHeight + wTop - elHeight)
+  }
+
+  async function handleUnreadMessage(msg) {
+    console.log("msg", msg);
+    // data-status="delivered" -> "read"
+    // зменшити лічильник badge (якщо його видно)
+    // запит до бд зі зміною статусу повідомлення
+
+    let contactID = msg.dataset.id,
+        messageID = msg.dataset.msgid;
+
+    let changeMessageStatusRequest = await changeMessageStatus(contactID, messageID);
+    if (changeMessageStatusRequest.status == 200) {
+      // ok
+    } else {
+      // not ok ;-)
     }
   }
 /* ↑↑↑ functions declaration ↑↑↑ */
@@ -2453,7 +2497,7 @@ if( document.querySelector('.left-side')) {
   }
 
   async function sendMessageToServer(contactID, message) {
-    let response = await fetch('api/chat',{
+    let response = await fetch('api/chat/sendMessageToServer',{
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -2461,6 +2505,24 @@ if( document.querySelector('.left-side')) {
       body: JSON.stringify({
         contactID : contactID,
         message   : message
+      })
+    });
+    if (response.status == 200) {
+      return {status: 200}
+    } else {
+      return {status: response.status}
+    }
+  }
+
+  async function changeMessageStatus(contactID, messageID) {
+    let response = fetch('api/chat/changeMessageStatus', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        contactID : contactID,
+        messageID : messageID
       })
     });
     if (response.status == 200) {

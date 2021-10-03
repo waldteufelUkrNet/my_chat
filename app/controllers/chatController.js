@@ -123,6 +123,42 @@ exports.getMessageFromClient = async function(req, res) {
   res.sendStatus(200);
 }
 
+exports.changeMessageStatus = async function(req, res) {
+  let userID    = req.session.user._id,
+      contactID = req.body.contactID,
+      messageID = req.body.messageID;
+  console.log("userID", userID);
+  console.log("contactID", contactID);
+  console.log("messageID", messageID);
+
+  if ( await isGroupChat(contactID, res) ) {
+    // зміна статусу повідомлення групового чату
+    console.log("групa");
+  } else {
+    // зміна статусу повідомлення моно чату
+    console.log("моно");
+
+    await MonoChat.findOne({ interlocutors: { $all: [userID, contactID] }})
+      .then(doc => {
+        let chat = doc.chat;
+        for (let i in chat) {
+          if ( chat[i].datatime == messageID ) {
+            chat[i].status = 'read';
+            doc.markModified("chat");
+            doc.save();
+            break
+          }
+        }
+        res.sendStatus(200)
+      })
+      .catch(err => {
+        res.sendStatus(500);
+        log.error('\nerr.name:\n    ' + err.name + '\nerr.message:\n    ' + err.message + '\nerr.stack:\n    ' + err.stack);
+        throw err;
+      });
+  }
+}
+
 async function isGroupChat(id, res) {
   let gchat = await GroupChat.findById( new objectId(id) )
       .then(result => {

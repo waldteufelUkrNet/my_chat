@@ -1,14 +1,16 @@
 //- mono:
 //- {
-//-   datatime: 1615578883000,
+//-   datatime: 1632650048749,
 //-   who: '6127f48dd770f515a0458394',
-//-   whom: '6127f376d770f515a045835d',
-//-   message: 'outwill microconidial sciarid',
-//-   status: 'read',
+//-   whom: '6128f4b586b0640204c57ed9',
+//-   message: 'ййй',
+//-   status: 'delivered',
+//-   whoID: '6127f48dd770f515a0458394',
 //-   whoName: 'test',
-//-   whomName: 'Aliza Obermoeller',
+//-   whomName: 'test2',
 //-   whoImg: 'img/users/6127f48dd770f515a0458394.jpg',
-//-   messageType: 'chat-list__item_sent'
+//-   messageType: 'chat-list__item_sent',
+//-   message.id: '1628757600000'
 //- }
 
 //- group:
@@ -19,7 +21,8 @@
 //-   status: 'read',
 //-   whoName: 'Justa Marinucci',
 //-   whoImg: '',
-//-   messageType: 'chat-list__item_received'
+//-   messageType: 'chat-list__item_received',
+//-   message.id: '1628757600000'
 //- }
 
 -
@@ -28,6 +31,7 @@
   // console.log('from pug: ', chat);
   // console.log('from pug: ', interlocutors);
   // console.log('from pug: ', chat[0].datatime);
+  // console.log('from pug: ', chat[0]);
 
   function getDateString(millisec) {
     let dateObj = new Date(+millisec),
@@ -87,7 +91,7 @@ ul.chat-list(class=modClass)
       -
         datetimeFlag = false;
 
-      li.chat-list__item(class=message.messageType data-id=interlocutorID)
+      li.chat-list__item(class=message.messageType data-id=interlocutorID data-status=message.status data-msgid=message.id)
         .logo
           p.logo__name #{message.whoName.slice(0,2).toUpperCase()}
           img.logo__img(src="" + message.whoImg + "")
