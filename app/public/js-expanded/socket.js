@@ -36,14 +36,25 @@ function handleIncommingMessage(msg) {
     // own message
     addOwnMessageToList(msg, user);
 
-    if ( isChatsListOpen() ) {
+    if ( isChatListOpen() ) {
       addMetaToList_ownMessage(msg);
     }
   } else {
     // incomming message
     addIncommingMessageToList(msg);
 
-    if ( isChatsListOpen() ) {
+    let message;
+    if ( isSmallView() ) {
+      message = document.querySelector('[data-list="chat"] .chat-list__item_received[data-status="delivered"]');
+    } else {
+      message = document.querySelector('[data-list="chatP"] .chat-list__item_received[data-status="delivered"]');
+    }
+
+    if (message) {
+      handleUnreadMessage(message);
+    }
+
+    if ( isChatListOpen() ) {
       addMetaToList_incommingMessage(msg);
     }
   }
@@ -114,7 +125,7 @@ function addIncommingMessageToList(msg) {
   let time = hh + ':' + mm;
 
   let html = '\
-    <li class="chat-list__item chat-list__item_received" data-id="' + contact.id + '">\
+    <li class="chat-list__item chat-list__item_received" data-id="' + contact.id + '" data-status="delivered" data-msgid="' + msg.datatime + '">\
       <div class="logo">\
         <p class="logo__name">' + contact.name + '</p>\
         <img class="logo__img" src="' + contact.imgSrc + '">\
@@ -157,21 +168,6 @@ function addMetaToList_incommingMessage(msg) {
 
   listItemData.innerHTML = dateStr;
   listItemMessage.innerHTML = msg.message;
-
-  // badges - тільки якщо не відкрите поле даного чату
-  if ( !document.querySelector('.list_active[data-list="chatP"] .subheader[data-id="' + id + '"]') ) {
-    let activeBadge = document.querySelector('.chat-item[data-id="' + id + '"] .chat-item__badge_active');
-    if (activeBadge) {
-      let count = +activeBadge.innerHTML + 1;
-      activeBadge.innerHTML = count;
-    } else {
-      document.querySelector('.chat-item[data-id="' + id + '"] .chat-item__badge').innerHTML = '1';
-      document.querySelector('.chat-item[data-id="' + id + '"] .chat-item__badge').classList.add('chat-item__badge_active');
-    }
-  } else {
-    document.querySelector('.chat-item[data-id="' + id + '"] .chat-item__badge').innerHTML = '';
-    document.querySelector('.chat-item[data-id="' + id + '"] .chat-item__badge').classList.remove('chat-item__badge_active');
-  }
 }
 
 function addMetaToList_ownMessage(msg) {
@@ -205,16 +201,6 @@ function isChatOpen() {
   if (list_big) {
     if (list_big.classList.contains("list_active")) {
       return list_big
-    }
-  }
-  return false
-}
-
-function isChatsListOpen() {
-  let listWrapper = document.querySelector('[data-list="chatlist"]');
-  if (listWrapper) {
-    if ( listWrapper.classList.contains('list_active') ) {
-      return true
     }
   }
   return false

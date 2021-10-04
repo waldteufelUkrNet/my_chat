@@ -1776,6 +1776,18 @@ if( document.querySelector('.left-side')) {
       openChat(contactId, 'group');
     }
   });
+
+  if ( document.querySelector('[data-list="chatP"] .wjs-scroll__content') ) {
+    document.querySelector('[data-list="chatP"] .wjs-scroll__content').addEventListener('scroll', function(event){
+      scrollMessages();
+    });
+  }
+
+  if ( document.querySelector('[data-list="chat"] .wjs-scroll__content') ) {
+    document.querySelector('[data-list="chat"] .wjs-scroll__content').addEventListener('scroll', function(event){
+      scrollMessages();
+    });
+  }
 /* ↑↑↑ event listeners ↑↑↑ */
 ////////////////////////////////////////////////////////////////////////////////
 /* ↓↓↓ functions declaration ↓↓↓ */
@@ -1879,19 +1891,22 @@ if( document.querySelector('.left-side')) {
                   { right:true, overflowXHidden:true });
     }
 
-    let unreadMessage;
+    let unreadMessageArr;
 
     if ( isSmallView() ) {
-      unreadMessage = document.querySelector('[data-list="chat"] .chat-list__item_received[data-status="delivered"]');
+      unreadMessageArr = document.querySelectorAll('[data-list="chat"] .chat-list__item_received[data-status="delivered"]');
     } else {
-      unreadMessage = document.querySelector('[data-list="chatP"] .chat-list__item_received[data-status="delivered"]');
+      unreadMessageArr = document.querySelectorAll('[data-list="chatP"] .chat-list__item_received[data-status="delivered"]');
     }
 
-    if (unreadMessage) {
-      if ( isMessageHidden(unreadMessage) ) {
-        unreadMessage.scrollIntoView({behavior: 'smooth', block: 'end'});
+    if (unreadMessageArr) {
+      for (let msg of unreadMessageArr) {
+        if ( isMessageHidden(msg) ) {
+          msg.scrollIntoView({behavior: 'smooth', block: 'end'});
+        }
+        await handleUnreadMessage(msg);
+        break
       }
-      handleUnreadMessage(unreadMessage);
     }
   }
 
@@ -1955,7 +1970,6 @@ if( document.querySelector('.left-side')) {
   }
 
   async function handleUnreadMessage(msg) {
-    console.log("msg", msg);
     // data-status="delivered" -> "read"
     // зменшити лічильник badge (якщо його видно)
     // запит до бд зі зміною статусу повідомлення
@@ -1966,9 +1980,57 @@ if( document.querySelector('.left-side')) {
     let changeMessageStatusRequest = await changeMessageStatus(contactID, messageID);
     if (changeMessageStatusRequest.status == 200) {
       // ok
+      msg.setAttribute('data-status','read');
+
+      if( isChatListOpen() ) {
+        let badge = document.querySelector('.chat-item[data-id="' + msg.dataset.id + '"] .chat-item__badge');
+        if ( badge.classList.contains('chat-item__badge_active') ) {
+          let count = +badge.innerHTML - 1;
+          badge.innerHTML = count;
+          if (count == 0) {
+            badge.classList.remove('chat-item__badge_active');
+          }
+        }
+      }
+
     } else {
       // not ok ;-)
     }
+  }
+
+  function isChatListOpen() {
+    return document.querySelector('[data-list="chatlist"]').classList.contains('list_active');
+  }
+
+  var isScrollMessagesFuncAtWork = false;
+  async function scrollMessages() {
+
+    if (isScrollMessagesFuncAtWork) { console.log('at work');return; }
+
+    console.log('not at work');
+
+    isScrollMessagesFuncAtWork = true;
+
+    let unreadMessageArr;
+
+    if ( isSmallView() ) {
+      unreadMessageArr = document.querySelectorAll('[data-list="chat"] .chat-list__item_received[data-status="delivered"]');
+    } else {
+      unreadMessageArr = document.querySelectorAll('[data-list="chatP"] .chat-list__item_received[data-status="delivered"]');
+    }
+
+    console.log("unreadMessageArr", unreadMessageArr);
+
+    if (unreadMessageArr && unreadMessageArr.length > 0) {
+      console.log("unreadMessageArr2", unreadMessageArr);
+      for (let msg of unreadMessageArr) {
+        if ( !isMessageHidden(msg) ) {
+          await handleUnreadMessage(msg);
+        }
+      }
+    }
+
+    isScrollMessagesFuncAtWork = false;
   }
 /* ↑↑↑ functions declaration ↑↑↑ */
 ////////////////////////////////////////////////////////////////////////////////
@@ -2515,7 +2577,7 @@ if( document.querySelector('.left-side')) {
   }
 
   async function changeMessageStatus(contactID, messageID) {
-    let response = fetch('api/chat/changeMessageStatus', {
+    let response = await fetch('api/chat/changeMessageStatus', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -2571,14 +2633,25 @@ function handleIncommingMessage(msg) {
     // own message
     addOwnMessageToList(msg, user);
 
-    if ( isChatsListOpen() ) {
+    if ( isChatListOpen() ) {
       addMetaToList_ownMessage(msg);
     }
   } else {
     // incomming message
     addIncommingMessageToList(msg);
 
-    if ( isChatsListOpen() ) {
+    let message;
+    if ( isSmallView() ) {
+      message = document.querySelector('[data-list="chat"] .chat-list__item_received[data-status="delivered"]');
+    } else {
+      message = document.querySelector('[data-list="chatP"] .chat-list__item_received[data-status="delivered"]');
+    }
+
+    if (message) {
+      handleUnreadMessage(message);
+    }
+
+    if ( isChatListOpen() ) {
       addMetaToList_incommingMessage(msg);
     }
   }
@@ -2649,7 +2722,7 @@ function addIncommingMessageToList(msg) {
   let time = hh + ':' + mm;
 
   let html = '\
-    <li class="chat-list__item chat-list__item_received" data-id="' + contact.id + '">\
+    <li class="chat-list__item chat-list__item_received" data-id="' + contact.id + '" data-status="delivered" data-msgid="' + msg.datatime + '">\
       <div class="logo">\
         <p class="logo__name">' + contact.name + '</p>\
         <img class="logo__img" src="' + contact.imgSrc + '">\
@@ -2692,21 +2765,6 @@ function addMetaToList_incommingMessage(msg) {
 
   listItemData.innerHTML = dateStr;
   listItemMessage.innerHTML = msg.message;
-
-  // badges - тільки якщо не відкрите поле даного чату
-  if ( !document.querySelector('.list_active[data-list="chatP"] .subheader[data-id="' + id + '"]') ) {
-    let activeBadge = document.querySelector('.chat-item[data-id="' + id + '"] .chat-item__badge_active');
-    if (activeBadge) {
-      let count = +activeBadge.innerHTML + 1;
-      activeBadge.innerHTML = count;
-    } else {
-      document.querySelector('.chat-item[data-id="' + id + '"] .chat-item__badge').innerHTML = '1';
-      document.querySelector('.chat-item[data-id="' + id + '"] .chat-item__badge').classList.add('chat-item__badge_active');
-    }
-  } else {
-    document.querySelector('.chat-item[data-id="' + id + '"] .chat-item__badge').innerHTML = '';
-    document.querySelector('.chat-item[data-id="' + id + '"] .chat-item__badge').classList.remove('chat-item__badge_active');
-  }
 }
 
 function addMetaToList_ownMessage(msg) {
@@ -2740,16 +2798,6 @@ function isChatOpen() {
   if (list_big) {
     if (list_big.classList.contains("list_active")) {
       return list_big
-    }
-  }
-  return false
-}
-
-function isChatsListOpen() {
-  let listWrapper = document.querySelector('[data-list="chatlist"]');
-  if (listWrapper) {
-    if ( listWrapper.classList.contains('list_active') ) {
-      return true
     }
   }
   return false

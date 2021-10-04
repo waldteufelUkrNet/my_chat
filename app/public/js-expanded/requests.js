@@ -541,7 +541,7 @@
   }
 
   async function changeMessageStatus(contactID, messageID) {
-    let response = fetch('api/chat/changeMessageStatus', {
+    let response = await fetch('api/chat/changeMessageStatus', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

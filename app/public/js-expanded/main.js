@@ -82,6 +82,18 @@ if( document.querySelector('.left-side')) {
       openChat(contactId, 'group');
     }
   });
+
+  if ( document.querySelector('[data-list="chatP"] .wjs-scroll__content') ) {
+    document.querySelector('[data-list="chatP"] .wjs-scroll__content').addEventListener('scroll', function(event){
+      scrollMessages();
+    });
+  }
+
+  if ( document.querySelector('[data-list="chat"] .wjs-scroll__content') ) {
+    document.querySelector('[data-list="chat"] .wjs-scroll__content').addEventListener('scroll', function(event){
+      scrollMessages();
+    });
+  }
 /* ↑↑↑ event listeners ↑↑↑ */
 ////////////////////////////////////////////////////////////////////////////////
 /* ↓↓↓ functions declaration ↓↓↓ */
@@ -185,19 +197,22 @@ if( document.querySelector('.left-side')) {
                   { right:true, overflowXHidden:true });
     }
 
-    let unreadMessage;
+    let unreadMessageArr;
 
     if ( isSmallView() ) {
-      unreadMessage = document.querySelector('[data-list="chat"] .chat-list__item_received[data-status="delivered"]');
+      unreadMessageArr = document.querySelectorAll('[data-list="chat"] .chat-list__item_received[data-status="delivered"]');
     } else {
-      unreadMessage = document.querySelector('[data-list="chatP"] .chat-list__item_received[data-status="delivered"]');
+      unreadMessageArr = document.querySelectorAll('[data-list="chatP"] .chat-list__item_received[data-status="delivered"]');
     }
 
-    if (unreadMessage) {
-      if ( isMessageHidden(unreadMessage) ) {
-        unreadMessage.scrollIntoView({behavior: 'smooth', block: 'end'});
+    if (unreadMessageArr) {
+      for (let msg of unreadMessageArr) {
+        if ( isMessageHidden(msg) ) {
+          msg.scrollIntoView({behavior: 'smooth', block: 'end'});
+        }
+        await handleUnreadMessage(msg);
+        break
       }
-      handleUnreadMessage(unreadMessage);
     }
   }
 
@@ -261,7 +276,6 @@ if( document.querySelector('.left-side')) {
   }
 
   async function handleUnreadMessage(msg) {
-    console.log("msg", msg);
     // data-status="delivered" -> "read"
     // зменшити лічильник badge (якщо його видно)
     // запит до бд зі зміною статусу повідомлення
@@ -272,9 +286,57 @@ if( document.querySelector('.left-side')) {
     let changeMessageStatusRequest = await changeMessageStatus(contactID, messageID);
     if (changeMessageStatusRequest.status == 200) {
       // ok
+      msg.setAttribute('data-status','read');
+
+      if( isChatListOpen() ) {
+        let badge = document.querySelector('.chat-item[data-id="' + msg.dataset.id + '"] .chat-item__badge');
+        if ( badge.classList.contains('chat-item__badge_active') ) {
+          let count = +badge.innerHTML - 1;
+          badge.innerHTML = count;
+          if (count == 0) {
+            badge.classList.remove('chat-item__badge_active');
+          }
+        }
+      }
+
     } else {
       // not ok ;-)
     }
+  }
+
+  function isChatListOpen() {
+    return document.querySelector('[data-list="chatlist"]').classList.contains('list_active');
+  }
+
+  var isScrollMessagesFuncAtWork = false;
+  async function scrollMessages() {
+
+    if (isScrollMessagesFuncAtWork) { console.log('at work');return; }
+
+    console.log('not at work');
+
+    isScrollMessagesFuncAtWork = true;
+
+    let unreadMessageArr;
+
+    if ( isSmallView() ) {
+      unreadMessageArr = document.querySelectorAll('[data-list="chat"] .chat-list__item_received[data-status="delivered"]');
+    } else {
+      unreadMessageArr = document.querySelectorAll('[data-list="chatP"] .chat-list__item_received[data-status="delivered"]');
+    }
+
+    console.log("unreadMessageArr", unreadMessageArr);
+
+    if (unreadMessageArr && unreadMessageArr.length > 0) {
+      console.log("unreadMessageArr2", unreadMessageArr);
+      for (let msg of unreadMessageArr) {
+        if ( !isMessageHidden(msg) ) {
+          await handleUnreadMessage(msg);
+        }
+      }
+    }
+
+    isScrollMessagesFuncAtWork = false;
   }
 /* ↑↑↑ functions declaration ↑↑↑ */
 ////////////////////////////////////////////////////////////////////////////////
