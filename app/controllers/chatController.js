@@ -17,19 +17,44 @@ exports.getMessageFromClient = async function(req, res) {
         contactID = req.body.contactID,
         message   = req.body.message;
 
-  let chatID, messageObj;
+  let chatID;
+
+  let messageObj = {
+    "who"     : userID,
+    "message" : message,
+  };
+
+  messageObj.whoName =  await User.findById(new objectId(userID), {username:1})
+                        .then(user => {
+                          return user.username;
+                        })
+                        .catch(err => {
+               res.sendStatus(500);
+               log.error('\nerr.name:\n    ' + err.name + '\nerr.message:\n    ' + err.message + '\nerr.stack:\n    ' + err.stack);
+               throw err;
+                        });
+
+  messageObj.whoImgSrc =  await isAvaFileAviable(userID)
+                          .then(condition => {
+                            if ( condition ) {
+                              return config.get('avatarPathFromClient') + userID + '.jpg';
+                            } else {
+                              return '';
+                            }
+                          })
+                          .catch(err => {
+                            res.sendStatus(500);
+                            log.error('\nerr.name:\n    ' + err.name + '\nerr.message:\n    ' + err.message + '\nerr.stack:\n    ' + err.stack);
+                            throw err;
+                          });
 
   if ( await isGroupChat(contactID, res) ) {
     // це груповий чат
     let date       = new Date(),
         datatime   = date.getTime() + (date.getTimezoneOffset() * 60000);
 
-    messageObj = {
-      "datatime" : datatime,
-      "who"      : userID,
-      "message"  : message,
-      "status"   : {}
-    };
+    messageObj.datatime = datatime;
+    messageObj.status   = {};
 
     let members = await GroupChat.findById(new objectId(contactID), { interlocutors: 1})
       .then(result => {
@@ -60,13 +85,9 @@ exports.getMessageFromClient = async function(req, res) {
     let date       = new Date(),
         datatime   = date.getTime() + (date.getTimezoneOffset() * 60000);
 
-    messageObj = {
-      "datatime" : datatime,
-      "who"      : userID,
-      "whom"     : contactID,
-      "message"  : message,
-      "status"   : "delivered"
-    };
+    messageObj.datatime = datatime;
+    messageObj.whom     = contactID;
+    messageObj.status   = "delivered";
 
     let chat = await MonoChat.find({ interlocutors: { $all: [userID, contactID] } })
       .then(result => {
@@ -174,4 +195,17 @@ async function isGroupChat(id, res) {
         throw err;
       });
   return gchat;
+}
+
+async function isAvaFileAviable(id) {
+  const avatarPath = config.get('avatarPathFromServer') + id + '.jpg';
+  let result;
+
+  try {
+    await access(avatarPath, constants.F_OK);
+    result = true;
+  } catch {
+    result = false;
+  }
+  return result;
 }

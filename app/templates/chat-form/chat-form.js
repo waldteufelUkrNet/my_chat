@@ -26,6 +26,7 @@
     }
   });
 
+  // send message
   document.addEventListener('submit', function(event){
     event.preventDefault();
     if ( event.target.closest('.chat-form') ) {

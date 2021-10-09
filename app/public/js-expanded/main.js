@@ -82,18 +82,6 @@ if( document.querySelector('.left-side')) {
       openChat(contactId, 'group');
     }
   });
-
-  if ( document.querySelector('[data-list="chatP"] .wjs-scroll__content') ) {
-    document.querySelector('[data-list="chatP"] .wjs-scroll__content').addEventListener('scroll', function(event){
-      scrollMessages();
-    });
-  }
-
-  if ( document.querySelector('[data-list="chat"] .wjs-scroll__content') ) {
-    document.querySelector('[data-list="chat"] .wjs-scroll__content').addEventListener('scroll', function(event){
-      scrollMessages();
-    });
-  }
 /* ↑↑↑ event listeners ↑↑↑ */
 ////////////////////////////////////////////////////////////////////////////////
 /* ↓↓↓ functions declaration ↓↓↓ */
@@ -162,60 +150,6 @@ if( document.querySelector('.left-side')) {
     }
   }
 
-  async function openChat(id, meta) {
-
-    await showSubheader(id, meta);
-
-    let tzOffset = new Date().getTimezoneOffset();
-
-    document.querySelector('.right-side .chat-wrapper .wjs-scroll__content').innerHTML = '';
-    document.querySelector('.chat-wrapper_small-view').innerHTML = '';
-
-
-    let openChatRequest = await loadChat(id, meta, tzOffset);
-    if (openChatRequest.status == 200) {
-      document.querySelector('.right-side .chat-wrapper .wjs-scroll__content').innerHTML = openChatRequest.html;
-      document.querySelector('.chat-wrapper_small-view').innerHTML = openChatRequest.html;
-    } else {
-      showPopupInfo('something went wrong with chat downloading');
-    }
-
-    if ( isSmallView() ) {
-      showMenuItem('aside', 'chat');
-      document.querySelector('.left-side').classList.add('left-side_with-subheader');
-      if ( document.querySelector('.left-side .subheader') ) {
-        document.querySelector('.left-side .subheader').style.display = 'flex';
-      }
-      wSetScroll( document.querySelector('.lists-wrapper.wjs-scroll'),
-                  { right:true, overflowXHidden:true });
-    } else {
-      showMenuItem('page', 'chatP')
-
-      wSetScroll( document.querySelector('.right-side .chat-wrapper.wjs-scroll'),
-                  { right:true, overflowXHidden:true });
-      wSetScroll( document.querySelector('.right-side .chat-wrapper.wjs-scroll'),
-                  { right:true, overflowXHidden:true });
-    }
-
-    let unreadMessageArr;
-
-    if ( isSmallView() ) {
-      unreadMessageArr = document.querySelectorAll('[data-list="chat"] .chat-list__item_received[data-status="delivered"]');
-    } else {
-      unreadMessageArr = document.querySelectorAll('[data-list="chatP"] .chat-list__item_received[data-status="delivered"]');
-    }
-
-    if (unreadMessageArr) {
-      for (let msg of unreadMessageArr) {
-        if ( isMessageHidden(msg) ) {
-          msg.scrollIntoView({behavior: 'smooth', block: 'end'});
-        }
-        await handleUnreadMessage(msg);
-        break
-      }
-    }
-  }
-
   async function showSubheader(id, meta) {
     let showSubheaderRequest = await loadContactSubheader(id, meta);
     if (showSubheaderRequest.status == 200) {
@@ -263,80 +197,41 @@ if( document.querySelector('.left-side')) {
     }
   }
 
-  function isMessageHidden(elem) {
+  async function openChat(id, meta) {
 
-    let w        = elem.closest('.wjs-scroll__content'),
-        ww       = elem.closest('.wjs-scroll__content-wrapper'),
-        wTop     = w.getBoundingClientRect().top,
-        wHeight  = ww.scrollHeight,
-        elTop    = elem.getBoundingClientRect().top,
-        elHeight = elem.scrollHeight;
+    await showSubheader(id, meta);
 
-    return (elTop > wHeight + wTop - elHeight)
-  }
+    let tzOffset = new Date().getTimezoneOffset();
 
-  async function handleUnreadMessage(msg) {
-    // data-status="delivered" -> "read"
-    // зменшити лічильник badge (якщо його видно)
-    // запит до бд зі зміною статусу повідомлення
+    document.querySelector('.right-side .chat-wrapper .wjs-scroll__content').innerHTML = '';
+    document.querySelector('.chat-wrapper_small-view').innerHTML = '';
 
-    let contactID = msg.dataset.id,
-        messageID = msg.dataset.msgid;
-
-    let changeMessageStatusRequest = await changeMessageStatus(contactID, messageID);
-    if (changeMessageStatusRequest.status == 200) {
-      // ok
-      msg.setAttribute('data-status','read');
-
-      if( isChatListOpen() ) {
-        let badge = document.querySelector('.chat-item[data-id="' + msg.dataset.id + '"] .chat-item__badge');
-        if ( badge.classList.contains('chat-item__badge_active') ) {
-          let count = +badge.innerHTML - 1;
-          badge.innerHTML = count;
-          if (count == 0) {
-            badge.classList.remove('chat-item__badge_active');
-          }
-        }
-      }
-
+    let openChatRequest = await loadChat(id, meta, tzOffset);
+    if (openChatRequest.status == 200) {
+      document.querySelector('.right-side .chat-wrapper .wjs-scroll__content').innerHTML = openChatRequest.html;
+      document.querySelector('.chat-wrapper_small-view').innerHTML = openChatRequest.html;
     } else {
-      // not ok ;-)
+      showPopupInfo('something went wrong with chat downloading');
     }
-  }
-
-  function isChatListOpen() {
-    return document.querySelector('[data-list="chatlist"]').classList.contains('list_active');
-  }
-
-  var isScrollMessagesFuncAtWork = false;
-  async function scrollMessages() {
-
-    if (isScrollMessagesFuncAtWork) { console.log('at work');return; }
-
-    console.log('not at work');
-
-    isScrollMessagesFuncAtWork = true;
-
-    let unreadMessageArr;
 
     if ( isSmallView() ) {
-      unreadMessageArr = document.querySelectorAll('[data-list="chat"] .chat-list__item_received[data-status="delivered"]');
-    } else {
-      unreadMessageArr = document.querySelectorAll('[data-list="chatP"] .chat-list__item_received[data-status="delivered"]');
-    }
-
-    console.log("unreadMessageArr", unreadMessageArr);
-
-    if (unreadMessageArr && unreadMessageArr.length > 0) {
-      console.log("unreadMessageArr2", unreadMessageArr);
-      for (let msg of unreadMessageArr) {
-        if ( !isMessageHidden(msg) ) {
-          await handleUnreadMessage(msg);
-        }
+      showMenuItem('aside', 'chat');
+      document.querySelector('.left-side').classList.add('left-side_with-subheader');
+      if ( document.querySelector('.left-side .subheader') ) {
+        document.querySelector('.left-side .subheader').style.display = 'flex';
       }
+      wSetScroll( document.querySelector('.lists-wrapper.wjs-scroll'),
+                  { right:true, overflowXHidden:true });
+    } else {
+      showMenuItem('page', 'chatP')
+
+      wSetScroll( document.querySelector('.right-side .chat-wrapper.wjs-scroll'),
+                  { right:true, overflowXHidden:true });
+      wSetScroll( document.querySelector('.right-side .chat-wrapper.wjs-scroll'),
+                  { right:true, overflowXHidden:true });
     }
 
-    isScrollMessagesFuncAtWork = false;
+    handleMessagesList();
   }
 /* ↑↑↑ functions declaration ↑↑↑ */
 ////////////////////////////////////////////////////////////////////////////////

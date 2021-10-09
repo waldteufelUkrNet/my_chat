@@ -83,16 +83,22 @@ var dictionary = {
 
 ////////////////////////////////////////////////////////////////////////////////
 /* ↓↓↓ functions declaration ↓↓↓ */
+  /**
+   * [sleep робить затримку у виконанні коду на визначений час у мілісекундах]
+   * @param  {[Number]} ms [час затримки]
+   * @return {[Promise]}   [успішний проміс після вказаної затримки]
+   */
   function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
 
+  /**
+   * [isSmallView визначає зовнішній вигляд сайту (залежить від ширини)]
+   * @return {Boolean} [результат перевірки]
+   */
   function isSmallView() {
     let indicator = document.getElementById('widthIndicator');
-    if (getComputedStyle(indicator).display == 'none') {
-      return true
-    }
-    return false
+    return (getComputedStyle(indicator).display == 'none')
   }
 /* ↑↑↑ functions declaration ↑↑↑ */
 ////////////////////////////////////////////////////////////////////////////////

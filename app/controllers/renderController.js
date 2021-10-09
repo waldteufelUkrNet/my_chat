@@ -437,6 +437,7 @@ exports.renderMonoChat = async function(req, res) {
 
         let params = {
             meta: 'mono',
+            chatID: contactID,
             interlocutors: { user: userID, contact: contactID },
             chat: chat
         };
@@ -446,6 +447,7 @@ exports.renderMonoChat = async function(req, res) {
       // такого чату в колекції нема
       let params = {
           meta: 'mono',
+          chatID: contactID,
           interlocutors: { user: userID, contact: contactID },
           chat: []
       };
@@ -532,6 +534,7 @@ exports.renderGroupChat = async function(req, res) {
 
     let params = {
       meta: 'group',
+      chatID: groupID,
       interlocutors: {},
       chat: chat
     };
