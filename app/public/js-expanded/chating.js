@@ -1,16 +1,16 @@
 ////////////////////////////////////////////////////////////////////////////////
 /* ↓↓↓ event listeners ↓↓↓ */
-  // if ( document.querySelector('[data-list="chatP"] .wjs-scroll__content') ) {
-  //   document.querySelector('[data-list="chatP"] .wjs-scroll__content').addEventListener('scroll', function(event){
-  //     scrollMessages();
-  //   });
-  // }
+  if ( document.querySelector('[data-list="chatP"] .wjs-scroll__content') ) {
+    document.querySelector('[data-list="chatP"] .wjs-scroll__content').addEventListener('scroll', function(event){
+      scrollMessages();
+    });
+  }
 
-  // if ( document.querySelector('[data-list="chat"] .wjs-scroll__content') ) {
-  //   document.querySelector('[data-list="chat"] .wjs-scroll__content').addEventListener('scroll', function(event){
-  //     scrollMessages();
-  //   });
-  // }
+  if ( document.querySelector('[data-list="chat"] .wjs-scroll__content') ) {
+    document.querySelector('[data-list="chat"] .wjs-scroll__content').addEventListener('scroll', function(event){
+      scrollMessages();
+    });
+  }
 /* ↑↑↑ event listeners ↑↑↑ */
 ////////////////////////////////////////////////////////////////////////////////
 /* ↓↓↓ sockets ↓↓↓ */
@@ -369,7 +369,6 @@
    * прочитаних повідомлень і відповідає за прокрутку]
    */
   async function handleMessagesList() {
-    console.log("handleMessagesList");
 
     if ( isUnreadMessageExist() ) {
 
@@ -402,37 +401,44 @@
       // кнопка-
     }
   }
-/* ↑↑↑ functions declaration ↑↑↑ */
-////////////////////////////////////////////////////////////////////////////////
 
+  /**
+   * [scrollMessages робить видимі не прочитані повідомлення прочитаними]
+   */
+  async function scrollMessages() {
 
-var isScrollMessagesFuncAtWork = false;
-async function scrollMessages() {
+    // це перевірка на запуск функції: подія onscroll виникає так часто, що код
+    // не встигає виконатися, як запускається наново, через це були помилки на
+    // сервері при зверненні до бази даних. Щоб цього уникнути, потрібно зробити
+    // так, щоб у кожен момент часу виконувалася одна функція, без повторів.
+    // Є теоретичний ньюанс: якщо буде дуже багато повідомлень і швидко
+    // проскролити, можливо повідомлення проскочить область видимості і знову
+    // стане не видимим. Я цього не перевіряв, але якщо така хиба раптом вилізе,
+    // треба буде робити розбивку циклів: спочатку перевіряти на видимість, а
+    // лише потім робити звернення до бд і змінювати статус.
+    if (scrollMessages.isNowAtWork) {
+      return
+    } else {
+      scrollMessages.isNowAtWork = true;
 
-  if (isScrollMessagesFuncAtWork) { console.log('at work');return; }
-
-  console.log('not at work');
-
-  isScrollMessagesFuncAtWork = true;
-
-  let unreadMessageArr;
-
-  if ( isSmallView() ) {
-    unreadMessageArr = document.querySelectorAll('[data-list="chat"] .chat-list__item_received[data-status="delivered"]');
-  } else {
-    unreadMessageArr = document.querySelectorAll('[data-list="chatP"] .chat-list__item_received[data-status="delivered"]');
-  }
-
-  console.log("unreadMessageArr", unreadMessageArr);
-
-  if (unreadMessageArr && unreadMessageArr.length > 0) {
-    console.log("unreadMessageArr2", unreadMessageArr);
-    for (let msg of unreadMessageArr) {
-      if ( !isMessageHidden(msg) ) {
-        // await handleUnreadMessage(msg);
+      if ( isUnreadMessageExist() ) {
+        let unreadMessageArr = getUnreadMessagesNodesArr();
+        for (let i = 0; i < unreadMessageArr.length; i++) {
+          let msg = unreadMessageArr[i];
+          if ( isMessageHidden(msg) ) {
+            // кнопка+-
+            scrollMessages.isNowAtWork = false;
+            return
+          } else {
+            await makeMessageRead(msg);
+            if ( isChatListOpen() ) {
+              decreaseBadge( getChatID() );
+            }
+          }
+        }
       }
+      scrollMessages.isNowAtWork = false;
     }
   }
-
-  isScrollMessagesFuncAtWork = false;
-}
+/* ↑↑↑ functions declaration ↑↑↑ */
+////////////////////////////////////////////////////////////////////////////////
