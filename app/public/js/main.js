@@ -1016,6 +1016,77 @@ var dictionary = {
 /* ↑↑↑ functions declaration ↑↑↑ */
 ////////////////////////////////////////////////////////////////////////////////
 // 6127f3d2d770f515a045836f
+"use strict"; // round-button module
+////////////////////////////////////////////////////////////////////////////////
+/* ↓↓↓ event listeners ↓↓↓ */
+  document.addEventListener('click', function(event){
+    if ( event.target.closest('[data-list="chat"] .round-btn')
+         || event.target.closest('[data-list="chatP"] .round-btn') ){
+      scrollChatToBottom();
+    }
+  });
+  if ( document.querySelector('[data-list="chatP"] .wjs-scroll__content') ) {
+    document.querySelector('[data-list="chatP"] .wjs-scroll__content').addEventListener('scroll', function(event){
+      toggleScrollButton();
+    });
+  }
+
+  if ( document.querySelector('[data-list="chat"] .wjs-scroll__content') ) {
+    document.querySelector('[data-list="chat"] .wjs-scroll__content').addEventListener('scroll', function(event){
+      toggleScrollButton();
+    });
+  }
+/* ↑↑↑ event listeners ↑↑↑ */
+////////////////////////////////////////////////////////////////////////////////
+/* ↓↓↓ functions declaration ↓↓↓ */
+  function showScrollButton() {
+    let btn;
+    if ( isSmallView() ) {
+      btn = document.querySelector('[data-list="chat"] .round-btn');
+    } else {
+      btn = document.querySelector('[data-list="chatP"] .round-btn');
+    }
+    if (btn) {
+      btn.classList.add('round-btn_active');
+    }
+  }
+
+  function hideScrollButton() {
+    let btn;
+    if ( isSmallView() ) {
+      btn = document.querySelector('[data-list="chat"] .round-btn');
+    } else {
+      btn = document.querySelector('[data-list="chatP"] .round-btn');
+    }
+    if (btn) {
+      btn.classList.remove('round-btn_active');
+    }
+  }
+
+  function toggleScrollButton() {
+    let btn;
+    if ( isSmallView() ) {
+      btn = document.querySelector('[data-list="chat"] .round-btn');
+    } else {
+      btn = document.querySelector('[data-list="chatP"] .round-btn');
+    }
+
+    if (!btn) return;
+
+    let container = btn.closest('.wjs-scroll'),
+        content   = container.querySelector('.wjs-scroll__content'),
+        crSH      = container.scrollHeight,
+        ctSH      = content.scrollHeight,
+        ctST      = content.scrollTop;
+
+    if ( ctSH <= ctST + crSH ) {
+      hideScrollButton();
+    } else {
+      showScrollButton();
+    }
+  }
+/* ↑↑↑ functions declaration ↑↑↑ */
+////////////////////////////////////////////////////////////////////////////////
 "use strict"; // usercard module
 ////////////////////////////////////////////////////////////////////////////////
 /* ↓↓↓ event listeners ↓↓↓ */
@@ -1132,6 +1203,10 @@ var dictionary = {
   socket.on('message', msg => {
     handleMessage(msg)
   });
+
+  socket.on('msgStatus', msg => {
+    makeMessageStatusRead(msg)
+  });
 /* ↑↑↑ sockets ↑↑↑ */
 ////////////////////////////////////////////////////////////////////////////////
 /* ↓↓↓ functions declaration ↓↓↓ */
@@ -1188,8 +1263,10 @@ var dictionary = {
       }
 
       if ( isChatListOpen() ) {
-        addMetaToList(chatID, msg.message, msg.datatime);
-        // боковий статус 1 пташка
+        addMetaToList(msg.whom, msg.message, msg.datatime);
+        if (!msg.group) {
+          setMetaStatus(msg.whom, 'delivered');
+        }
       }
     } else {
       // incoming message
@@ -1201,7 +1278,9 @@ var dictionary = {
           if ( isChatListOpen() ) {
             addMetaToList(chatID, msg.message, msg.datatime);
             increaseBadge(chatID);
-            // боковий статус 1 пташка
+            if (!msg.group) {
+              setMetaStatus(msg.who, 'delivered');
+            }
           }
         } else {
           addMessageToChat(msg, 'incoming');
@@ -1212,14 +1291,18 @@ var dictionary = {
           }
           if ( isChatListOpen() ) {
             addMetaToList(chatID, msg.message, msg.datatime);
-            // боковий статус 2 пташки
+            if (!msg.group) {
+              setMetaStatus(msg.who, 'read');
+            }
           }
         }
       } else {
         if ( isChatListOpen() ) {
           addMetaToList(chatID, msg.message, msg.datatime);
           increaseBadge(chatID);
-          // боковий статус 1 пташка
+          if (!msg.group) {
+            setMetaStatus(msg.who, 'delivered');
+          }
         }
       }
     }
@@ -1256,6 +1339,10 @@ var dictionary = {
     let list = document.querySelector('.list_active ul.chat-list[data-chatid]');
     if (!list) return false;
     return list.dataset.chatid;
+  }
+
+  function getUserID() {
+    return document.querySelector('.header__subheader').innerHTML.slice(1);
   }
 
   /**
@@ -1386,7 +1473,7 @@ var dictionary = {
             ';
     } else if (type == 'outgoing') {
       html = '\
-        <li class="chat-list__item chat-list__item_sent" data-id="' + msg.who + '">\
+        <li class="chat-list__item chat-list__item_sent" data-id="' + msg.who + '" data-msgid="' + msg.datatime + '">\
          <div class="logo">\
            <p class="logo__name">' + msg.whoName.toUpperCase().slice(0,2) + '</p>\
            <img class="logo__img" src="' + msg.whoImgSrc + '">\
@@ -1483,14 +1570,15 @@ var dictionary = {
         let msg = unreadMessageArr[i];
         if ( isMessageHidden(msg) ) {
           await makeMessageRead(msg);
+          msg.scrollIntoView({behavior: 'smooth', block: 'end'});
           if (isChatListOpen()) {
             decreaseBadge(chatID);
           }
-          if ( isUnreadMessageExist() ) {
-            // кнопка+
-          } else {
-            // кнопка-
-          }
+          // if ( isUnreadMessageExist() ) {
+          //   showScrollButton();
+          // } else {
+          //   hideScrollButton();
+          // }
           return
         } else {
           await makeMessageRead(msg);
@@ -1499,10 +1587,10 @@ var dictionary = {
           }
         }
       }
-      // кнопка-
+      // hideScrollButton();
     } else {
       scrollChatToBottom();
-      // кнопка-
+      // hideScrollButton();
     }
   }
 
@@ -1530,7 +1618,7 @@ var dictionary = {
         for (let i = 0; i < unreadMessageArr.length; i++) {
           let msg = unreadMessageArr[i];
           if ( isMessageHidden(msg) ) {
-            // кнопка+-
+            // showScrollButton();
             scrollMessages.isNowAtWork = false;
             return
           } else {
@@ -1542,6 +1630,40 @@ var dictionary = {
         }
       }
       scrollMessages.isNowAtWork = false;
+    }
+  }
+
+  /**
+   * [setMetaStatus змінює статус прочитання повідомлення у списку чатів
+   * (пташки)]
+   * @param {[String]} chatID [ідентифікатор чату]
+   * @param {[String]} status [статус прочитання повідомлення]
+   */
+  function setMetaStatus(chatID, status) {
+    let statusMarker = document.querySelector('.chat-item[data-id="' + chatID + '"] .message-status');
+    statusMarker.className = 'message-status message-status_' + status;
+  }
+
+  function makeMessageStatusRead(msgData) {
+    if( getUserID() == msgData.contact ) return;
+
+    let chatID = msgData.contact;
+
+    let msgNode;
+    if ( isSmallView() && getChatID == chatID ) {
+      msgNode = document.querySelector('[data-list="chat"] .chat-list__item_sent[data-msgid="' + msgData.messageID + '"]');
+    } else {
+      msgNode = document.querySelector('[data-list="chatP"] .chat-list__item_sent[data-msgid="' + msgData.messageID + '"]');
+    }
+
+    if (msgNode) {
+      msgNode.setAttribute('data-status', 'read');
+      msgNode.querySelector('.message-status').className = 'message-status message-status_read';
+    }
+
+    if ( isChatListOpen() ) {
+      let readMarker = document.querySelector('[data-list="chatlist"] .chat-item[data-id="' + chatID + '"] .message-status');
+      readMarker.className = 'message-status message-status_read';
     }
   }
 /* ↑↑↑ functions declaration ↑↑↑ */

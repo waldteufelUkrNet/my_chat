@@ -160,23 +160,29 @@ exports.changeMessageStatus = async function(req, res) {
     console.log("моно");
 
     await MonoChat.findOne({ interlocutors: { $all: [userID, contactID] }})
-      .then(doc => {
-        let chat = doc.chat;
-        for (let i in chat) {
-          if ( chat[i].datatime == messageID ) {
-            chat[i].status = 'read';
-            doc.markModified("chat");
-            doc.save();
-            break
-          }
+    .then(doc => {
+      let chat = doc.chat;
+      for (let i in chat) {
+        if ( chat[i].datatime == messageID ) {
+          chat[i].status = 'read';
+          doc.markModified("chat");
+          doc.save();
+          break
         }
-        res.sendStatus(200)
-      })
-      .catch(err => {
-        res.sendStatus(500);
-        log.error('\nerr.name:\n    ' + err.name + '\nerr.message:\n    ' + err.message + '\nerr.stack:\n    ' + err.stack);
-        throw err;
-      });
+      }
+      let chatID = String(doc._id);
+      let msgStatus = {
+        messageID,
+        contact: userID
+      };
+      io().in(chatID).emit('msgStatus', msgStatus);
+      res.sendStatus(200)
+    })
+    .catch(err => {
+      res.sendStatus(500);
+      log.error('\nerr.name:\n    ' + err.name + '\nerr.message:\n    ' + err.message + '\nerr.stack:\n    ' + err.stack);
+      throw err;
+    });
   }
 }
 
