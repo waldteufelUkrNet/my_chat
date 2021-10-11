@@ -29,9 +29,9 @@ exports.getMessageFromClient = async function(req, res) {
                           return user.username;
                         })
                         .catch(err => {
-               res.sendStatus(500);
-               log.error('\nerr.name:\n    ' + err.name + '\nerr.message:\n    ' + err.message + '\nerr.stack:\n    ' + err.stack);
-               throw err;
+                          res.sendStatus(500);
+                          log.error('\nerr.name:\n    ' + err.name + '\nerr.message:\n    ' + err.message + '\nerr.stack:\n    ' + err.stack);
+                          throw err;
                         });
 
   messageObj.whoImgSrc =  await isAvaFileAviable(userID)
@@ -148,17 +148,31 @@ exports.changeMessageStatus = async function(req, res) {
   let userID    = req.session.user._id,
       contactID = req.body.contactID,
       messageID = req.body.messageID;
-  console.log("userID", userID);
-  console.log("contactID", contactID);
-  console.log("messageID", messageID);
 
   if ( await isGroupChat(contactID, res) ) {
     // зміна статусу повідомлення групового чату
-    console.log("групa");
+
+    await GroupChat.findById( new objectId(contactID) )
+    .then(doc => {
+      let chat = doc.chat;
+      for (let i in chat) {
+        if ( chat[i].datatime == messageID ) {
+          chat[i].status[userID] = 'read';
+          doc.markModified("chat");
+          doc.save();
+          break
+        }
+      }
+      res.sendStatus(200)
+    })
+    .catch(err => {
+      res.sendStatus(500);
+      log.error('\nerr.name:\n    ' + err.name + '\nerr.message:\n    ' + err.message + '\nerr.stack:\n    ' + err.stack);
+      throw err;
+    });
+
   } else {
     // зміна статусу повідомлення моно чату
-    console.log("моно");
-
     await MonoChat.findOne({ interlocutors: { $all: [userID, contactID] }})
     .then(doc => {
       let chat = doc.chat;

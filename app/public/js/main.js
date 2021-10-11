@@ -1263,14 +1263,15 @@ var dictionary = {
       }
 
       if ( isChatListOpen() ) {
-        addMetaToList(msg.whom, msg.message, msg.datatime);
+        let id = msg.whom || msg.group;
+        addMetaToList(id, msg.message, msg.datatime);
         if (!msg.group) {
           setMetaStatus(msg.whom, 'delivered');
         }
       }
     } else {
       // incoming message
-      if( isChatAreaOpen() && getChatID() == msg.who) {
+      if( isChatAreaOpen() && getChatID() == chatID ) {
 
         if ( isUnreadMessageExist() ) {
           addMessageToChat(msg, 'incoming');
@@ -1285,10 +1286,11 @@ var dictionary = {
         } else {
           addMessageToChat(msg, 'incoming');
           let msgDOM = document.querySelector('.chat-list__item_received[data-id="' + msg.who + '"][data-msgid="' + msg.datatime + '"]');
-          makeMessageRead(msgDOM);
-          if( isMessageHidden(msgDOM) ) {
-            scrollChatToBottom();
-          }
+          // makeMessageRead(msgDOM); після додавання обробника на onscroll тут
+          // виклик функції став не потрібен, бо інакше відбувається подвоєння
+          // запиту до бази даних і помилка вірсіонування
+          scrollChatToBottom();
+
           if ( isChatListOpen() ) {
             addMetaToList(chatID, msg.message, msg.datatime);
             if (!msg.group) {
@@ -1501,8 +1503,9 @@ var dictionary = {
    * @param  {[DOM-node]} msg [html повідомлення]
    */
   async function makeMessageRead(msg) {
-    let contactID = msg.dataset.id,
+    let contactID = msg.closest('ul.chat-list').dataset.chatid,
         messageID = msg.dataset.msgid;
+
 
     let changeMessageStatusRequest = await changeMessageStatus(contactID, messageID);
     if (changeMessageStatusRequest.status == 200) {
@@ -1658,7 +1661,10 @@ var dictionary = {
 
     if (msgNode) {
       msgNode.setAttribute('data-status', 'read');
-      msgNode.querySelector('.message-status').className = 'message-status message-status_read';
+      let checks = msgNode.querySelector('.message-status');
+      if (checks) {
+        checks.className = 'message-status message-status_read';
+      }
     }
 
     if ( isChatListOpen() ) {
