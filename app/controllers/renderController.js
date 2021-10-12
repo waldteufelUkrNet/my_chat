@@ -65,7 +65,8 @@ exports.renderContactsList = async function(req, res) {
 
 exports.renderChatsList = async function(req, res) {
   const userID   = req.session.user._id,
-        tzOffset = req.body.tzOffset;
+        // tzOffset = req.body.tzOffset;
+        tzOffset = 0;
   let chatsArr = [];
   let chats = await User.findById(new objectId(userID), { monochats: 1, groupchats: 1 })
     .then(result => {
@@ -368,7 +369,8 @@ exports.renderGroupSubheader = async function(req, res) {
 exports.renderMonoChat = async function(req, res) {
     const contactID = req.body.id,
           userID    = req.session.user._id,
-          tzOffset  = req.body.tzOffset;
+          // tzOffset  = req.body.tzOffset;
+          tzOffset = 0;
 
     let isChatExist = await User.findById(new objectId(userID), { monochats: 1 })
         .then(function(user) {
@@ -459,7 +461,8 @@ exports.renderMonoChat = async function(req, res) {
 exports.renderGroupChat = async function(req, res) {
   const groupID  = req.body.id,
         userID   = req.session.user._id,
-        tzOffset = req.body.tzOffset;
+        // tzOffset = req.body.tzOffset;
+        tzOffset = 0;
 
   let isChatExist = await GroupChat.findById(new objectId(groupID))
     .then(function(chat) {

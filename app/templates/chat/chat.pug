@@ -35,9 +35,12 @@
 
   function getDateString(millisec) {
     let dateObj = new Date(+millisec),
-        year    = dateObj.getUTCFullYear(),
-        mon     = dateObj.getUTCMonth() + 1,
-        day     = dateObj.getUTCDate();
+        // year    = dateObj.getUTCFullYear(),
+        // mon     = dateObj.getUTCMonth() + 1,
+        // day     = dateObj.getUTCDate();
+        year    = dateObj.getFullYear(),
+        mon     = dateObj.getMonth() + 1,
+        day     = dateObj.getDate();
     if (mon < 10) mon = '0' + mon;
     if (day < 10) day = '0' + day;
 
@@ -69,7 +72,8 @@ ul.chat-list(class=modClass data-chatid=chatID)
         if (mCount > 0) {
           let d1 = +chat[mCount].datatime,
               d2 = +chat[mCount-1].datatime;
-          if ( (d1 - d2) > 86400000 || new Date(d1).getUTCDate() != new Date(d2).getUTCDate() ) {
+          //- if ( (d1 - d2) > 86400000 || new Date(d1).getUTCDate() != new Date(d2).getUTCDate() ) {
+          if ( (d1 - d2) > 86400000 || new Date(d1).getDate() != new Date(d2).getDate() ) {
             datetimeFlag = true;
           }
         }
@@ -100,8 +104,10 @@ ul.chat-list(class=modClass data-chatid=chatID)
 
           -
             let dateObj = new Date(+message.datatime),
-                hh      = dateObj.getUTCHours(),
-                mm      = dateObj.getUTCMinutes();
+                // hh      = dateObj.getUTCHours(),
+                // mm      = dateObj.getUTCMinutes();
+                hh      = dateObj.getHours(),
+                mm      = dateObj.getMinutes();
             if (hh < 10) hh = '0' + hh;
             if (mm < 10) mm = '0' + mm;
 

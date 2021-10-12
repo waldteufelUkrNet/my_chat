@@ -253,9 +253,12 @@
         listItemDate    = document.querySelector('.chat-item[data-id="' + id + '"] .chat-item__date');
 
     let dateObj = new Date(date),
-        dd      = dateObj.getUTCDate(),
-        mm      = dateObj.getUTCMonth() + 1,
-        yy      = String(dateObj.getUTCFullYear()).slice(2);
+        // dd      = dateObj.getUTCDate(),
+        // mm      = dateObj.getUTCMonth() + 1,
+        // yy      = String(dateObj.getUTCFullYear()).slice(2);
+        dd      = dateObj.getDate(),
+        mm      = dateObj.getMonth() + 1,
+        yy      = String(dateObj.getFullYear()).slice(2);
 
     if (dd < 10) dd = '0' + dd;
     if (mm < 10) mm = '0' + mm;
@@ -274,7 +277,8 @@
   function addMessageToChat(msg, type) {
 
     let date = new Date(msg.datatime),
-        hh   = date.getUTCHours(),
+        // hh   = date.getUTCHours(),
+        hh   = date.getHours(),
         mm   = date.getMinutes();
     if (hh < 10) {
       hh = '0' + hh

@@ -51,7 +51,8 @@ exports.getMessageFromClient = async function(req, res) {
   if ( await isGroupChat(contactID, res) ) {
     // це груповий чат
     let date       = new Date(),
-        datatime   = date.getTime() + (date.getTimezoneOffset() * 60000);
+        // datatime   = date.getTime() + (date.getTimezoneOffset() * 60000);
+        datatime   = date.getTime();
 
     messageObj.datatime = datatime;
     messageObj.status   = {};
@@ -83,7 +84,8 @@ exports.getMessageFromClient = async function(req, res) {
   } else {
     // моно-чат
     let date       = new Date(),
-        datatime   = date.getTime() + (date.getTimezoneOffset() * 60000);
+        // datatime   = date.getTime() + (date.getTimezoneOffset() * 60000);
+        datatime   = date.getTime();
 
     messageObj.datatime = datatime;
     messageObj.whom     = contactID;
