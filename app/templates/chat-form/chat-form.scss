@@ -29,6 +29,9 @@
     margin: 0;
     border: none;
     cursor: default;
+    &_file {
+      cursor: pointer;
+    }
     &_active {
       cursor: pointer;
       background-color: $c44;
@@ -36,6 +39,22 @@
     }
     i {
       font: 2em ElegantIcons;
+    }
+  }
+  &__file-input-wrapper {
+    position: absolute;
+    width: 100%;
+    height: 0px;
+    left: 0;
+    bottom: 41px;
+    background-color: #34cec0;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    transition: height .3s;
+    &_active {
+      border-top: 1px solid #1e90ff;
+      height: 40px;
     }
   }
 }

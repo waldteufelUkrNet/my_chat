@@ -557,5 +557,50 @@
       return {status: response.status}
     }
   }
+
+  async function sendFileToServer(formData, chatID, fileName, fileExt) {
+
+    let response = await fetch('/api/chat/file', {
+      method: 'POST',
+      headers: {
+        'chatID'   : chatID,
+        'fileName' : fileName,
+        'fileExt'  : fileExt
+      },
+      body : formData
+    });
+
+    if (response.status == 200) {
+      let filename = await response.text();
+      return {status: 200, filename: filename}
+    } else {
+      return {status: response.status}
+    }
+  }
+
+  async function getFile(fileID, fileName, fileExt) {
+    let response = await fetch('/api/chat/fileDownload', {
+      method: 'POST',
+      headers: {
+        'Content-Type':'application/json'
+      },
+      body: JSON.stringify({
+        fileID:fileID,
+        fileExt:fileExt
+      })
+    });
+    if (response.status == 200) {
+      let blob = await response.blob();
+      console.log("blob", blob);
+      let link = document.createElement('a');
+      link.download = fileName;
+      link.href = URL.createObjectURL(blob);
+      link.click();
+      URL.revokeObjectURL(link.href);
+
+    } else {
+      return {status: response.status}
+    }
+  }
 /* ↑↑↑ functions declaration ↑↑↑ */
 ////////////////////////////////////////////////////////////////////////////////

@@ -11,6 +11,12 @@
       scrollMessages();
     });
   }
+
+  document.addEventListener('click', function(e) {
+    if ( e.target.closest('.chat-list__message-file') ) {
+      downloadFile(e);
+    }
+  });
 /* ↑↑↑ event listeners ↑↑↑ */
 ////////////////////////////////////////////////////////////////////////////////
 /* ↓↓↓ sockets ↓↓↓ */
@@ -266,7 +272,12 @@
     let dateStr = dd + '.' + mm + '.' + yy;
 
     listItemDate.innerHTML = dateStr;
-    listItemMessage.innerHTML = text;
+
+    let chattext = text;
+    if ( text.includes('FILE') && text.includes('FILEID') ) {
+      chattext = text.slice( 5, -31 );
+    }
+    listItemMessage.innerHTML = chattext;
   }
 
   /**
@@ -289,6 +300,26 @@
     let time = hh + ':' + mm;
 
     let html;
+
+    let subhtml = '<div class="chat-list__message-text">' + msg.message + '</div>';
+
+    if ( msg.message.includes('FILE') && msg.message.includes('FILEID') ) {
+
+      let str      = msg.message,
+          fileID   = str.slice(-24),
+          fileName = str.slice( 5, -31 ),
+          fileExt  = fileName.slice( fileName.lastIndexOf('.') + 1 );
+
+      subhtml = '\
+        <div class="chat-list__message-file" data-filename="' + fileName + '" data-fileid="' + fileID + '">\
+          <div class="chat-list__message-file-icon">\
+            <div class="chat-list__message-file-extention">' + fileExt + '</div>\
+          </div>\
+          <span class="chat-list__message-file-name">' + fileName + '</span>\
+          <i class="ico chat-list__message-file-download">&#xe092</i>\
+        </div>';
+    }
+
     if (type == 'incoming') {
       html = '\
               <li class="chat-list__item chat-list__item_received" data-id="' + msg.who + '" data-status="delivered" data-msgid="' + msg.datatime + '">\
@@ -296,9 +327,9 @@
                   <p class="logo__name">' + msg.whoName.toUpperCase().slice(0,2) + '</p>\
                   <img class="logo__img" src="' + msg.whoImgSrc + '">\
                 </div>\
-                <div class="chat-list__message">\
-                  <div class="chat-list__message-text">' + msg.message + '</div>\
-                  <div class="chat-list__message-date">' + time + '</div>\
+                <div class="chat-list__message">'
+                  + subhtml +
+                  '<div class="chat-list__message-date">' + time + '</div>\
                 </div>\
               </li>\
             ';
@@ -309,9 +340,9 @@
            <p class="logo__name">' + msg.whoName.toUpperCase().slice(0,2) + '</p>\
            <img class="logo__img" src="' + msg.whoImgSrc + '">\
          </div>\
-         <div class="chat-list__message">\
-           <div class="chat-list__message-text">' + msg.message + '</div>\
-           <div class="chat-list__message-date">' + time + '</div>\
+         <div class="chat-list__message">'
+           + subhtml +
+           '<div class="chat-list__message-date">' + time + '</div>\
            <div class="message-status message-status_delivered">\
              <i class="ico">N</i>\
              <i class="ico">N</i>\
@@ -500,6 +531,18 @@
       let readMarker = document.querySelector('[data-list="chatlist"] .chat-item[data-id="' + chatID + '"] .message-status');
       readMarker.className = 'message-status message-status_read';
     }
+  }
+
+  async function downloadFile(e) {
+    let fileID   = e.target.closest('.chat-list__message-file').dataset.fileid,
+        fileName = e.target.closest('.chat-list__message-file').dataset.filename,
+        fileExt  = fileName.slice( fileName.lastIndexOf('.') + 1 );
+    let dwn = await getFile(fileID,fileName,fileExt);
+    // if (dwn.status == 200) {
+    //   //
+    // } else {
+    //   //
+    // }
   }
 /* ↑↑↑ functions declaration ↑↑↑ */
 ////////////////////////////////////////////////////////////////////////////////

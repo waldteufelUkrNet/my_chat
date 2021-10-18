@@ -5,6 +5,7 @@ const config    = require('../config'),
       log       = require('../libs/log')(module),
       objectId  = require('mongodb').ObjectId,
 
+      File      = require('../models/file.js').File,
       GroupChat = require('../models/groupchat.js').GroupChat,
       MonoChat  = require('../models/monochat.js').MonoChat,
       User      = require('../models/user.js').User,
@@ -202,6 +203,166 @@ exports.changeMessageStatus = async function(req, res) {
   }
 }
 
+exports.file = async function(req, res) {
+  if(req.file) {
+    const userID   = req.session.user._id,
+          chatID   = req.headers.chatid,
+          fileName = req.headers.filename,
+          fileExt  = req.headers.fileext,
+          fileID   = req.headers.fileID;
+
+    await File.create({fileid   : fileID,
+                       filename : fileName,
+                       fileext  : fileExt
+                     })
+          .catch(err => {
+            res.sendStatus(500);
+            log.error('\nerr.name:\n    ' + err.name + '\nerr.message:\n    ' + err.message + '\nerr.stack:\n    ' + err.stack);
+            throw err;
+          });
+
+    let messageObj = {
+      "who"     : userID,
+      "message" : 'FILE:' + fileName + '.' + fileExt + 'FILEID:' + fileID,
+    };
+    let chatsID;
+
+    messageObj.whoName =  await User.findById(new objectId(userID), {username:1})
+                          .then(user => {
+                            return user.username;
+                          })
+                          .catch(err => {
+                            res.sendStatus(500);
+                            log.error('\nerr.name:\n    ' + err.name + '\nerr.message:\n    ' + err.message + '\nerr.stack:\n    ' + err.stack);
+                            throw err;
+                          });
+
+    messageObj.whoImgSrc =  await isAvaFileAviable(userID)
+                            .then(condition => {
+                              if ( condition ) {
+                                return config.get('avatarPathFromClient') + userID + '.jpg';
+                              } else {
+                                return '';
+                              }
+                            })
+                            .catch(err => {
+                              res.sendStatus(500);
+                              log.error('\nerr.name:\n    ' + err.name + '\nerr.message:\n    ' + err.message + '\nerr.stack:\n    ' + err.stack);
+                              throw err;
+                            });
+
+    if ( await isGroupChat(chatID, res) ) {
+      // це груповий чат
+      let date       = new Date(),
+          // datatime   = date.getTime() + (date.getTimezoneOffset() * 60000);
+          datatime   = date.getTime();
+
+      messageObj.datatime = datatime;
+      messageObj.status   = {};
+
+      let members = await GroupChat.findById(new objectId(chatID), { interlocutors: 1})
+        .then(result => {
+          return result.interlocutors
+        })
+        .catch(err => {
+          res.sendStatus(500);
+          log.error('\nerr.name:\n    ' + err.name + '\nerr.message:\n    ' + err.message + '\nerr.stack:\n    ' + err.stack);
+          throw err;
+        });
+
+      members.forEach(memberID => {
+        messageObj.status[memberID] = "delivered"
+      });
+
+      GroupChat.findByIdAndUpdate(new objectId(chatID), {$push: {chat: messageObj}})
+      .catch(err => {
+        res.sendStatus(500);
+        log.error('\nerr.name:\n    ' + err.name + '\nerr.message:\n    ' + err.message + '\nerr.stack:\n    ' + err.stack);
+        throw err;
+      });
+
+      messageObj.group = chatID;
+      delete messageObj.status;
+      chatsID = chatID;
+    } else {
+      // моно-чат
+      let date       = new Date(),
+          datatime   = date.getTime();
+
+      messageObj.datatime = datatime;
+      messageObj.whom     = chatID;
+      messageObj.status   = "delivered";
+
+      let chat = await MonoChat.find({ interlocutors: { $all: [userID, chatID] } })
+                       .then(result => {
+                         return result;
+                       })
+                       .catch(err => {
+                          res.sendStatus(500);
+                          log.error('\nerr.name:\n    ' + err.name + '\nerr.message:\n    ' + err.message + '\nerr.stack:\n    ' + err.stack);
+                          throw err;
+                       });
+
+      // дописати у існуючий запис або створити новий запис
+      if (chat.length) {
+        chatsID = await MonoChat.findOneAndUpdate({ interlocutors: { $all: [userID, chatID] } }, {$push: {chat: messageObj}})
+          .then(chat => {
+            return String(chat._id);
+          })
+          .catch(err => {
+            res.sendStatus(500);
+            log.error('\nerr.name:\n    ' + err.name + '\nerr.message:\n    ' + err.message + '\nerr.stack:\n    ' + err.stack);
+            throw err;
+          });
+      } else {
+        chatsID = await MonoChat.create({
+          "interlocutors": [userID, chatID],
+          "chat": [messageObj]
+        })
+        .then(chat => {
+          return String(chat._id)
+        })
+        .catch(err => {
+          res.sendStatus(500);
+          log.error('\nerr.name:\n    ' + err.name + '\nerr.message:\n    ' + err.message + '\nerr.stack:\n    ' + err.stack);
+          throw err;
+        });
+
+        await User.findByIdAndUpdate(new objectId(userID), {$push: {monochats: chatID}})
+        .catch(err => {
+          res.sendStatus(500);
+          log.error('\nerr.name:\n    ' + err.name + '\nerr.message:\n    ' + err.message + '\nerr.stack:\n    ' + err.stack);
+          throw err;
+        });
+
+        await User.findByIdAndUpdate(new objectId(chatID), {$push: {monochats: userID}})
+        .catch(err => {
+          res.sendStatus(500);
+          log.error('\nerr.name:\n    ' + err.name + '\nerr.message:\n    ' + err.message + '\nerr.stack:\n    ' + err.stack);
+          throw err;
+        });
+      }
+    }
+
+    io().in(chatsID).emit('message', messageObj);
+    res.status(200).send(req.file.filename);
+  } else {
+    res.sendStatus(500);
+  }
+}
+
+exports.fileDownload = async function(req,res) {
+  const fileID  = req.body.fileID,
+        fileExt = req.body.fileExt;
+
+  if( await isFileExist(fileID,fileExt) ) {
+    const filePath = config.get('dataStoragePath') + fileID + '.' + fileExt;
+    fs.createReadStream(filePath).pipe(res);
+  } else {
+    res.sendStatus(404);
+  }
+}
+
 async function isGroupChat(id, res) {
   let gchat = await GroupChat.findById( new objectId(id) )
       .then(result => {
@@ -225,6 +386,19 @@ async function isAvaFileAviable(id) {
 
   try {
     await access(avatarPath, constants.F_OK);
+    result = true;
+  } catch {
+    result = false;
+  }
+  return result;
+}
+
+async function isFileExist(id, ext) {
+  const filePath = config.get('dataStoragePath') + id + '.' + ext;
+  let result;
+
+  try {
+    await access(filePath, constants.F_OK);
     result = true;
   } catch {
     result = false;

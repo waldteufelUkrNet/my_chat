@@ -8,7 +8,8 @@
     "start": "npm run dev",
     "gulp": "gulp default",
     "nodemon": "nodemon app/app.js",
-    "dev": "npm-run-all -p gulp nodemon"
+    "dev": "npm-run-all -p gulp nodemon",
+    "build": "gulp build"
   },
   "repository": {
     "type": "git",

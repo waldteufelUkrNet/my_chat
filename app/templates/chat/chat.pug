@@ -28,7 +28,7 @@
 -
   // console.log('from pug');
   // console.log('from pug: ', meta);
-  // console.log('from pug: ', chat);
+  // console.log('from pug: ', chat[chat.length-1]);
   // console.log('from pug: ', interlocutors);
   // console.log('from pug: ', chat[0].datatime);
   // console.log('from pug: ', chat[0]);
@@ -100,7 +100,25 @@ ul.chat-list(class=modClass data-chatid=chatID)
           p.logo__name #{message.whoName.slice(0,2).toUpperCase()}
           img.logo__img(src="" + message.whoImg + "")
         .chat-list__message
-          .chat-list__message-text #{message.message}
+          -
+            let condition = message.message.includes('FILE') && message.message.includes('FILEID');
+            let str, fileID, fileName, fileExt;
+            if ( condition ) {
+              str = message.message,
+              fileID = str.slice(-24),
+              fileName = str.slice( 5, -31 ),
+              fileExt = fileName.slice( fileName.lastIndexOf('.') + 1 );
+            }
+
+          if condition
+            .chat-list__message-file(data-filename=fileName data-fileid=fileID)
+              .chat-list__message-file-icon
+                .chat-list__message-file-extention .#{fileExt}
+              span.chat-list__message-file-name #{fileName}
+              i.ico.chat-list__message-file-download &#xe092;
+
+          else
+            .chat-list__message-text #{message.message}
 
           -
             let dateObj = new Date(+message.datatime),

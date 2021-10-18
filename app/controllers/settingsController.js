@@ -83,10 +83,6 @@ exports.manageGroup = async function(req,res) {
     members.push(userID);
   }
 
-// console.log("groupID : ", groupID);
-// console.log("name    : ", name);
-// console.log("members : ", members);
-
   if (groupID) {
     // update group chat
     let group = await GroupChat.findById( new objectId(groupID), {interlocutors:1,meta:1} )

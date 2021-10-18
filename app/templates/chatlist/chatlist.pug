@@ -34,7 +34,14 @@ ul.chat-list
         img.logo__img(src=chat.imgURL)
       .chat-item__text-wrapper
         h4.chat-item__name #{chat.name}
-        h4.chat-item__message #{chat.message}
+
+        -
+          let condition = chat.message.includes('FILE') && chat.message.includes('FILEID');
+
+        if condition
+          h4.chat-item__message #{chat.message.slice( 5, -31 )}
+        else
+          h4.chat-item__message #{chat.message}
       -
         let dateObj = new Date(+chat.datetime),
             year    = dateObj.getUTCFullYear(),

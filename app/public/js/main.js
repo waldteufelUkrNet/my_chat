@@ -465,7 +465,7 @@ var dictionary = {
          && ! document.querySelector('.chat-form__textarea_active') ) {
 
       let ta  = event.target.closest('.chat-form__textarea'),
-          btn = ta.closest('.chat-form').querySelector('.chat-form__btn');
+          btn = ta.closest('.chat-form').querySelector('.chat-form__btn_text');
       ta.classList.add('chat-form__textarea_active');
       btn.classList.add('chat-form__btn_active');
       ta.focus();
@@ -477,10 +477,43 @@ var dictionary = {
         && !event.target.closest('.chat-form__textarea_active') ) {
 
       let ta  = document.querySelector('.chat-form__textarea_active'),
-          btn = ta.closest('.chat-form').querySelector('.chat-form__btn');
+          btn = ta.closest('.chat-form').querySelector('.chat-form__btn_text');
       ta.classList.remove('chat-form__textarea_active');
       btn.classList.remove('chat-form__btn_active');
       ta.blur();
+    }
+
+    // toggle select file area
+    if ( event.target.closest('.chat-form__btn_file')
+         && !document.querySelector('.chat-form__file-input-wrapper_active') ) {
+      if ( isSmallView() ) {
+        document.querySelector('[data-list="chatP] .chat-form__file-input-wrapper').classList.add('chat-form__file-input-wrapper_active');
+        document.querySelector('.chat-form__btn_file').classList.add('chat-form__btn_active');
+      } else {
+        document.querySelector('[data-list="chatP"] .chat-form__file-input-wrapper').classList.add('chat-form__file-input-wrapper_active');
+        document.querySelector('.chat-form__btn_file').classList.add('chat-form__btn_active');
+      }
+    } else if (
+         ( document.querySelector('.chat-form__file-input-wrapper_active')
+           && !event.target.closest('.chat-form__btn_file')
+           && !event.target.closest('[type="file"]')
+         ) || (
+           document.querySelector('.chat-form__file-input-wrapper_active')
+           && event.target.closest('.chat-form__btn_file')
+         )
+       ) {
+      if ( isSmallView() ) {
+        document.querySelector('[data-list="chatP] .chat-form__file-input-wrapper').classList.remove('chat-form__file-input-wrapper_active');
+        document.querySelector('.chat-form__btn_file').classList.remove('chat-form__btn_active');
+      } else {
+        document.querySelector('[data-list="chatP"] .chat-form__file-input-wrapper').classList.remove('chat-form__file-input-wrapper_active');
+        document.querySelector('.chat-form__btn_file').classList.remove('chat-form__btn_active');
+      }
+    }
+
+    // send file
+    if ( event.target.closest('.chat-form__btn_send-file') ) {
+      sendFile(event);
     }
   });
 
@@ -511,7 +544,29 @@ var dictionary = {
 
     let sendMessageRequest = await sendMessageToServer(contactID, message);
     if (sendMessageRequest.status == 200) {
-      // додати повідомлення на сторінку
+      // додати повідомлення на сторінку - реалізація в сокетах
+    } else {
+      // показати попап з помилкою
+      showPopupInfo('Помилка при відправці повідомлення');
+    }
+  }
+
+  async function sendFile(event) {
+    let fileInput = event.target.closest('.chat-form__file-input-wrapper')
+                                .querySelector('[type="file"]');
+
+    if (!fileInput.value) return;
+
+    let formData     = new FormData( event.target.closest('form[name="chat-form"]') ),
+        chatID       = getChatID(),
+        filePath     = fileInput.value,
+        fullfileName = filePath.match(/[ !\p{Alpha}\p{M}\p{Nd}\p{Pc}\p{Join_C}\.]+\.[\w\d]+$/ui)?.[0],
+        fileExt      = fullfileName.match(/[^\.]+$/ui),
+        fileName     = fullfileName.slice(0, fullfileName.indexOf('.' + fileExt) );
+
+    let sendFileRequest = await sendFileToServer(formData, chatID, fileName, fileExt);
+    if (sendFileRequest.status == 200) {
+      // додати повідомлення на сторінку - реалізація в сокетах
     } else {
       // показати попап з помилкою
       showPopupInfo('Помилка при відправці повідомлення');
@@ -1186,6 +1241,12 @@ var dictionary = {
       scrollMessages();
     });
   }
+
+  document.addEventListener('click', function(e) {
+    if ( e.target.closest('.chat-list__message-file') ) {
+      downloadFile(e);
+    }
+  });
 /* ↑↑↑ event listeners ↑↑↑ */
 ////////////////////////////////////////////////////////////////////////////////
 /* ↓↓↓ sockets ↓↓↓ */
@@ -1441,7 +1502,12 @@ var dictionary = {
     let dateStr = dd + '.' + mm + '.' + yy;
 
     listItemDate.innerHTML = dateStr;
-    listItemMessage.innerHTML = text;
+
+    let chattext = text;
+    if ( text.includes('FILE') && text.includes('FILEID') ) {
+      chattext = text.slice( 5, -31 );
+    }
+    listItemMessage.innerHTML = chattext;
   }
 
   /**
@@ -1464,6 +1530,26 @@ var dictionary = {
     let time = hh + ':' + mm;
 
     let html;
+
+    let subhtml = '<div class="chat-list__message-text">' + msg.message + '</div>';
+
+    if ( msg.message.includes('FILE') && msg.message.includes('FILEID') ) {
+
+      let str      = msg.message,
+          fileID   = str.slice(-24),
+          fileName = str.slice( 5, -31 ),
+          fileExt  = fileName.slice( fileName.lastIndexOf('.') + 1 );
+
+      subhtml = '\
+        <div class="chat-list__message-file" data-filename="' + fileName + '" data-fileid="' + fileID + '">\
+          <div class="chat-list__message-file-icon">\
+            <div class="chat-list__message-file-extention">' + fileExt + '</div>\
+          </div>\
+          <span class="chat-list__message-file-name">' + fileName + '</span>\
+          <i class="ico chat-list__message-file-download">&#xe092</i>\
+        </div>';
+    }
+
     if (type == 'incoming') {
       html = '\
               <li class="chat-list__item chat-list__item_received" data-id="' + msg.who + '" data-status="delivered" data-msgid="' + msg.datatime + '">\
@@ -1471,9 +1557,9 @@ var dictionary = {
                   <p class="logo__name">' + msg.whoName.toUpperCase().slice(0,2) + '</p>\
                   <img class="logo__img" src="' + msg.whoImgSrc + '">\
                 </div>\
-                <div class="chat-list__message">\
-                  <div class="chat-list__message-text">' + msg.message + '</div>\
-                  <div class="chat-list__message-date">' + time + '</div>\
+                <div class="chat-list__message">'
+                  + subhtml +
+                  '<div class="chat-list__message-date">' + time + '</div>\
                 </div>\
               </li>\
             ';
@@ -1484,9 +1570,9 @@ var dictionary = {
            <p class="logo__name">' + msg.whoName.toUpperCase().slice(0,2) + '</p>\
            <img class="logo__img" src="' + msg.whoImgSrc + '">\
          </div>\
-         <div class="chat-list__message">\
-           <div class="chat-list__message-text">' + msg.message + '</div>\
-           <div class="chat-list__message-date">' + time + '</div>\
+         <div class="chat-list__message">'
+           + subhtml +
+           '<div class="chat-list__message-date">' + time + '</div>\
            <div class="message-status message-status_delivered">\
              <i class="ico">N</i>\
              <i class="ico">N</i>\
@@ -1675,6 +1761,18 @@ var dictionary = {
       let readMarker = document.querySelector('[data-list="chatlist"] .chat-item[data-id="' + chatID + '"] .message-status');
       readMarker.className = 'message-status message-status_read';
     }
+  }
+
+  async function downloadFile(e) {
+    let fileID   = e.target.closest('.chat-list__message-file').dataset.fileid,
+        fileName = e.target.closest('.chat-list__message-file').dataset.filename,
+        fileExt  = fileName.slice( fileName.lastIndexOf('.') + 1 );
+    let dwn = await getFile(fileID,fileName,fileExt);
+    // if (dwn.status == 200) {
+    //   //
+    // } else {
+    //   //
+    // }
   }
 /* ↑↑↑ functions declaration ↑↑↑ */
 ////////////////////////////////////////////////////////////////////////////////
@@ -3067,6 +3165,51 @@ if( document.querySelector('.left-side')) {
     });
     if (response.status == 200) {
       return {status: 200}
+    } else {
+      return {status: response.status}
+    }
+  }
+
+  async function sendFileToServer(formData, chatID, fileName, fileExt) {
+
+    let response = await fetch('/api/chat/file', {
+      method: 'POST',
+      headers: {
+        'chatID'   : chatID,
+        'fileName' : fileName,
+        'fileExt'  : fileExt
+      },
+      body : formData
+    });
+
+    if (response.status == 200) {
+      let filename = await response.text();
+      return {status: 200, filename: filename}
+    } else {
+      return {status: response.status}
+    }
+  }
+
+  async function getFile(fileID, fileName, fileExt) {
+    let response = await fetch('/api/chat/fileDownload', {
+      method: 'POST',
+      headers: {
+        'Content-Type':'application/json'
+      },
+      body: JSON.stringify({
+        fileID:fileID,
+        fileExt:fileExt
+      })
+    });
+    if (response.status == 200) {
+      let blob = await response.blob();
+      console.log("blob", blob);
+      let link = document.createElement('a');
+      link.download = fileName;
+      link.href = URL.createObjectURL(blob);
+      link.click();
+      URL.revokeObjectURL(link.href);
+
     } else {
       return {status: response.status}
     }

@@ -23,5 +23,6 @@
     }
   },
   "avatarPathFromServer"   : "app/public/img/users/",
-  "avatarPathFromClient"   : "img/users/"
+  "avatarPathFromClient"   : "img/users/",
+  "dataStoragePath"        : "app/datastorage/"
 }
