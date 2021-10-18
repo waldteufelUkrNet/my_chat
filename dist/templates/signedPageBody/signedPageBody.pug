@@ -1,0 +1,48 @@
+.body-inner
+  .left-side
+    include ../header/header.pug
+    .subheader__wrapper
+      //- include ../subheader/subheader.pug
+    .lists-wrapper.wjs-scroll(data-scroll='right' data-scroll-hidden='horizontal')
+      .wjs-scroll__content-wrapper
+        .wjs-scroll__content
+          .list.list_active(data-list-group="aside" data-list="startL")
+            p Знайдіть друзів і почніть спілкуватись
+          .list(data-list-group="aside" data-list="menu")
+            include ../menu/menu.pug
+          .list(data-list-group="aside" data-list="settings")
+            include ../settings/settings.pug
+          .list(data-list-group="aside" data-list="chatlist")
+            //- include ../chatlist/chatlist.pug
+          .list(data-list-group="aside" data-list="contactlist")
+            //- include ../contactlist/contactlist.pug
+
+          .list(data-list-group="aside" data-list="usercard")
+            //- include ../usercard/usercard.pug
+          .list(data-list-group="aside" data-list="groupcard")
+            //- include ../groupcard/groupcard.pug
+          .list(data-list-group="aside" data-list="chat")
+            .chat-wrapper_small-view
+            //- include ../chat/chat.pug
+            include ../round-button/round-button.pug
+            include ../chat-form/chat-form.pug
+
+  .right-side
+    .list.list_active(data-list-group="page" data-list="startP")
+      p.right-side__info Виберіть чат або контакт і почніть спілкування
+    .list(data-list-group="page" data-list="usercardP")
+      //- include ../usercard/usercard.pug
+    .list(data-list-group="page" data-list="groupcardP")
+      //- include ../groupcard/groupcard.pug
+    .list(data-list-group="page" data-list="chatP")
+      .subheader__wrapper
+        //- include ../subheader/subheader.pug
+      .chat-wrapper.wjs-scroll(data-scroll='right')
+        .wjs-scroll__content-wrapper
+          .wjs-scroll__content
+            //- include ../chat/chat.pug
+        include ../round-button/round-button.pug
+      include ../chat-form/chat-form.pug
+
+include ../popups/popups.pug
+#widthIndicator

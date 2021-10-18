@@ -1,0 +1,1 @@
+const mongoose=require("../libs/mongoose"),Schema=mongoose.Schema;let schema=new Schema({interlocutors:{type:Array,required:!0},meta:{type:Object,required:!0},chat:{type:Array}});exports.GroupChat=mongoose.model("GroupChat",schema);

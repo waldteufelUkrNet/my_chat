@@ -1,0 +1,174 @@
+//- mono:
+//- {
+//-   datatime: 1632650048749,
+//-   who: '6127f48dd770f515a0458394',
+//-   whom: '6128f4b586b0640204c57ed9',
+//-   message: 'ййй',
+//-   status: 'delivered',
+//-   whoID: '6127f48dd770f515a0458394',
+//-   whoName: 'test',
+//-   whomName: 'test2',
+//-   whoImg: 'img/users/6127f48dd770f515a0458394.jpg',
+//-   messageType: 'chat-list__item_sent',
+//-   message.id: '1628757600000'
+//- }
+
+//- group:
+//- {
+//-   datatime: 1628757600000,
+//-   who: '6127f3a9d770f515a0458366',
+//-   message: 'subtegulaneous endearance blithering unimpassionedness drona farmstead arsenate wickedish patient epoptes thereanent juvia basten sopition Foist overfear perivitelline ludicroserious swamp coset archilowe Fabroniaceae deglutitious magniloquence',
+//-   status: 'read',
+//-   whoName: 'Justa Marinucci',
+//-   whoImg: '',
+//-   messageType: 'chat-list__item_received',
+//-   message.id: '1628757600000'
+//- }
+
+-
+  // console.log('from pug');
+  // console.log('from pug: ', meta);
+  // console.log('from pug: ', chat[chat.length-1]);
+  // console.log('from pug: ', interlocutors);
+  // console.log('from pug: ', chat[0].datatime);
+  // console.log('from pug: ', chat[0]);
+
+  function getDateString(millisec) {
+    let dateObj = new Date(+millisec),
+        // year    = dateObj.getUTCFullYear(),
+        // mon     = dateObj.getUTCMonth() + 1,
+        // day     = dateObj.getUTCDate();
+        year    = dateObj.getFullYear(),
+        mon     = dateObj.getMonth() + 1,
+        day     = dateObj.getDate();
+    if (mon < 10) mon = '0' + mon;
+    if (day < 10) day = '0' + day;
+
+    let dateStr = year + '-' + mon + '-' + day;
+    return dateStr
+  }
+
+  let modClass;
+  if (meta == 'mono') {
+    modClass = 'chat-list_mono'
+  } else if (meta == 'group') {
+    modClass = 'chat-list_group'
+  }
+
+  let mCount = -1;
+
+ul.chat-list(class=modClass data-chatid=chatID)
+
+  if chat.length
+
+    li.chat-list__item.chat-list__item_date #{getDateString(chat[0].datatime)}
+
+    for message in chat
+
+      -
+        mCount = mCount + 1;
+        let datetimeFlag = false;
+
+        if (mCount > 0) {
+          let d1 = +chat[mCount].datatime,
+              d2 = +chat[mCount-1].datatime;
+          //- if ( (d1 - d2) > 86400000 || new Date(d1).getUTCDate() != new Date(d2).getUTCDate() ) {
+          if ( (d1 - d2) > 86400000 || new Date(d1).getDate() != new Date(d2).getDate() ) {
+            datetimeFlag = true;
+          }
+        }
+
+        let interlocutorID;
+        if (meta == 'mono') {
+          if (message.messageType == 'chat-list__item_received') {
+            interlocutorID = interlocutors.contact
+          } else if (message.messageType == 'chat-list__item_sent') {
+            interlocutorID = interlocutors.user
+          }
+        } else {
+          interlocutorID = message.who
+        }
+
+      if datetimeFlag
+        li.chat-list__item.chat-list__item_date #{getDateString(message.datatime)}
+
+      -
+        datetimeFlag = false;
+
+      li.chat-list__item(class=message.messageType data-id=interlocutorID data-status=message.status data-msgid=message.id)
+        .logo
+          p.logo__name #{message.whoName.slice(0,2).toUpperCase()}
+          img.logo__img(src="" + message.whoImg + "")
+        .chat-list__message
+          -
+            let condition = message.message.includes('FILE') && message.message.includes('FILEID');
+            let str, fileID, fileName, fileExt;
+            if ( condition ) {
+              str = message.message,
+              fileID = str.slice(-24),
+              fileName = str.slice( 5, -31 ),
+              fileExt = fileName.slice( fileName.lastIndexOf('.') + 1 );
+            }
+
+          if condition
+            .chat-list__message-file(data-filename=fileName data-fileid=fileID)
+              .chat-list__message-file-icon
+                .chat-list__message-file-extention .#{fileExt}
+              span.chat-list__message-file-name #{fileName}
+              i.ico.chat-list__message-file-download &#xe092;
+
+          else
+            .chat-list__message-text #{message.message}
+
+          -
+            let dateObj = new Date(+message.datatime),
+                // hh      = dateObj.getUTCHours(),
+                // mm      = dateObj.getUTCMinutes();
+                hh      = dateObj.getHours(),
+                mm      = dateObj.getMinutes();
+            if (hh < 10) hh = '0' + hh;
+            if (mm < 10) mm = '0' + mm;
+
+            let dateSrting = hh + ':' + mm;
+
+          .chat-list__message-date #{dateSrting}
+
+          -
+            let modClass = '';
+            if (message.status == 'read') {
+              modClass = 'message-status_read'
+            } else if (message.status == 'delivered') {
+              modClass = 'message-status_delivered'
+            }
+          if message.whoID
+            .message-status(class=modClass)
+              i.ico &#x4e;
+              i.ico &#x4e;
+
+//- ul.chat-list.chat-list_mono
+//-   li.chat-list__item.chat-list__item_date 12.12.2021, пт
+
+//-   li.chat-list__item.chat-list__item_sent
+//-   //- li.chat-list__item.chat-list__item_received(data-id="")
+//-     .logo
+//-       p.logo__name
+//-       img.logo__img(src="../path/to/image")
+//-     .chat-list__message
+//-       .chat-list__message-text lorem ipsum
+//-       .chat-list__message-date 12.34
+//-       .message-status.message-status_read
+//-       //- .message-status.message-status_delivered
+//-         i.ico &#x4e;
+//-         i.ico &#x4e;
+
+//- ul.chat-list(class=".chat-list_" + meta + "")
+
+//-   for message in chat
+//-     //- let mod;
+//-     //- if ( message.who == userID ) {
+//-     //-   mod = 'chat-list__item_sent'
+//-     //- }
+//-     //- else {
+//-     //-   mod = 'chat-list__item_received'
+//-     //- }
+//-     li.chat-list__item

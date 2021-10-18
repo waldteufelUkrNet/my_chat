@@ -1,0 +1,1 @@
+const User=require("../models/user").User;module.exports=function(s,e,r){if(s.user=e.locals.user=null,!s.session.user)return r();User.findById(s.session.user,(function(u,n){if(u)return r(u);s.user=e.locals.user=n,r()}))};

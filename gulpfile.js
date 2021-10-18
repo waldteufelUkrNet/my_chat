@@ -10,18 +10,17 @@
         } = require('gulp');
 
   const bs      = require('browser-sync').create(),
-        // del     = require('del'),
+        del     = require('del'),
         autopre = require('gulp-autoprefixer'),
         concat  = require('gulp-concat'), // ??? а css?
-        // imgmin  = require('gulp-imagemin'),
+        csso    = require('gulp-csso'),
         notify  = require('gulp-notify'),
         pug     = require('gulp-pug'),
-        // rename  = require('gulp-rename'),
         scss    = require('gulp-sass')(require('sass')),
         uglify  = require('gulp-uglify-es').default;
 /* ↑↑↑ /VARIABLES ↑↑↑ */
 ////////////////////////////////////////////////////////////////////////////////
-/* ↓↓↓ TASKS ↓↓↓ */
+/* ↓↓↓ TASKS (DEVELOPMENT) ↓↓↓ */
   // server for live reload
   function startBrowserSync() {
     bs.init({
@@ -101,7 +100,6 @@
   }
   exports.convertJS = convertJS;
 
-
   // watching & live reload
   function startWatch(){
     watch(['app/public/index.pug'], convertIndexPug);
@@ -113,5 +111,57 @@
   exports.startWatch = startWatch;
 
   exports.default = series(convertSCSS, convertJS, convertPug, convertIndexPug, parallel(startBrowserSync, startWatch));
-/* ↑↑↑ /TASKS ↑↑↑ */
+/* ↑↑↑ /TASKS (DEVELOPMENT) ↑↑↑ */
+////////////////////////////////////////////////////////////////////////////////
+/* ↓↓↓ TASKS (PRODUCTION) ↓↓↓ */
+
+  function convertServerJS() {
+    return src(['app/*/*.js', '!app/socket/**/*'])
+           .pipe( uglify() )
+           .on('error', notify.onError({
+              message : 'Error: <%= error.message %>',
+              title   : 'JS error'
+            }))
+           .pipe( dest('dist/') )
+  }
+  exports.convertServerJS = convertServerJS;
+
+  function convertAppJS() {
+    return src('app/app.js')
+           .pipe( uglify() )
+           .on('error', notify.onError({
+              message : 'Error: <%= error.message %>',
+              title   : 'JS error'
+            }))
+           .pipe( dest('dist/') )
+  }
+  exports.convertAppJS = convertAppJS;
+
+  function copyFiles(done) {
+    src('app/config/config.json').pipe( dest('dist/config/') );
+    src('app/bin/**/*').pipe( dest('dist/bin/') );
+    src('app/templates/**/*.pug').pipe( dest('dist/templates/') );
+    src('app/datastorage/**/*').pipe( dest('dist/datastorage/') );
+    src('app/socket/**/*').pipe( dest('dist/socket/') );
+
+    src('app/public/css/main.css').pipe( csso() ).pipe( dest('dist/public/css/') );
+    src('app/public/fonts/**/*').pipe( dest('dist/public/fonts/') );
+    src('app/public/html/**/*').pipe( dest('dist/public/html/') );
+    src('app/public/*.html').pipe( dest('dist/public/') );
+    src('app/public/img/**/*').pipe( dest('dist/public/img/') );
+    src('app/public/js/main.js').pipe( dest('dist/public/js/') );
+
+    done()
+  }
+  exports.copyFiles = copyFiles;
+
+  // чищення каталогу dist
+  function clean(done) {
+    return del('dist');
+    done();
+  }
+  exports.clean = clean;
+
+  exports.build = series(clean, convertServerJS, convertAppJS, copyFiles);
+/* ↑↑↑ /TASKS (PRODUCTION) ↑↑↑ */
 ////////////////////////////////////////////////////////////////////////////////

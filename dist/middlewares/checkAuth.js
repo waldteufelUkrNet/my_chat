@@ -1,0 +1,1 @@
+const loadSignedPage=require("../libs/loadSignedPage.js");module.exports=function(e,s,o){e.session.user||o()};

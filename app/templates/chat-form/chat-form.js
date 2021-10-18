@@ -103,10 +103,11 @@
         chatID       = getChatID(),
         filePath     = fileInput.value,
         fullfileName = filePath.match(/[ !\p{Alpha}\p{M}\p{Nd}\p{Pc}\p{Join_C}\.]+\.[\w\d]+$/ui)?.[0],
-        fileExt      = fullfileName.match(/[^\.]+$/ui),
+        fileExt      = fullfileName.match(/[^\.]+$/ui)[0],
         fileName     = fullfileName.slice(0, fullfileName.indexOf('.' + fileExt) );
 
     let sendFileRequest = await sendFileToServer(formData, chatID, fileName, fileExt);
+
     if (sendFileRequest.status == 200) {
       // додати повідомлення на сторінку - реалізація в сокетах
     } else {

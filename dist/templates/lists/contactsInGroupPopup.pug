@@ -1,0 +1,23 @@
+//- li.popup__item(data-id='6127f376d770f515a045835d')
+//-   label
+//-     input(type="checkbox")
+//-     i.ico.check &#x5a;
+//-     i.ico.uncheck &#x56;
+//-     span Вася Пупкін
+//-     span (@6127f376d770f515a045835d)
+
+//- _id: '6127f3ddd770f515a0458372',
+//-   username: 'Curtis Tandy'
+//- }
+
+for user in users
+  li.popup__item(data-id=user._id)
+    label
+      if user.isMember
+        input(type="checkbox" checked)
+      else
+        input(type="checkbox")
+      i.ico.check &#x5a;
+      i.ico.uncheck &#x56;
+      span #{user.username}
+      span (@#{user._id})

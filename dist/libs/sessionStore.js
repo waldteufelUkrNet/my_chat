@@ -1,0 +1,1 @@
+const config=require("../config"),mongoSessionStore=require("connect-mongo"),sessionStore=mongoSessionStore.create({mongoUrl:config.get("mongoose:uri")});module.exports=sessionStore;

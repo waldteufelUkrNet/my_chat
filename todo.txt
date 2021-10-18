@@ -1,6 +1,13 @@
 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
 ========================================
 
+для startprod потрібно змінити config:
+  "avatarPathFromServer"   : "dist/public/img/users/",
+  "avatarPathFromClient"   : "img/users/",
+  "dataStoragePath"        : "dist/datastorage/"
+
+фішка ?. певно відносно нава, тому uglify в gulpfile видає помилку при компіляції проекту npm run build.
+
 логіка переписки:
 1. Завантаження починається з чатів, а не контактів:
    - розраховуються badge, статуси, повідомлення

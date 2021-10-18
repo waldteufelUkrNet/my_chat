@@ -1,0 +1,28 @@
+{
+  "port"                   : 3002,
+  "mongoose"               : {
+    "uri"                  : "mongodb://localhost/my-cha-cha",
+    "options"              : {
+      "keepAlive"          : true,
+      "useNewUrlParser"    : true,
+      "useUnifiedTopology" : true,
+      "useCreateIndex"     : true,
+      "useFindAndModify"   : false
+    }
+  },
+  "session"                : {
+    "name"                 : "mcc_sid",
+    "secret"               : "Q'P'A!WSg8XLh@Gg3n*YCDjh@<STE'",
+    "resave"               : false,
+    "saveUninitialized"    : true,
+    "cookie"               : {
+      "path"               : "/",
+      "httpOnly"           : true,
+      "secure"             : false,
+      "maxAge"             : null
+    }
+  },
+  "avatarPathFromServer"   : "dist/public/img/users/",
+  "avatarPathFromClient"   : "img/users/",
+  "dataStoragePath"        : "dist/datastorage/"
+}

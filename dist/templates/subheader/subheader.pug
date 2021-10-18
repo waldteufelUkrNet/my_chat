@@ -1,0 +1,22 @@
+//- {
+//-   name: 'Aline Bosshart',
+//-   _id: 6127f368d770f515a045835a,
+//-   imgURL: 'img/users/6127f368d770f515a045835a.jpg'
+//- }
+
+-
+  let groupMod;
+  let un = name || 'UN';
+  if (group){
+    groupMod = 'true'
+  } else {
+    groupMod = 'false'
+  }
+.subheader(data-id=_id data-group=groupMod)
+  .logo
+    p.logo__name #{un.slice(0,2).toUpperCase()}
+    img.logo__img(src="" + imgURL + "")
+  .subheader__text-wrapper
+    h1.subheader__name #{name}
+    h4.subheader__id @#{_id}
+
