@@ -1,5 +1,6 @@
 {
   "port"                   : 3002,
+  "host"                   : "localhost",
   "mongoose"               : {
     "uri"                  : "mongodb://localhost/my-cha-cha",
     "options"              : {

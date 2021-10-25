@@ -1,4 +1,4 @@
-process.env.NODE_ENV = 'development';
+process.env.NODE_ENV = 'production';
 
 const chalk             = require('chalk'),
       config            = require('./config'),
@@ -22,12 +22,13 @@ const chalk             = require('chalk'),
       uCardRouter       = require('./routes/uCardRouter'),
 
       port              = config.get('port'),
+      host              = config.get('host'),
 
       app               = express();
 
 let httpServer = io.init(app);
 
-httpServer.listen(3002, function(err, result) {
+httpServer.listen(port, host, function(err, result) {
   if (err) {
     log.error('\nerr.name:\n    ' + err.name + '\nerr.message:\n    ' + err.message + '\nerr.stack:\n    ' +err.stack);
   } else {

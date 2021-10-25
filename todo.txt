@@ -1,5 +1,4 @@
-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
-========================================
+mongodb+srv://qa5wFbIGt:6iqN50rq4aDvdNb8@cluster0.8bp0e.mongodb.net/my-cha-cha?retryWrites=true&w=majority
 
 для startprod потрібно змінити config:
   "avatarPathFromServer"   : "dist/public/img/users/",

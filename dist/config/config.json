@@ -1,7 +1,8 @@
 {
-  "port"                   : 3002,
+  "port"                   : 80,
+  "host"                   : "localhost",
   "mongoose"               : {
-    "uri"                  : "mongodb://localhost/my-cha-cha",
+    "uri"                  : "mongodb+srv://qa5wFbIGt:6iqN50rq4aDvdNb8@cluster0.8bp0e.mongodb.net/my-cha-cha?retryWrites=true&w=majority",
     "options"              : {
       "keepAlive"          : true,
       "useNewUrlParser"    : true,
